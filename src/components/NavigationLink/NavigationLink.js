@@ -2,7 +2,7 @@ import style from "./navigation-link.module.css";
 
 function NavigationLink({ linkName, isLinkActive, children }) {
   return (
-    <li className={`${style.navigation_link}  pr-5 pl-5 ml-2`}>
+    <li className={`${style.navigation_link}  pr-5 pl-5`}>
       {children}
       <a
         className={`${style.link_name} 

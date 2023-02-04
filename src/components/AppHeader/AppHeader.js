@@ -13,7 +13,7 @@ function AppHeader() {
   return (
     <header className={appHeader.header}>
       <div className={`${appHeader.content} pb-4 pt-4`}>
-        <Navigation>
+        <Navigation position={"left"}>
           <NavigationLink linkName={"Конструктор"} isLinkActive={true}>
             <BurgerIcon type="primary" />
           </NavigationLink>
@@ -22,7 +22,7 @@ function AppHeader() {
           </NavigationLink>
         </Navigation>
         <Logo />
-        <Navigation isPositionRight={true}>
+        <Navigation position={"right"}>
           <NavigationLink linkName={"Личный кабинет"} isLinkActive={false}>
             <ProfileIcon type="secondary" />
           </NavigationLink>
