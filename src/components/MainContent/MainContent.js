@@ -1,12 +1,13 @@
-import style from "./main-content.module.css";
+import styles from "./main-content.module.css";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import BurgerIngedients from "../BurgerIngedients/BurgerIngedients";
 
-function MainContent({ components }) {
+function MainContent({ components, ingredients }) {
   return (
-    <main className={style.main_container}>
-      <div className={style.content}>
-        <div className={style.block}></div>
-        <BurgerConstructor components={components}/>
+    <main className={styles.main_container}>
+      <div className={styles.content}>
+        <BurgerIngedients ingredients={ingredients} />
+        <BurgerConstructor components={components} />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import style from "./burger-component.module.css";
+import styles from "./burger-component.module.css";
 
 import {
   ConstructorElement,
@@ -10,10 +10,10 @@ function BurgerComponent({ component, type }) {
 
   return (
     <div
-      className={`${style.component} ${
-        isLocked ? style.component_type_locked : ""
+      className={`${styles.component} ${
+        isLocked ? styles.component_type_locked : ""
       } 
-      ${type === "bottom" ? style.component_position_bottom : ""}mb-4`}
+      ${type === "bottom" ? styles.component_position_bottom : ""}mb-4`}
     >
       {!isLocked && <DragIcon type="primary" />}
       <ConstructorElement

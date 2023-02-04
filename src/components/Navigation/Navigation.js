@@ -1,11 +1,11 @@
-import style from "./navigation.module.css";
+import styles from "./navigation.module.css";
 
 function Navigation({ position, children }) {
   return (
     <nav>
       <ul
-        className={`${style.navigation} 
-      ${position === "right" ? style.navigation_position_right : ""}
+        className={`${styles.navigation} 
+      ${position === "right" ? styles.navigation_position_right : ""}
       `}
       >
         {children}

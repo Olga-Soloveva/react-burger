@@ -1,4 +1,4 @@
-import appHeader from "./app-header.module.css";
+import styles from "./app-header.module.css";
 import Navigation from "../Navigation/Navigation";
 import NavigationLink from "../NavigationLink/NavigationLink";
 
@@ -11,8 +11,8 @@ import {
 
 function AppHeader() {
   return (
-    <header className={appHeader.header}>
-      <div className={`${appHeader.content} pb-4 pt-4`}>
+    <header className={styles.header}>
+      <div className={`${styles.content} pb-4 pt-4`}>
         <Navigation position={"left"}>
           <NavigationLink linkName={"Конструктор"} isLinkActive={true}>
             <BurgerIcon type="primary" />
