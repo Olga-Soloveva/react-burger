@@ -1,0 +1,12 @@
+.navigation {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    gap: 8px;
+  }
+  
+  .navigation_position_right {
+    justify-content: end;
+  }

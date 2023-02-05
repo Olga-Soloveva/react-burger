@@ -1,0 +1,30 @@
+.section_container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab {
+  display: flex;
+  width: 100%;
+}
+.ingredients {
+  width: 100%;
+  max-height: calc(100vh - 284px);
+  overflow: auto;
+}
+
+.ingredients::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+  background: #2f2f37;
+  margin-bottom: 52px;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}

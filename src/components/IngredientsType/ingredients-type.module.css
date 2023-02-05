@@ -1,0 +1,6 @@
+.ingredient_container {
+    display: grid;
+    column-gap: 24px;
+    row-gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+}
