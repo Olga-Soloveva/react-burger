@@ -1,4 +1,5 @@
 import styles from "./navigation.module.css";
+import PropTypes from "prop-types";
 
 function Navigation({ position, children }) {
   return (
@@ -13,5 +14,10 @@ function Navigation({ position, children }) {
     </nav>
   );
 }
+
+Navigation.propTypes = {
+  children: PropTypes.node.isRequired,
+  position: PropTypes.string,
+};
 
 export default Navigation;

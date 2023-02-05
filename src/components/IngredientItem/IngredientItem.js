@@ -1,5 +1,10 @@
 import styles from "./ingredient-item.module.css";
-import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import ingredientType from "../../utils/types";
+import {
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 function IngredientItem({ ingredient }) {
   const { name, image, price } = ingredient;
@@ -15,5 +20,9 @@ function IngredientItem({ ingredient }) {
     </div>
   );
 }
+
+IngredientItem.propTypes = {
+  ingredient: PropTypes.shape(ingredientType).isRequired,
+};
 
 export default IngredientItem;

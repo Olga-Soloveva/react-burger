@@ -1,5 +1,6 @@
 import styles from "./burger-component.module.css";
-
+import PropTypes from "prop-types";
+import ingredientType from "../../utils/types";
 import {
   ConstructorElement,
   DragIcon,
@@ -7,6 +8,14 @@ import {
 
 function BurgerComponent({ component, type }) {
   const isLocked = type === "top" || type === "bottom" ? true : false;
+  const nameComponent = (function () {
+    if (type === "top") {
+      return component.name + " (верх)";
+    } else if (type === "bottom") {
+      return component.name + " (низ)";
+    }
+    return component.name;
+  })();
 
   return (
     <div
@@ -19,12 +28,17 @@ function BurgerComponent({ component, type }) {
       <ConstructorElement
         type={type}
         isLocked={isLocked}
-        text={component.name}
+        text={nameComponent}
         price={component.price}
         thumbnail={component.image}
       />
     </div>
   );
 }
+
+BurgerComponent.propTypes = {
+  component: PropTypes.shape(ingredientType).isRequired,
+  type: PropTypes.string.isRequired,
+};
 
 export default BurgerComponent;

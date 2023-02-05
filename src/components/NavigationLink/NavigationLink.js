@@ -1,4 +1,5 @@
 import styles from "./navigation-link.module.css";
+import PropTypes from "prop-types";
 
 function NavigationLink({ linkName, isLinkActive, children }) {
   return (
@@ -16,5 +17,11 @@ function NavigationLink({ linkName, isLinkActive, children }) {
     </li>
   );
 }
+
+NavigationLink.propTypes = {
+  children: PropTypes.node.isRequired,
+  linkName: PropTypes.string.isRequired,
+  isLinkActive: PropTypes.bool,
+};
 
 export default NavigationLink;
