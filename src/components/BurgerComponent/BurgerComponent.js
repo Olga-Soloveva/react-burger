@@ -37,8 +37,8 @@ function BurgerComponent({ component, type }) {
 }
 
 BurgerComponent.propTypes = {
-  component: PropTypes.shape(ingredientType).isRequired,
-  type: PropTypes.string.isRequired,
+  component: ingredientType.isRequired,
+  type: PropTypes.string,
 };
 
 export default BurgerComponent;

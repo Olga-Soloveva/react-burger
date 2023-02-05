@@ -8,7 +8,7 @@ function IngredientsType({ ingredientsThisType, typeName }) {
     <>
       <h2 className="text text_type_main-medium">{typeName}</h2>
       <div className={`${styles.ingredient_container} pt-6 pb-10 pl-4 pr-4`}>
-      {ingredientsThisType.map((ingredient, index) => {
+      {ingredientsThisType.map((ingredient) => {
             return <IngredientItem ingredient={ingredient} key={ingredient._id} />;
           })}
       </div>

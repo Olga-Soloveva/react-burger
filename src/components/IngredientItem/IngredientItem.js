@@ -22,7 +22,7 @@ function IngredientItem({ ingredient }) {
 }
 
 IngredientItem.propTypes = {
-  ingredient: PropTypes.shape(ingredientType).isRequired,
+  ingredient: ingredientType.isRequired,
 };
 
 export default IngredientItem;
