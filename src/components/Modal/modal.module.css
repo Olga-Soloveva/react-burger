@@ -1,0 +1,30 @@
+.modal {
+  margin: auto;
+  position: relative;
+  width: 720px;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  box-sizing: border-box;
+}
+
+.title {
+  max-width: 580px;
+  line-height: 64px;
+}
+
+.buttonClose {
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  background-color: transparent;
+  border: 0;
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

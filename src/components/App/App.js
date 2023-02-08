@@ -17,7 +17,7 @@ function App() {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((res) => {
-         setingredients(res.data);
+        setingredients(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -25,10 +25,12 @@ function App() {
   }, []);
 
   return (
-    <div className={styles.page}>
-      <AppHeader />
-      <MainContent ingredients={ingredients} components={data} />
-    </div>
+    <>
+      <div className={styles.page}>
+        <AppHeader />
+        <MainContent ingredients={ingredients} components={data} />
+      </div>
+    </>
   );
 }
 
