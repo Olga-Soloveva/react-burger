@@ -8,8 +8,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function BurgerConstructor({ components }) {
-  const bunComponent = components[0];
-  const otherComponent = components.slice(1);
+  const bunComponent = components.find(function (component) { 
+    return component.type === "bun"
+  }); 
+  const otherComponent = components.filter((component) => {
+    return component.type === "main" || component.type === "sauce"
+  });
 
   return (
     <section className={`${styles.section_container} pt-25 `}>

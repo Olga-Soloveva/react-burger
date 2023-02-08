@@ -7,7 +7,7 @@ import IngredientsType from "../IngredientsType/IngredientsType";
 
 function BurgerIngedients({ ingredients }) {
   const [current, setCurrent] = useState("one");
-  const ingredientsByType = (function () {
+  const ingredientsByType = (() => {
     let bun = [];
     let main = [];
     let sauce = [];
