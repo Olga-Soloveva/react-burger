@@ -1,8 +1,8 @@
 import styles from "./ingredient-details.module.css";
+import ingredientType from "../../utils/types";
 import Modal from "../Modal/Modal";
 
 const IngredientDetails = ({ ingredient, ...props }) => {
-  console.log(ingredient);
 
   const {
     name,
@@ -27,7 +27,6 @@ const IngredientDetails = ({ ingredient, ...props }) => {
             {calories}
           </p>
         </div>
-
         <div className={styles.nutrition_item}>
           <p className="text text_type_main-default text_color_inactive">
             Белки, г
@@ -36,7 +35,6 @@ const IngredientDetails = ({ ingredient, ...props }) => {
             {proteins}
           </p>
         </div>
-
         <div className={styles.nutrition_item}>
           <p className="text text_type_main-default text_color_inactive">
             Жиры, г
@@ -45,7 +43,6 @@ const IngredientDetails = ({ ingredient, ...props }) => {
             {fat}
           </p>
         </div>
-
         <div className={styles.nutrition_item}>
           <p className="text text_type_main-default text_color_inactive">
             Углеводы, г
@@ -58,5 +55,10 @@ const IngredientDetails = ({ ingredient, ...props }) => {
     </Modal>
   );
 };
+
+IngredientDetails.propTypes = {
+  ingredient: ingredientType.isRequired,
+};
+
 
 export default IngredientDetails;

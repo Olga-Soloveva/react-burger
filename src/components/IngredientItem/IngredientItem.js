@@ -1,5 +1,4 @@
 import styles from "./ingredient-item.module.css";
-import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
 import {
   CurrencyIcon,

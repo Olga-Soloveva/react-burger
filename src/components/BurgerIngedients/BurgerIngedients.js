@@ -2,14 +2,15 @@ import styles from "./burger-ingedients.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
 
 function BurgerIngedients({ ingredients }) {
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
-  const ingredientsByType = useCallback(() => {
+  const ingredientsByType = useMemo(
+    (() => {
     let bun = [];
     let main = [];
     let sauce = [];
@@ -23,7 +24,8 @@ function BurgerIngedients({ ingredients }) {
       }
     });
     return { bun, main, sauce };
-  },[ingredients])();
+  }), [ingredients]);
+
   const [selectedIngredient, setSelectedIngredient] = useState({});
 
   const closeModal = useCallback(() => {
@@ -33,7 +35,7 @@ function BurgerIngedients({ ingredients }) {
   const showIngredientDetails = useCallback((data) => {
     setIsModalIngredientOpen(true);
     setSelectedIngredient(data);
-  }, [])
+  }, []);
 
   return (
     <>
@@ -68,7 +70,13 @@ function BurgerIngedients({ ingredients }) {
           />
         </div>
       </section>
-      {isModalIngredientOpen && <IngredientDetails ingredient={selectedIngredient} title="Детали ингредиента" onClose={closeModal} />}
+      {isModalIngredientOpen && (
+        <IngredientDetails
+          ingredient={selectedIngredient}
+          title="Детали ингредиента"
+          onClose={closeModal}
+        />
+      )}
     </>
   );
 }

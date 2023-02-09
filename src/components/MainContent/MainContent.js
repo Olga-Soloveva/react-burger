@@ -4,7 +4,7 @@ import ingredientType from "../../utils/types";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngedients from "../BurgerIngedients/BurgerIngedients";
 
-function MainContent({ components, ingredients }) {
+function MainContent({  ingredients, components }) {
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
