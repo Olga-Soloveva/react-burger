@@ -4,6 +4,7 @@ import BurgerComponent from "../BurgerComponent/BurgerComponent";
 import { useState, useCallback, useMemo } from "react";
 import ingredientType from "../../utils/types";
 import { testDataOrder } from "../../utils/testData";
+import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {
   Button,
@@ -75,12 +76,11 @@ function BurgerConstructor({ components }) {
           </Button>
         </div>
       </section>
+
       {isModalOrderOpen && (
-        <OrderDetails
-          order={testDataOrder}
-          title={null}
-          onClose={closeModal}
-        />
+        <Modal itle={null} onClose={closeModal}>
+          <OrderDetails order={testDataOrder} />
+        </Modal>
       )}
     </>
   );

@@ -1,6 +1,7 @@
 import styles from "./burger-ingedients.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
+import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { useState, useCallback, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -71,11 +72,9 @@ function BurgerIngedients({ ingredients }) {
         </div>
       </section>
       {isModalIngredientOpen && (
-        <IngredientDetails
-          ingredient={selectedIngredient}
-          title="Детали ингредиента"
-          onClose={closeModal}
-        />
+        <Modal title={"Детали ингредиента"} onClose={closeModal}>
+          <IngredientDetails ingredient={selectedIngredient} />
+        </Modal>
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import styles from "./ingredient-item.module.css";
+import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
 import {
   CurrencyIcon,
@@ -26,6 +27,7 @@ function IngredientItem({ ingredient, showIngredientDetails }) {
 
 IngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
+  showIngredientDetails: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;

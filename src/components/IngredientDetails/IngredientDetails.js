@@ -1,9 +1,7 @@
 import styles from "./ingredient-details.module.css";
 import ingredientType from "../../utils/types";
-import Modal from "../Modal/Modal";
 
-const IngredientDetails = ({ ingredient, ...props }) => {
-
+const IngredientDetails = ({ ingredient }) => {
   const {
     name,
     image_large: image,
@@ -13,7 +11,7 @@ const IngredientDetails = ({ ingredient, ...props }) => {
     carbohydrates,
   } = ingredient;
   return (
-    <Modal {...props}>
+    <>
       <img src={image} alt={name} className={styles.image} />
       <h3 className={`text text_type_main-medium mt-4 mb-8 ${styles.title}`}>
         {name}
@@ -52,13 +50,12 @@ const IngredientDetails = ({ ingredient, ...props }) => {
           </p>
         </div>
       </div>
-    </Modal>
+    </>
   );
 };
 
 IngredientDetails.propTypes = {
   ingredient: ingredientType.isRequired,
 };
-
 
 export default IngredientDetails;
