@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import React from "react";
 import { useState, useCallback, useMemo } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
@@ -84,4 +85,4 @@ BurgerIngedients.propTypes = {
   ingredients: PropTypes.arrayOf(ingredientType).isRequired,
 };
 
-export default BurgerIngedients;
+export default React.memo(BurgerIngedients);

@@ -1,6 +1,7 @@
 import styles from "./burger-constructor.module.css";
 import PropTypes from "prop-types";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
+import React from "react";
 import { useState, useCallback, useMemo } from "react";
 import ingredientType from "../../utils/types";
 import { testDataOrder } from "../../utils/testData";
@@ -90,4 +91,4 @@ BurgerConstructor.propTypes = {
   components: PropTypes.arrayOf(ingredientType).isRequired,
 };
 
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);
