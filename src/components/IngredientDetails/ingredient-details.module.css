@@ -1,0 +1,21 @@
+.nutrition_container {
+  width: 516px;
+  height: 56px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  max-width: 520px;
+text-align: center;
+}
+
+.nutrition_item {
+  min-width: 112px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}

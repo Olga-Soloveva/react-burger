@@ -1,6 +1,7 @@
 import styles from "./burger-component.module.css";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
+import {  useMemo } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -8,16 +9,16 @@ import {
 
 function BurgerComponent({ component, type }) {
   const isLocked = type === "top" || type === "bottom" ? true : false;
-  const nameComponent = (function () {
+  const nameComponent = useMemo((function () {
     if (type === "top") {
       return component.name + " (верх)";
     } else if (type === "bottom") {
       return component.name + " (низ)";
     }
     return component.name;
-  })();
+  }), [component, type]);
 
-  return (
+    return (
     <div
       className={`${styles.component} ${
         isLocked ? styles.component_type_locked : ""

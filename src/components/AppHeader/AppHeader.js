@@ -1,4 +1,5 @@
 import styles from "./app-header.module.css";
+import React from "react";
 import Navigation from "../Navigation/Navigation";
 import NavigationLink from "../NavigationLink/NavigationLink";
 
@@ -9,7 +10,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function AppHeader() {
+const AppHeader = React.memo((props) => {
   return (
     <header className={styles.header}>
       <div className={`${styles.content} pb-4 pt-4`}>
@@ -30,6 +31,6 @@ function AppHeader() {
       </div>
     </header>
   );
-}
+});
 
 export default AppHeader;

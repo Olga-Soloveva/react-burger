@@ -4,12 +4,12 @@ import ingredientType from "../../utils/types";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngedients from "../BurgerIngedients/BurgerIngedients";
 
-function MainContent({ components, ingredients }) {
+function MainContent({  ingredients }) {
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
         <BurgerIngedients ingredients={ingredients} />
-        <BurgerConstructor components={components} />
+        <BurgerConstructor components={ingredients} />
       </div>
     </main>
   );
@@ -17,7 +17,6 @@ function MainContent({ components, ingredients }) {
 
 MainContent.propTypes = {
   ingredients: PropTypes.arrayOf(ingredientType).isRequired,
-  components: PropTypes.arrayOf(ingredientType).isRequired,
 };
 
 export default MainContent;

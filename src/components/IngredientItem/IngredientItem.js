@@ -6,10 +6,14 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function IngredientItem({ ingredient }) {
+function IngredientItem({ ingredient, showIngredientDetails }) {
   const { name, image, price } = ingredient;
+
+  const handleIngredient = () => {
+    showIngredientDetails(ingredient);
+  };
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleIngredient}>
       <img src={image} alt={name} />
       <div className={styles.price}>
         <p className="text text_type_digits-default">{price}</p>{" "}
@@ -23,6 +27,7 @@ function IngredientItem({ ingredient }) {
 
 IngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
+  showIngredientDetails: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;
