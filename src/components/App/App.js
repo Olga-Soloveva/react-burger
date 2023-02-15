@@ -17,19 +17,17 @@ function App() {
       })
       .then((res) => {
         setingredients(res.data);
-         })
+      })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-   return (
-    <>
-      <div className={styles.page}>
-        <AppHeader />
-        <MainContent ingredients={ingredients}/>
-      </div>
-    </>
+  return (
+    <div className={styles.page}>
+      <AppHeader />
+      <MainContent ingredients={ingredients} />
+    </div>
   );
 }
 
