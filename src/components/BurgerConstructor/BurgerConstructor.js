@@ -1,7 +1,6 @@
 import styles from "./burger-constructor.module.css";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
-import React, { useState, useCallback, useContext } from "react";
-import { testDataOrder } from "../../utils/testData";
+import React, { useState, useCallback, useContext, useMemo } from "react";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {
@@ -9,19 +8,38 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
+import { createOrder } from "../../utils/ingredients-api";
 
-function BurgerConstructor({ orderAmount }) {
-  const { bunComponent, otherComponent } = useContext(BurgerComponentContext);
+function BurgerConstructor() {
+  const { bunComponent, otherComponent, orderAmount, order } = useContext(
+    BurgerComponentContext
+  );
+  const [orderNumber, setOrderNumber] = useState(null);
 
+  const ingredients = useMemo(
+    () =>
+      order.map((ingredient) => {
+        return ingredient._id;
+      }),
+    [order]
+  );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
 
   const closeModal = useCallback(() => {
     setIsModalOrderOpen(false);
   }, []);
 
-  const showOrderDetails = useCallback((data) => {
+  const placeOrder = (data) => {
     setIsModalOrderOpen(true);
-  }, []);
+    createOrder(ingredients)
+      .then((res) => {
+        setOrderNumber(res.order.number);
+      })
+      .catch((err) => {
+        setOrderNumber("Error");
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -56,7 +74,7 @@ function BurgerConstructor({ orderAmount }) {
             htmlType="button"
             type="primary"
             size="large"
-            onClick={showOrderDetails}
+            onClick={placeOrder}
           >
             Оформить заказ
           </Button>
@@ -65,7 +83,7 @@ function BurgerConstructor({ orderAmount }) {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails order={testDataOrder} />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>

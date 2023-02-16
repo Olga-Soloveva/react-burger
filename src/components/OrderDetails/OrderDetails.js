@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import WrapperIcon from "../WtapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const OrderDetails = ({ order }) => {
-  const { number } = order;
+const OrderDetails = ({ orderNumber }) => {
+ 
   return (
     <>
-      <h3 className={`text text_type_digits-large mt-30 mb-8`}> {number}</h3>
+      <h3 className={`text text_type_digits-large mt-30 mb-8`}> {orderNumber}</h3>
       <p className={`text text_type_main-medium mb-15`}>идентификатор заказа</p>
       <WrapperIcon>
         <CheckMarkIcon type="primary" className={styles.image} />

@@ -5,12 +5,12 @@ import MainContent from "../MainContent/MainContent";
 import { getIngredients } from "../../utils/ingredients-api";
 
 function App() {
-  const [ingredients, setingredients] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
   useEffect(() => {
     getIngredients()
       .then((data) => {
-        setingredients(data);
+        setIngredients(data);
       })
       .catch((err) => {
         console.log(err);

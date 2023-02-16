@@ -81,16 +81,14 @@ function MainContent({ ingredients }) {
     }
   }
 
-  console.log(orderAmountState.orderAmount);
-
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
         <BurgerIngedients ingredients={ingredients} />
         <BurgerComponentContext.Provider
-          value={{ bunComponent, otherComponent }}
+          value={{ bunComponent, otherComponent, orderAmount: orderAmountState.orderAmount, order }}
         >
-          <BurgerConstructor orderAmount={orderAmountState.orderAmount} />
+          <BurgerConstructor/>
         </BurgerComponentContext.Provider>
       </div>
     </main>
