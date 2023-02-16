@@ -22,7 +22,7 @@ function MainContent({ ingredients }) {
     [ingredients]
   );
 
-  const otherComponentData = useMemo(
+  const otherComponentsData = useMemo(
     () =>
       ingredients.filter((component) => {
         return component.type === "main" || component.type === "sauce";
@@ -31,26 +31,27 @@ function MainContent({ ingredients }) {
   );
 
   const [bunComponent, setBunComponent] = useState([]);
-  const [otherComponent, setOtherComponent] = useState([]);
-  const [order, setOrder] = useState([]);
+  const [otherComponents, setOtherComponents] = useState([]);
+  const [orderIngredients, setOrderIngredients] = useState([]);
+  const [orderNumber, setOrderNumber] = useState(0);
 
   useEffect(() => {
-    otherComponentData && setOtherComponent(otherComponentData);
-  }, [otherComponentData]);
+    otherComponentsData && setOtherComponents(otherComponentsData);
+  }, [otherComponentsData]);
 
   useEffect(() => {
     bunComponentData && setBunComponent(bunComponentData);
   }, [bunComponentData]);
 
   useEffect(() => {
-    setOrder([bunComponent, ...otherComponent]);
-  }, [bunComponent, otherComponent]);
+    setOrderIngredients([bunComponent, ...otherComponents]);
+  }, [bunComponent, otherComponents]);
 
   useEffect(() => {
     orderAmountDispatcher({
       type: "reset",
     });
-    order.forEach((component) => {
+    orderIngredients.forEach((component) => {
       if (component.type === "bun") {
         orderAmountDispatcher({
           type: "addBunComponent",
@@ -63,7 +64,7 @@ function MainContent({ ingredients }) {
         });
       }
     });
-  }, [order]);
+  }, [orderIngredients]);
 
   function reducer(state, action) {
     switch (action.type) {
@@ -86,7 +87,7 @@ function MainContent({ ingredients }) {
       <div className={styles.content}>
         <BurgerIngedients ingredients={ingredients} />
         <BurgerComponentContext.Provider
-          value={{ bunComponent, otherComponent, orderAmount: orderAmountState.orderAmount, order }}
+          value={{ bunComponent, otherComponents, orderIngredients, orderAmount: orderAmountState.orderAmount, orderNumber, setOrderNumber }}
         >
           <BurgerConstructor/>
         </BurgerComponentContext.Provider>

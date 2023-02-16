@@ -1,13 +1,17 @@
 import styles from "./order-details.module.css";
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import WrapperIcon from "../WtapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 
-const OrderDetails = ({ orderNumber }) => {
- 
+const OrderDetails = () => {
+  const { orderNumber } = useContext(BurgerComponentContext);
+
   return (
     <>
-      <h3 className={`text text_type_digits-large mt-30 mb-8`}> {orderNumber}</h3>
+      <h3 className={`text text_type_digits-large mt-30 mb-8`}>
+        {orderNumber}
+      </h3>
       <p className={`text text_type_main-medium mb-15`}>идентификатор заказа</p>
       <WrapperIcon>
         <CheckMarkIcon type="primary" className={styles.image} />
@@ -21,12 +25,5 @@ const OrderDetails = ({ orderNumber }) => {
     </>
   );
 };
-
-OrderDetails.propTypes = {
-  order: PropTypes.shape({
-    number: PropTypes.string,
-    status: PropTypes.string,
-  })
-}
 
 export default OrderDetails;

@@ -1,6 +1,6 @@
 import styles from "./burger-constructor.module.css";
-import BurgerComponent from "../BurgerComponent/BurgerComponent";
 import React, { useState, useCallback, useContext, useMemo } from "react";
+import BurgerComponent from "../BurgerComponent/BurgerComponent";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {
@@ -11,17 +11,15 @@ import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 import { createOrder } from "../../utils/ingredients-api";
 
 function BurgerConstructor() {
-  const { bunComponent, otherComponent, orderAmount, order } = useContext(
-    BurgerComponentContext
-  );
-  const [orderNumber, setOrderNumber] = useState(null);
+  const { bunComponent, otherComponents, orderIngredients, orderAmount, setOrderNumber } =
+    useContext(BurgerComponentContext);
 
   const ingredients = useMemo(
     () =>
-      order.map((ingredient) => {
+    orderIngredients.map((ingredient) => {
         return ingredient._id;
       }),
-    [order]
+    [orderIngredients]
   );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
 
@@ -36,7 +34,6 @@ function BurgerConstructor() {
         setOrderNumber(res.order.number);
       })
       .catch((err) => {
-        setOrderNumber("Error");
         console.log(err);
       });
   };
@@ -50,9 +47,9 @@ function BurgerConstructor() {
               <BurgerComponent component={bunComponent} type="top" />
             </div>
           )}
-          {otherComponent.length !== 0 && (
+          {otherComponents.length !== 0 && (
             <div className={` ${styles.components_container_scrol} pl-4 pr-2`}>
-              {otherComponent.map((component) => {
+              {otherComponents.map((component) => {
                 return (
                   <BurgerComponent component={component} key={component._id} />
                 );
@@ -83,11 +80,12 @@ function BurgerConstructor() {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails orderNumber={orderNumber} />
+          <OrderDetails/>
         </Modal>
       )}
     </>
   );
 }
+
 
 export default React.memo(BurgerConstructor);
