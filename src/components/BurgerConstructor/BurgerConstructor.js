@@ -11,31 +11,45 @@ import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 import { createOrder } from "../../utils/ingredients-api";
 
 function BurgerConstructor() {
-  const { bunComponent, otherComponents, orderIngredients, orderAmount, setOrderNumber } =
-    useContext(BurgerComponentContext);
+  const {
+    bunComponent,
+    otherComponents,
+    orderIngredients,
+    orderAmount,
+    setOrderNumber,
+  } = useContext(BurgerComponentContext);
 
   const ingredients = useMemo(
     () =>
-    orderIngredients.map((ingredient) => {
+      orderIngredients.map((ingredient) => {
         return ingredient._id;
       }),
     [orderIngredients]
   );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const closeModal = useCallback(() => {
     setIsModalOrderOpen(false);
   }, []);
 
   const placeOrder = (data) => {
+    setOrderNumber(0);
+    setIsLoading(true)
     setIsModalOrderOpen(true);
     createOrder(ingredients)
       .then((res) => {
+        setHasError(false)
         setOrderNumber(res.order.number);
       })
       .catch((err) => {
-        console.log(err);
-      });
+        setOrderNumber(0);
+        setHasError(true);      
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   };
 
   return (
@@ -80,12 +94,11 @@ function BurgerConstructor() {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails/>
+          <OrderDetails  hasError={hasError} isLoading={isLoading} />
         </Modal>
       )}
     </>
   );
 }
-
 
 export default React.memo(BurgerConstructor);

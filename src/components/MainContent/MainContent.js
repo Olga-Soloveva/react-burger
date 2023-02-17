@@ -1,12 +1,13 @@
 import styles from "./main-content.module.css";
-import { useState, useMemo, useEffect, useReducer } from "react";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types";
+import { useState, useMemo, useEffect, useReducer, useContext } from "react";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngedients from "../BurgerIngedients/BurgerIngedients";
+import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
 import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 
-function MainContent({ ingredients }) {
+function MainContent() {
+  const { ingredients } = useContext(BurgerIngredientContext);
+
   const orderAmountInitialState = { orderAmount: 0 };
   const [orderAmountState, orderAmountDispatcher] = useReducer(
     reducer,
@@ -82,22 +83,34 @@ function MainContent({ ingredients }) {
     }
   }
 
+  const contextValue = useMemo(() => {
+    return {
+      bunComponent,
+      otherComponents,
+      orderIngredients,
+      orderAmount: orderAmountState.orderAmount,
+      orderNumber,
+      setOrderNumber,
+    };
+  }, [
+    bunComponent,
+    otherComponents,
+    orderIngredients,
+    orderAmountState,
+    orderNumber,
+    setOrderNumber,
+  ]);
+
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
         <BurgerIngedients ingredients={ingredients} />
-        <BurgerComponentContext.Provider
-          value={{ bunComponent, otherComponents, orderIngredients, orderAmount: orderAmountState.orderAmount, orderNumber, setOrderNumber }}
-        >
-          <BurgerConstructor/>
+        <BurgerComponentContext.Provider value={contextValue}>
+          <BurgerConstructor />
         </BurgerComponentContext.Provider>
       </div>
     </main>
   );
 }
-
-MainContent.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientType).isRequired,
-};
 
 export default MainContent;

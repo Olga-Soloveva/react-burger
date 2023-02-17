@@ -1,18 +1,19 @@
 import styles from "./burger-ingedients.module.css";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import React from "react";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useContext } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
+import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
 
-function BurgerIngedients({ ingredients }) {
+function BurgerIngedients() {
+  const { ingredients, isLoading, hasError } = useContext(
+    BurgerIngredientContext
+  );
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
-  const ingredientsByType = useMemo(
-    (() => {
+  const ingredientsByType = useMemo(() => {
     let bun = [];
     let main = [];
     let sauce = [];
@@ -26,7 +27,7 @@ function BurgerIngedients({ ingredients }) {
       }
     });
     return { bun, main, sauce };
-  }), [ingredients]);
+  }, [ingredients]);
 
   const [selectedIngredient, setSelectedIngredient] = useState({});
 
@@ -43,6 +44,7 @@ function BurgerIngedients({ ingredients }) {
     <>
       <section className={`${styles.section_container} pt-10 `}>
         <h1 className="text text_type_main-large pb-5">Соберите бургер</h1>
+
         <div className={`${styles.tab} pb-10`}>
           <Tab value="one" active={current === "one"} onClick={setCurrent}>
             Булки
@@ -54,23 +56,38 @@ function BurgerIngedients({ ingredients }) {
             Начинки
           </Tab>
         </div>
-        <div className={`${styles.ingredients}`}>
-          <IngredientsType
-            ingredientsThisType={ingredientsByType.bun}
-            typeName={"Булки"}
-            showIngredientDetails={showIngredientDetails}
-          />
-          <IngredientsType
-            ingredientsThisType={ingredientsByType.sauce}
-            typeName={"Соусы"}
-            showIngredientDetails={showIngredientDetails}
-          />
-          <IngredientsType
-            ingredientsThisType={ingredientsByType.main}
-            typeName={"Начинки"}
-            showIngredientDetails={showIngredientDetails}
-          />
-        </div>
+        {!hasError && !isLoading ? (
+          <div className={`${styles.ingredients}`}>
+            <IngredientsType
+              ingredientsThisType={ingredientsByType.bun}
+              typeName={"Булки"}
+              showIngredientDetails={showIngredientDetails}
+            />
+            <IngredientsType
+              ingredientsThisType={ingredientsByType.sauce}
+              typeName={"Соусы"}
+              showIngredientDetails={showIngredientDetails}
+            />
+            <IngredientsType
+              ingredientsThisType={ingredientsByType.main}
+              typeName={"Начинки"}
+              showIngredientDetails={showIngredientDetails}
+            />
+          </div>
+        ) : (
+          <>
+            {hasError && (
+              <p className="text text_type_main-default pt-4">
+                Ошибка сервера: невозможно загрузить ингридиенты.
+              </p>
+            )}
+            {isLoading && (
+              <p className="text text_type_main-default pt-4">
+                Загрузка ингридиентов...
+              </p>
+            )}
+          </>
+        )}
       </section>
       {isModalIngredientOpen && (
         <Modal title={"Детали ингредиента"} onClose={closeModal}>
@@ -80,9 +97,5 @@ function BurgerIngedients({ ingredients }) {
     </>
   );
 }
-
-BurgerIngedients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientType).isRequired,
-};
 
 export default React.memo(BurgerIngedients);
