@@ -1,61 +1,76 @@
 import styles from "./burger-constructor.module.css";
-import PropTypes from "prop-types";
+import React, { useState, useCallback, useContext, useMemo } from "react";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
-import { useState, useCallback, useMemo } from "react";
-import ingredientType from "../../utils/types";
-import { testDataOrder } from "../../utils/testData";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
+import { createOrder } from "../../utils/ingredients-api";
 
-function BurgerConstructor({ components }) {
-  const bunComponent = useMemo(
-    () =>
-      components.find(function (component) {
-        return component.type === "bun";
-      }),
-    [components]
-  );
+function BurgerConstructor() {
+  const {
+    bunComponent,
+    otherComponents,
+    orderIngredients,
+    orderAmount,
+    setOrderNumber,
+  } = useContext(BurgerComponentContext);
 
-  const otherComponent = useMemo(
+  const ingredients = useMemo(
     () =>
-      components.filter((component) => {
-        return component.type === "main" || component.type === "sauce";
+      orderIngredients.map((ingredient) => {
+        return ingredient._id;
       }),
-    [components]
+    [orderIngredients]
   );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const closeModal = useCallback(() => {
     setIsModalOrderOpen(false);
   }, []);
 
-  const showOrderDetails = useCallback((data) => {
+  const placeOrder = (data) => {
+    setOrderNumber(0);
+    setIsLoading(true)
     setIsModalOrderOpen(true);
-  }, []);
+    createOrder(ingredients)
+      .then((res) => {
+        setHasError(false)
+        setOrderNumber(res.order.number);
+      })
+      .catch((err) => {
+        setOrderNumber(0);
+        setHasError(true);      
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  };
 
   return (
     <>
       <section className={`${styles.section_container} pt-25 `}>
         <div className={`${styles.burger_components}`}>
-          {bunComponent && (
+          {bunComponent.length !== 0 && (
             <div className={`${styles.components_container} pl-4 pr-4`}>
               <BurgerComponent component={bunComponent} type="top" />
             </div>
           )}
-          {otherComponent && (
+          {otherComponents.length !== 0 && (
             <div className={` ${styles.components_container_scrol} pl-4 pr-2`}>
-              {otherComponent.map((component) => {
+              {otherComponents.map((component) => {
                 return (
                   <BurgerComponent component={component} key={component._id} />
                 );
               })}
             </div>
           )}
-          {bunComponent && (
+          {bunComponent.length !== 0 && (
             <div className={`${styles.components_container} pl-4 pr-4`}>
               <BurgerComponent component={bunComponent} type="bottom" />
             </div>
@@ -63,14 +78,14 @@ function BurgerConstructor({ components }) {
         </div>
         <div className={`${styles.info} mt-10`}>
           <div className={`${styles.price} mr-10`}>
-            <p className="text text_type_digits-medium">610</p>
+            <p className="text text_type_digits-medium">{orderAmount}</p>
             <CurrencyIcon type="primary" />
           </div>
           <Button
             htmlType="button"
             type="primary"
             size="large"
-            onClick={showOrderDetails}
+            onClick={placeOrder}
           >
             Оформить заказ
           </Button>
@@ -79,15 +94,11 @@ function BurgerConstructor({ components }) {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails order={testDataOrder} />
+          <OrderDetails  hasError={hasError} isLoading={isLoading} />
         </Modal>
       )}
     </>
   );
 }
 
-BurgerConstructor.propTypes = {
-  components: PropTypes.arrayOf(ingredientType).isRequired,
-};
-
-export default BurgerConstructor;
+export default React.memo(BurgerConstructor);

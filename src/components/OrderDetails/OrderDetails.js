@@ -1,14 +1,28 @@
 import styles from "./order-details.module.css";
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import WrapperIcon from "../WtapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 
-const OrderDetails = ({ order }) => {
-  const { number } = order;
+const OrderDetails = ({ hasError, isLoading }) => {
+  const { orderNumber } = useContext(BurgerComponentContext);
+
   return (
     <>
-      <h3 className={`text text_type_digits-large mt-30 mb-8`}> {number}</h3>
-      <p className={`text text_type_main-medium mb-15`}>идентификатор заказа</p>
+      <h3 className={`text text_type_digits-large mt-30 mb-8`}>
+        {/* {orderNumber}  */}
+        {hasError || isLoading ? "..." : (`${orderNumber}`)}
+      </h3>
+      <p className={`text text_type_main-medium mb-15`}>
+        {!hasError && !isLoading ? (
+          "идентификатор заказа"
+        ) : (
+          <>
+            {hasError && "Ошибка сервера: невозможно присвоить номер заказа."}
+            {isLoading && "Ожидайте номер заказа"}
+          </>
+        )}
+      </p>
       <WrapperIcon>
         <CheckMarkIcon type="primary" className={styles.image} />
       </WrapperIcon>
@@ -21,12 +35,5 @@ const OrderDetails = ({ order }) => {
     </>
   );
 };
-
-OrderDetails.propTypes = {
-  order: PropTypes.shape({
-    number: PropTypes.string,
-    status: PropTypes.string,
-  })
-}
 
 export default OrderDetails;

@@ -1,35 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import MainContent from "../MainContent/MainContent";
-import { INGREDIENTS_URL } from "../../utils/сonstant";
+import { getIngredients } from "../../utils/ingredients-api";
+import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
 
 function App() {
-  const [ingredients, setingredients] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    fetch(INGREDIENTS_URL)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
+    setIsLoading(true)
+    getIngredients()
+      .then((data) => {
+        setHasError(false)
+        setIngredients(data);
       })
-      .then((res) => {
-        setingredients(res.data);
-         })
       .catch((err) => {
-        console.log(err);
-      });
+        setIngredients([]);
+        setHasError(true)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, []);
 
-   return (
-    <>
-      <div className={styles.page}>
-        <AppHeader />
-        <MainContent ingredients={ingredients}/>
-      </div>
-    </>
+  const contextValue = useMemo(() => {
+    return { ingredients, isLoading, hasError };
+  }, [
+    ingredients, isLoading, hasError 
+  ]);
+
+  return (
+    <div className={styles.page}>
+      <AppHeader />
+      <BurgerIngredientContext.Provider value={contextValue}>
+        <MainContent />
+      </BurgerIngredientContext.Provider>
+    </div>
   );
 }
 
