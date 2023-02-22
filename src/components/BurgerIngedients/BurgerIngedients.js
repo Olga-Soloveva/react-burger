@@ -2,15 +2,22 @@ import styles from "./burger-ingedients.module.css";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import React from "react";
-import { useState, useCallback, useMemo, useContext } from "react";
+import { useState, useCallback, useMemo, 
+  // useContext 
+} from "react";
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
+// import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
 
 function BurgerIngedients() {
-  const { ingredients, isLoading, hasError } = useContext(
-    BurgerIngredientContext
-  );
+
+  const { ingredients, ingredientsRequest, ingredientsFailed} = useSelector(state => state.burger.ingredients);
+
+
+  // const { ingredients, isLoading, hasError } = useContext(
+  //   BurgerIngredientContext
+  // );
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
   const ingredientsByType = useMemo(() => {
@@ -56,7 +63,7 @@ function BurgerIngedients() {
             Начинки
           </Tab>
         </div>
-        {!hasError && !isLoading ? (
+        {!ingredientsFailed && !ingredientsRequest? (
           <div className={`${styles.ingredients}`}>
             <IngredientsType
               ingredientsThisType={ingredientsByType.bun}
@@ -76,12 +83,12 @@ function BurgerIngedients() {
           </div>
         ) : (
           <>
-            {hasError && (
+            {ingredientsFailed && (
               <p className="text text_type_main-default pt-4">
                 Ошибка сервера: невозможно загрузить ингридиенты.
               </p>
             )}
-            {isLoading && (
+            {ingredientsRequest && (
               <p className="text text_type_main-default pt-4">
                 Загрузка ингридиентов...
               </p>

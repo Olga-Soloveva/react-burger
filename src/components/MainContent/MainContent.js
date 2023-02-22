@@ -1,12 +1,14 @@
 import styles from "./main-content.module.css";
-import { useState, useMemo, useEffect, useReducer, useContext } from "react";
+import { useState, useMemo, useEffect, useReducer } from "react";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngedients from "../BurgerIngedients/BurgerIngedients";
-import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
 import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
+import { useSelector } from "react-redux";
 
 function MainContent() {
-  const { ingredients } = useContext(BurgerIngredientContext);
+ 
+  const { ingredients} = useSelector(state => state.burger.ingredients);
+
 
   const orderAmountInitialState = { orderAmount: 0 };
   const [orderAmountState, orderAmountDispatcher] = useReducer(
@@ -104,7 +106,9 @@ function MainContent() {
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
-        <BurgerIngedients ingredients={ingredients} />
+        <BurgerIngedients
+         ingredients={ingredients} 
+         />
         <BurgerComponentContext.Provider value={contextValue}>
           <BurgerConstructor />
         </BurgerComponentContext.Provider>
