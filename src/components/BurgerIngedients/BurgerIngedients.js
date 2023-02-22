@@ -2,22 +2,15 @@ import styles from "./burger-ingedients.module.css";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import React from "react";
-import { useState, useCallback, useMemo, 
-  // useContext 
-} from "react";
-import { useSelector } from "react-redux";
+import { useState, useCallback, useMemo} from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-// import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
+import { addIngredientDetails, removeIngredientDetails } from "../../services/actions/burger";
 
 function BurgerIngedients() {
-
+  const dispatch = useDispatch();
   const { ingredients, ingredientsRequest, ingredientsFailed} = useSelector(state => state.burger.ingredients);
-
-
-  // const { ingredients, isLoading, hasError } = useContext(
-  //   BurgerIngredientContext
-  // );
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
   const ingredientsByType = useMemo(() => {
@@ -36,16 +29,15 @@ function BurgerIngedients() {
     return { bun, main, sauce };
   }, [ingredients]);
 
-  const [selectedIngredient, setSelectedIngredient] = useState({});
-
   const closeModal = useCallback(() => {
     setIsModalIngredientOpen(false);
-  }, []);
+    dispatch(removeIngredientDetails())
+  }, [dispatch]);
 
   const showIngredientDetails = useCallback((data) => {
     setIsModalIngredientOpen(true);
-    setSelectedIngredient(data);
-  }, []);
+    dispatch(addIngredientDetails(data))
+  }, [dispatch]);
 
   return (
     <>
@@ -98,7 +90,7 @@ function BurgerIngedients() {
       </section>
       {isModalIngredientOpen && (
         <Modal title={"Детали ингредиента"} onClose={closeModal}>
-          <IngredientDetails ingredient={selectedIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </>

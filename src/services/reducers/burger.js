@@ -1,7 +1,9 @@
 import {
-  GET_INGREDIENTS,
-  GET_INGREDIENTS_FAILED,
+  GET_INGREDIENTS_REQUEST,
+  GET_INGREDIENTS_ERROR,
   GET_INGREDIENTS_SUCCESS,
+  ADD_INGREDIENT_DETAILS,
+  REMOVE_INGREDIENT_DETAILS,
 } from "../constants";
 
 import { combineReducers } from "redux";
@@ -17,36 +19,44 @@ const initialState = {
   order: {},
 };
 
+const selectedIngredient = (
+  state = initialState.selectedIngredient,
+  action
+) => {
+  switch (action.type) {
+    case ADD_INGREDIENT_DETAILS: {
+      return action.ingredientDetails;
+    }
+    case REMOVE_INGREDIENT_DETAILS: {
+      return null;
+    }
+    default: {
+      return state;
+    }
+  }
+};
+
 const ingredients = (state = initialState.ingredients, action) => {
   switch (action.type) {
-    case GET_INGREDIENTS: {
+    case GET_INGREDIENTS_REQUEST: {
       return {
         ...state,
-        // ingredients: {
-        //   ...state.ingredients,
-          ingredientsRequest: true,
-          ingredientsFailed: false,
-        // },
+        ingredientsRequest: true,
+        ingredientsFailed: false,
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
-        // ingredients: {
-        //   ...state.ingredients,
-          ingredients: action.ingredients,
-          ingredientsRequest: false,
-        // },
+        ingredients: action.ingredients,
+        ingredientsRequest: false,
       };
     }
-    case GET_INGREDIENTS_FAILED: {
+    case GET_INGREDIENTS_ERROR: {
       return {
         ...state,
-        // ingredients: {
-        //   ...state.ingredients,
-          ingredientsRequest: false,
-          ingredientsFailed: true,
-        // },
+        ingredientsRequest: false,
+        ingredientsFailed: true,
       };
     }
     default: {
@@ -57,4 +67,5 @@ const ingredients = (state = initialState.ingredients, action) => {
 
 export const burger = combineReducers({
   ingredients,
+  selectedIngredient,
 });

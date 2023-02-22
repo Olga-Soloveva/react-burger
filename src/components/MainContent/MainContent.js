@@ -106,9 +106,7 @@ function MainContent() {
   return (
     <main className={styles.main_container}>
       <div className={styles.content}>
-        <BurgerIngedients
-         ingredients={ingredients} 
-         />
+        <BurgerIngedients />
         <BurgerComponentContext.Provider value={contextValue}>
           <BurgerConstructor />
         </BurgerComponentContext.Provider>
