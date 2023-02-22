@@ -1,5 +1,12 @@
 import styles from "./burger-constructor.module.css";
-import React, { useState, useCallback, useContext, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useMemo,
+} from "react";
+import { useSelector, useDispatch } from "react-redux";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -9,23 +16,38 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 import { createOrder } from "../../utils/ingredients-api";
+import { getInitialComponents } from "../../services/actions/burger";
 
 function BurgerConstructor() {
+  const { components } = useSelector((store) => store.burger);
+  const { ingredients } = useSelector((store) => store.burger.ingredients);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getInitialComponents(ingredients));
+  }, [dispatch, ingredients]);
+
+  const bunComponent = useMemo(
+    () =>
+      components.find((component) => {
+        return component.type === "bun";
+      }),
+    [components]
+  );
+
+  const otherComponents = useMemo(
+    () =>
+      components.filter((component) => {
+        return component.type === "main" || component.type === "sauce";
+      }),
+    [components]
+  );
+
   const {
-    bunComponent,
-    otherComponents,
-    orderIngredients,
     orderAmount,
     setOrderNumber,
   } = useContext(BurgerComponentContext);
 
-  const ingredients = useMemo(
-    () =>
-      orderIngredients.map((ingredient) => {
-        return ingredient._id;
-      }),
-    [orderIngredients]
-  );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -36,27 +58,27 @@ function BurgerConstructor() {
 
   const placeOrder = (data) => {
     setOrderNumber(0);
-    setIsLoading(true)
+    setIsLoading(true);
     setIsModalOrderOpen(true);
-    createOrder(ingredients)
+    createOrder(components)
       .then((res) => {
-        setHasError(false)
+        setHasError(false);
         setOrderNumber(res.order.number);
       })
       .catch((err) => {
         setOrderNumber(0);
-        setHasError(true);      
+        setHasError(true);
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   };
 
   return (
     <>
       <section className={`${styles.section_container} pt-25 `}>
         <div className={`${styles.burger_components}`}>
-          {bunComponent.length !== 0 && (
+          {bunComponent && (
             <div className={`${styles.components_container} pl-4 pr-4`}>
               <BurgerComponent component={bunComponent} type="top" />
             </div>
@@ -70,7 +92,7 @@ function BurgerConstructor() {
               })}
             </div>
           )}
-          {bunComponent.length !== 0 && (
+          {bunComponent && (
             <div className={`${styles.components_container} pl-4 pr-4`}>
               <BurgerComponent component={bunComponent} type="bottom" />
             </div>
@@ -94,7 +116,7 @@ function BurgerConstructor() {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails  hasError={hasError} isLoading={isLoading} />
+          <OrderDetails hasError={hasError} isLoading={isLoading} />
         </Modal>
       )}
     </>

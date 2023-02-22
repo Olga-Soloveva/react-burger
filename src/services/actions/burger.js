@@ -4,9 +4,15 @@ import {
   GET_INGREDIENTS_SUCCESS,
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS,
+  GET_INIT_COMPONENTS
 } from "../constants";
 
 import { getIngredients as getIngredientsApi } from "../../utils/ingredients-api";
+
+export const getInitialComponents = (data) => ({
+  type: GET_INIT_COMPONENTS,
+  components: data,
+})
 
 export const addIngredientDetails = (data) => ({
   type: ADD_INGREDIENT_DETAILS,

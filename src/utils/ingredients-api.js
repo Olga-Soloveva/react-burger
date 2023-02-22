@@ -22,7 +22,11 @@ const createOrder = (data) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ingredients: data}),
+    body: JSON.stringify({
+      ingredients: data.map((ingredient) => {
+        return ingredient._id;
+      }),
+    }),
   })
     .then(checkResponse)
     .then((res) => res);

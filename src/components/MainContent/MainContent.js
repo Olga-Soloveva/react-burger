@@ -6,9 +6,7 @@ import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
 import { useSelector } from "react-redux";
 
 function MainContent() {
- 
-  const { ingredients} = useSelector(state => state.burger.ingredients);
-
+  const { components } = useSelector((store) => store.burger);
 
   const orderAmountInitialState = { orderAmount: 0 };
   const [orderAmountState, orderAmountDispatcher] = useReducer(
@@ -17,44 +15,13 @@ function MainContent() {
     undefined
   );
 
-  const bunComponentData = useMemo(
-    () =>
-      ingredients.find(function (component) {
-        return component.type === "bun";
-      }),
-    [ingredients]
-  );
-
-  const otherComponentsData = useMemo(
-    () =>
-      ingredients.filter((component) => {
-        return component.type === "main" || component.type === "sauce";
-      }),
-    [ingredients]
-  );
-
-  const [bunComponent, setBunComponent] = useState([]);
-  const [otherComponents, setOtherComponents] = useState([]);
-  const [orderIngredients, setOrderIngredients] = useState([]);
   const [orderNumber, setOrderNumber] = useState(0);
-
-  useEffect(() => {
-    otherComponentsData && setOtherComponents(otherComponentsData);
-  }, [otherComponentsData]);
-
-  useEffect(() => {
-    bunComponentData && setBunComponent(bunComponentData);
-  }, [bunComponentData]);
-
-  useEffect(() => {
-    setOrderIngredients([bunComponent, ...otherComponents]);
-  }, [bunComponent, otherComponents]);
 
   useEffect(() => {
     orderAmountDispatcher({
       type: "reset",
     });
-    orderIngredients.forEach((component) => {
+    components.forEach((component) => {
       if (component.type === "bun") {
         orderAmountDispatcher({
           type: "addBunComponent",
@@ -67,7 +34,7 @@ function MainContent() {
         });
       }
     });
-  }, [orderIngredients]);
+  }, [components]);
 
   function reducer(state, action) {
     switch (action.type) {
@@ -87,21 +54,11 @@ function MainContent() {
 
   const contextValue = useMemo(() => {
     return {
-      bunComponent,
-      otherComponents,
-      orderIngredients,
       orderAmount: orderAmountState.orderAmount,
       orderNumber,
       setOrderNumber,
     };
-  }, [
-    bunComponent,
-    otherComponents,
-    orderIngredients,
-    orderAmountState,
-    orderNumber,
-    setOrderNumber,
-  ]);
+  }, [orderAmountState, orderNumber, setOrderNumber]);
 
   return (
     <main className={styles.main_container}>

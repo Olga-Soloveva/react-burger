@@ -10,7 +10,6 @@ const OrderDetails = ({ hasError, isLoading }) => {
   return (
     <>
       <h3 className={`text text_type_digits-large mt-30 mb-8`}>
-        {/* {orderNumber}  */}
         {hasError || isLoading ? "..." : (`${orderNumber}`)}
       </h3>
       <p className={`text text_type_main-medium mb-15`}>

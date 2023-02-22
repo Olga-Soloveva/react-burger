@@ -10,7 +10,7 @@ import { addIngredientDetails, removeIngredientDetails } from "../../services/ac
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
-  const { ingredients, ingredientsRequest, ingredientsFailed} = useSelector(state => state.burger.ingredients);
+  const { ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => store.burger.ingredients);
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
   const ingredientsByType = useMemo(() => {

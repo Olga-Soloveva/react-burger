@@ -4,6 +4,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS,
+  GET_INIT_COMPONENTS,
 } from "../constants";
 
 import { combineReducers } from "redux";
@@ -17,6 +18,26 @@ const initialState = {
   components: [],
   selectedIngredient: {},
   order: {},
+};
+
+const components = (state = initialState.components, action) => {
+  switch (action.type) {
+    case GET_INIT_COMPONENTS: {
+      if (action.components.length > 0) {
+        const bunComponentData = action.components.find(function (component) {
+          return component.type === "bun";
+        });
+
+        const otherComponentsData = action.components.filter((component) => {
+          return component.type === "main" || component.type === "sauce";
+        });
+        return [bunComponentData, ...otherComponentsData];
+      } else return [];
+    }
+    default: {
+      return state;
+    }
+  }
 };
 
 const selectedIngredient = (
@@ -67,5 +88,6 @@ const ingredients = (state = initialState.ingredients, action) => {
 
 export const burger = combineReducers({
   ingredients,
+  components,
   selectedIngredient,
 });
