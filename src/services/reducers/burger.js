@@ -5,6 +5,10 @@ import {
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS,
   GET_INIT_COMPONENTS,
+  GET_ORDER_REQUEST,
+  GET_ORDER_SUCCESS,
+  GET_ORDER_ERROR,
+  CLEAR_ORDER,
 } from "../constants";
 
 import { combineReducers } from "redux";
@@ -17,7 +21,43 @@ const initialState = {
   },
   components: [],
   selectedIngredient: {},
-  order: {},
+  order: {
+    orderNumber: null,
+    orderRequest: false,
+    orderFailed: false,
+  },
+};
+
+const order = (state = initialState.order, action) => {
+  switch (action.type) {
+    case GET_ORDER_REQUEST: {
+      return {
+        ...state,
+        orderRequest: true,
+        orderFailed: false,
+      };
+    }
+    case GET_ORDER_SUCCESS: {
+      return {
+        ...state,
+        orderNumber: action.orderNumber,
+        orderRequest: false,
+      };
+    }
+    case GET_ORDER_ERROR: {
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: true,
+      };
+    }
+    case CLEAR_ORDER: {
+      return {};
+    }
+    default: {
+      return state;
+    }
+  }
 };
 
 const components = (state = initialState.components, action) => {
@@ -90,4 +130,5 @@ export const burger = combineReducers({
   ingredients,
   components,
   selectedIngredient,
+  order,
 });

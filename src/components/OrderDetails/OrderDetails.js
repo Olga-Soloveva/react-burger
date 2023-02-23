@@ -1,24 +1,26 @@
 import styles from "./order-details.module.css";
-import { useContext } from "react";
 import WrapperIcon from "../WtapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
+import { useSelector } from "react-redux";
 
-const OrderDetails = ({ hasError, isLoading }) => {
-  const { orderNumber } = useContext(BurgerComponentContext);
+const OrderDetails = () => {
+  const { orderNumber, orderRequest, orderFailed } = useSelector(
+    (store) => store.burger.order
+  );
 
   return (
     <>
       <h3 className={`text text_type_digits-large mt-30 mb-8`}>
-        {hasError || isLoading ? "..." : (`${orderNumber}`)}
+        {orderFailed || orderRequest ? "..." : `${orderNumber}`}
       </h3>
       <p className={`text text_type_main-medium mb-15`}>
-        {!hasError && !isLoading ? (
+        {!orderFailed && !orderRequest ? (
           "идентификатор заказа"
         ) : (
           <>
-            {hasError && "Ошибка сервера: невозможно присвоить номер заказа."}
-            {isLoading && "Ожидайте номер заказа"}
+            {orderFailed &&
+              "Ошибка сервера: невозможно присвоить номер заказа."}
+            {orderRequest && "Ожидайте номер заказа"}
           </>
         )}
       </p>

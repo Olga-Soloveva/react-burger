@@ -3,8 +3,8 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  useContext,
   useMemo,
+  useReducer,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
@@ -14,13 +14,13 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerComponentContext } from "../../contexts/BurgerComponentContext";
-import { createOrder } from "../../utils/ingredients-api";
 import { getInitialComponents } from "../../services/actions/burger";
+import { createOrder, clearOrder } from "../../services/actions/burger";
 
 function BurgerConstructor() {
   const { components } = useSelector((store) => store.burger);
   const { ingredients } = useSelector((store) => store.burger.ingredients);
+  const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -43,35 +43,56 @@ function BurgerConstructor() {
     [components]
   );
 
-  const {
-    orderAmount,
-    setOrderNumber,
-  } = useContext(BurgerComponentContext);
+  const orderAmountInitialState = { orderAmount: 0 };
+  const [orderAmountState, orderAmountDispatcher] = useReducer(
+    reducer,
+    orderAmountInitialState,
+    undefined
+  );
 
-  const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  useEffect(() => {
+    orderAmountDispatcher({
+      type: "reset",
+    });
+    components.forEach((component) => {
+      if (component.type === "bun") {
+        orderAmountDispatcher({
+          type: "addBunComponent",
+          payload: component.price,
+        });
+      } else if (component.type === "main" || component.type === "sauce") {
+        orderAmountDispatcher({
+          type: "addOtherComponent",
+          payload: component.price,
+        });
+      }
+    });
+  }, [components]);
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "addBunComponent":
+        return { orderAmount: state.orderAmount + action.payload * 2 };
+      case "addOtherComponent":
+        return { orderAmount: state.orderAmount + action.payload };
+      case "delete":
+        return { orderAmount: state.orderAmount - action.payload };
+      case "reset":
+        return orderAmountInitialState;
+
+      default:
+        throw new Error(`Wrong type of action: ${action.type}`);
+    }
+  }
 
   const closeModal = useCallback(() => {
     setIsModalOrderOpen(false);
-  }, []);
+    dispatch(clearOrder());
+  }, [dispatch]);
 
   const placeOrder = (data) => {
-    setOrderNumber(0);
-    setIsLoading(true);
     setIsModalOrderOpen(true);
-    createOrder(components)
-      .then((res) => {
-        setHasError(false);
-        setOrderNumber(res.order.number);
-      })
-      .catch((err) => {
-        setOrderNumber(0);
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    dispatch(createOrder(components));
   };
 
   return (
@@ -100,7 +121,9 @@ function BurgerConstructor() {
         </div>
         <div className={`${styles.info} mt-10`}>
           <div className={`${styles.price} mr-10`}>
-            <p className="text text_type_digits-medium">{orderAmount}</p>
+            <p className="text text_type_digits-medium">
+              {orderAmountState.orderAmount}
+            </p>
             <CurrencyIcon type="primary" />
           </div>
           <Button
@@ -116,7 +139,7 @@ function BurgerConstructor() {
 
       {isModalOrderOpen && (
         <Modal itle={null} onClose={closeModal}>
-          <OrderDetails hasError={hasError} isLoading={isLoading} />
+          <OrderDetails />
         </Modal>
       )}
     </>
