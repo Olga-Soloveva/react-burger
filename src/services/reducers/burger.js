@@ -1,134 +1,91 @@
-import {
-  GET_INGREDIENTS_REQUEST,
-  GET_INGREDIENTS_ERROR,
-  GET_INGREDIENTS_SUCCESS,
-  ADD_INGREDIENT_DETAILS,
-  REMOVE_INGREDIENT_DETAILS,
-  GET_INIT_COMPONENTS,
-  GET_ORDER_REQUEST,
-  GET_ORDER_SUCCESS,
-  GET_ORDER_ERROR,
-  CLEAR_ORDER,
-} from "../constants";
-
+import { createSlice } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import { createOrder, getIngredients } from "../actions/burger";
 
-const initialState = {
-  ingredients: {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsFailed: false,
+export const selectedIngredientSlice = createSlice({
+  name: "selectedIngredient",
+  initialState: {},
+  reducers: {
+    addIngredientDetails: (state, action) => action.payload,
+    removeIngredientDetails: (state) => null,
   },
-  components: [],
-  selectedIngredient: {},
-  order: {
-    orderNumber: null,
-    orderRequest: false,
-    orderFailed: false,
-  },
-};
+});
 
-const order = (state = initialState.order, action) => {
-  switch (action.type) {
-    case GET_ORDER_REQUEST: {
-      return {
-        ...state,
-        orderRequest: true,
-        orderFailed: false,
-      };
-    }
-    case GET_ORDER_SUCCESS: {
-      return {
-        ...state,
-        orderNumber: action.orderNumber,
-        orderRequest: false,
-      };
-    }
-    case GET_ORDER_ERROR: {
-      return {
-        ...state,
-        orderRequest: false,
-        orderFailed: true,
-      };
-    }
-    case CLEAR_ORDER: {
-      return {};
-    }
-    default: {
-      return state;
-    }
-  }
-};
-
-const components = (state = initialState.components, action) => {
-  switch (action.type) {
-    case GET_INIT_COMPONENTS: {
-      if (action.components.length > 0) {
-        const bunComponentData = action.components.find(function (component) {
+export const componentsSlice = createSlice({
+  name: "components",
+  initialState: [],
+  reducers: {
+    getInitialComponents: (state, action) => {
+      if (action.payload.length > 0) {
+        const bunComponentData = action.payload.find(function (component) {
           return component.type === "bun";
         });
 
-        const otherComponentsData = action.components.filter((component) => {
+        const otherComponentsData = action.payload.filter((component) => {
           return component.type === "main" || component.type === "sauce";
         });
         return [bunComponentData, ...otherComponentsData];
       } else return [];
-    }
-    default: {
-      return state;
-    }
-  }
-};
+    },
+  },
+});
 
-const selectedIngredient = (
-  state = initialState.selectedIngredient,
-  action
-) => {
-  switch (action.type) {
-    case ADD_INGREDIENT_DETAILS: {
-      return action.ingredientDetails;
-    }
-    case REMOVE_INGREDIENT_DETAILS: {
-      return null;
-    }
-    default: {
-      return state;
-    }
+export const orderSlice = createSlice({
+  name: "order",
+  initialState: {
+    orderNumber: null,
+    orderRequest: false,
+    orderFailed: false,
+  },
+  reducers: {
+    clearOrder: (state) => {
+      state.orderNumber = null;      
+      state.orderRequest = false;
+      state.orderFailed = false;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(createOrder.pending, (state, action) => {
+      state.orderRequest = true;
+      state.orderFailed = false;
+    })
+    .addCase(createOrder.fulfilled, (state, action) => {
+      state.orderNumber = action.payload;      
+      state.orderRequest = false;
+    })
+    .addCase(createOrder.rejected, (state, action) => {
+      state.orderRequest = false;
+      state.orderFailed = true;
+    });
   }
-};
+});
 
-const ingredients = (state = initialState.ingredients, action) => {
-  switch (action.type) {
-    case GET_INGREDIENTS_REQUEST: {
-      return {
-        ...state,
-        ingredientsRequest: true,
-        ingredientsFailed: false,
-      };
-    }
-    case GET_INGREDIENTS_SUCCESS: {
-      return {
-        ...state,
-        ingredients: action.ingredients,
-        ingredientsRequest: false,
-      };
-    }
-    case GET_INGREDIENTS_ERROR: {
-      return {
-        ...state,
-        ingredientsRequest: false,
-        ingredientsFailed: true,
-      };
-    }
-    default: {
-      return state;
-    }
+export const ingredientsSlice = createSlice({
+  name: "ingredients",
+  initialState: {
+    ingredients: [],
+    ingredientsRequest: false,
+    ingredientsFailed: false,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getIngredients.pending, (state, action) => {
+      state.ingredientsRequest = true;
+      state.ingredientsFailed = false;
+    })
+    .addCase(getIngredients.fulfilled, (state, action) => {
+      state.ingredients = action.payload;      
+      state.ingredientsRequest = false;
+    })
+    .addCase(getIngredients.rejected, (state, action) => {
+      state.ingredientsRequest = false;
+      state.ingredientsFailed = true;
+    });
   }
-};
+});
 
 export const burger = combineReducers({
-  ingredients,
-  components,
-  selectedIngredient,
-  order,
+  ingredients: ingredientsSlice.reducer,
+  components: componentsSlice.reducer,
+  selectedIngredient: selectedIngredientSlice.reducer,
+  order: orderSlice.reducer,
 });

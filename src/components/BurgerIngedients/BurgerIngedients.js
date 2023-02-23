@@ -6,18 +6,17 @@ import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-import {
-  addIngredientDetails,
-  removeIngredientDetails,
-} from "../../services/actions/burger";
+import { selectedIngredientSlice } from "../../services/reducers/burger";
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
+  const { removeIngredientDetails, addIngredientDetails } = selectedIngredientSlice.actions;
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.burger.ingredients
   );
   const [current, setCurrent] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
+
   const ingredientsByType = useMemo(() => {
     let bun = [];
     let main = [];
@@ -37,21 +36,20 @@ function BurgerIngedients() {
   const closeModal = useCallback(() => {
     setIsModalIngredientOpen(false);
     dispatch(removeIngredientDetails());
-  }, [dispatch]);
+  }, [dispatch, removeIngredientDetails]);
 
   const showIngredientDetails = useCallback(
     (data) => {
       setIsModalIngredientOpen(true);
       dispatch(addIngredientDetails(data));
     },
-    [dispatch]
+    [dispatch, addIngredientDetails]
   );
 
   return (
     <>
       <section className={`${styles.section_container} pt-10 `}>
         <h1 className="text text_type_main-large pb-5">Соберите бургер</h1>
-
         <div className={`${styles.tab} pb-10`}>
           <Tab value="one" active={current === "one"} onClick={setCurrent}>
             Булки

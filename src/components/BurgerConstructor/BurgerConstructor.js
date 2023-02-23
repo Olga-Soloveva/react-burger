@@ -14,18 +14,21 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getInitialComponents } from "../../services/actions/burger";
-import { createOrder, clearOrder } from "../../services/actions/burger";
+import { orderSlice } from "../../services/reducers/burger";
+import { componentsSlice } from "../../services/reducers/burger";
+import { createOrder } from "../../services/actions/burger";
 
 function BurgerConstructor() {
   const { components } = useSelector((store) => store.burger);
   const { ingredients } = useSelector((store) => store.burger.ingredients);
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
+  const { getInitialComponents } = componentsSlice.actions;
+  const { clearOrder } = orderSlice.actions;
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInitialComponents(ingredients));
-  }, [dispatch, ingredients]);
+  }, [dispatch, getInitialComponents, ingredients]);
 
   const bunComponent = useMemo(
     () =>
@@ -88,7 +91,7 @@ function BurgerConstructor() {
   const closeModal = useCallback(() => {
     setIsModalOrderOpen(false);
     dispatch(clearOrder());
-  }, [dispatch]);
+  }, [dispatch, clearOrder]);
 
   const placeOrder = (data) => {
     setIsModalOrderOpen(true);
