@@ -14,7 +14,7 @@ function BurgerIngedients() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.burger.ingredients
   );
-  const [current, setCurrent] = useState("one");
+  const [currentTab, setCurrentTab] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
 
   const ingredientsByType = useMemo(() => {
@@ -46,18 +46,25 @@ function BurgerIngedients() {
     [dispatch, addIngredientDetails]
   );
 
+  const onTabClick = (tab) => {
+    setCurrentTab(tab)
+    const element = document.getElementById(tab)
+    if (element) element.scrollIntoView({ behavior: "smooth"})
+
+  }
+
   return (
     <>
       <section className={`${styles.section_container} pt-10 `}>
         <h1 className="text text_type_main-large pb-5">Соберите бургер</h1>
         <div className={`${styles.tab} pb-10`}>
-          <Tab value="one" active={current === "one"} onClick={setCurrent}>
+          <Tab value="buns" active={currentTab === "buns"} onClick={onTabClick}>
             Булки
           </Tab>
-          <Tab value="two" active={current === "two"} onClick={setCurrent}>
+          <Tab value="sauces" active={currentTab === "sauces"} onClick={onTabClick}>
             Соусы
           </Tab>
-          <Tab value="three" active={current === "three"} onClick={setCurrent}>
+          <Tab value="mains" active={currentTab === "mains"} onClick={onTabClick}>
             Начинки
           </Tab>
         </div>
@@ -67,16 +74,19 @@ function BurgerIngedients() {
               ingredientsThisType={ingredientsByType.bun}
               typeName={"Булки"}
               showIngredientDetails={showIngredientDetails}
+              idElement="buns"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.sauce}
               typeName={"Соусы"}
               showIngredientDetails={showIngredientDetails}
+              idElement="sauces"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.main}
               typeName={"Начинки"}
               showIngredientDetails={showIngredientDetails}
+              idElement="mains"
             />
           </div>
         ) : (
