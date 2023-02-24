@@ -10,7 +10,8 @@ import { selectedIngredientSlice } from "../../services/reducers/burger";
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
-  const { removeIngredientDetails, addIngredientDetails } = selectedIngredientSlice.actions;
+  const { removeIngredientDetails, addIngredientDetails } =
+    selectedIngredientSlice.actions;
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.burger.ingredients
   );
@@ -47,29 +48,58 @@ function BurgerIngedients() {
   );
 
   const onTabClick = (tab) => {
-    setCurrentTab(tab)
-    const element = document.getElementById(tab)
-    if (element) element.scrollIntoView({ behavior: "smooth"})
+    setCurrentTab(tab);
+    const element = document.getElementById(tab);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
+  };
 
-  }
+  const setActiveTab = () => {
+    const tabContainerPosition = document
+      .getElementById("tabContainer")
+      .getBoundingClientRect().top;
+    const tabElement = ["buns", "sauces", "mains"];
+    const tabElementData = tabElement.map((item) => {
+      return {
+        type: item,
+        position: Math.abs(
+          document.getElementById(item).getBoundingClientRect().top -
+            tabContainerPosition
+        ),
+      };
+    });
+
+    const activeTabElement = tabElementData.sort(function (a, b) {
+      return a.position - b.position;
+    })[0]['type'];
+
+    setCurrentTab(activeTabElement);
+  };
 
   return (
     <>
       <section className={`${styles.section_container} pt-10 `}>
         <h1 className="text text_type_main-large pb-5">Соберите бургер</h1>
-        <div className={`${styles.tab} pb-10`}>
+        <div className={`${styles.tab} pb-10`} id="tabContainer">
           <Tab value="buns" active={currentTab === "buns"} onClick={onTabClick}>
             Булки
           </Tab>
-          <Tab value="sauces" active={currentTab === "sauces"} onClick={onTabClick}>
+          <Tab
+            value="sauces"
+            active={currentTab === "sauces"}
+            onClick={onTabClick}
+          >
             Соусы
           </Tab>
-          <Tab value="mains" active={currentTab === "mains"} onClick={onTabClick}>
+          <Tab
+            value="mains"
+            active={currentTab === "mains"}
+            onClick={onTabClick}
+          >
             Начинки
           </Tab>
         </div>
         {!ingredientsFailed && !ingredientsRequest ? (
-          <div className={`${styles.ingredients}`}>
+          <div className={`${styles.ingredients}`} onScroll={setActiveTab}>
             <IngredientsType
               ingredientsThisType={ingredientsByType.bun}
               typeName={"Булки"}
