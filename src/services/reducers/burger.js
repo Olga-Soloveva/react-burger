@@ -13,19 +13,51 @@ export const selectedIngredientSlice = createSlice({
 
 export const componentsSlice = createSlice({
   name: "components",
-  initialState: [],
+  initialState: {
+    componentId: 0,
+    components: [],
+  },
   reducers: {
-    getInitialComponents: (state, action) => {
-      if (action.payload.length > 0) {
-        const bunComponentData = action.payload.find(function (component) {
-          return component.type === "bun";
+    getComponent: (state, action) => {
+      const component = JSON.parse(JSON.stringify(action.payload));
+      if (component.type === "bun") {
+        if (
+          state.components.some((item) => {
+            return item.type === "bun" && item._id === component._id;
+          })
+        ) {
+          return;
+        } else {
+          state.components = state.components.filter((item) => {
+            return item.type !== "bun";
+          });
+        }
+      }
+      component.componentId = state.componentId;
+      state.components = [...state.components, component];
+      state.componentId += 1;
+    },
+    deleteComponent: (state, action) => {
+      state.components = state.components.filter((item) => {
+        return item.componentId !== action.payload.componentId;
+      });
+    },
+    moveComponent: (state, action) => {
+      if (
+        action.payload.componentDrop.componentId ===
+        action.payload.componentDrag.componentId
+      ) {
+        return;
+      } else {
+        const indexDragItem = state.components.findIndex(
+          (item) =>
+            item.componentId === action.payload.componentDrag.componentId
+        );
+        state.components = state.components.filter((item) => {
+          return item.componentId !== action.payload.componentDrop.componentId;
         });
-
-        const otherComponentsData = action.payload.filter((component) => {
-          return component.type === "main" || component.type === "sauce";
-        });
-        return [bunComponentData, ...otherComponentsData];
-      } else return [];
+        state.components.splice(indexDragItem, 0, action.payload.componentDrop);
+      }
     },
   },
 });
@@ -39,25 +71,26 @@ export const orderSlice = createSlice({
   },
   reducers: {
     clearOrder: (state) => {
-      state.orderNumber = null;      
+      state.orderNumber = null;
       state.orderRequest = false;
       state.orderFailed = false;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(createOrder.pending, (state, action) => {
-      state.orderRequest = true;
-      state.orderFailed = false;
-    })
-    .addCase(createOrder.fulfilled, (state, action) => {
-      state.orderNumber = action.payload;      
-      state.orderRequest = false;
-    })
-    .addCase(createOrder.rejected, (state, action) => {
-      state.orderRequest = false;
-      state.orderFailed = true;
-    });
-  }
+    builder
+      .addCase(createOrder.pending, (state, action) => {
+        state.orderRequest = true;
+        state.orderFailed = false;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orderNumber = action.payload;
+        state.orderRequest = false;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderRequest = false;
+        state.orderFailed = true;
+      });
+  },
 });
 
 export const ingredientsSlice = createSlice({
@@ -68,19 +101,20 @@ export const ingredientsSlice = createSlice({
     ingredientsFailed: false,
   },
   extraReducers: (builder) => {
-    builder.addCase(getIngredients.pending, (state, action) => {
-      state.ingredientsRequest = true;
-      state.ingredientsFailed = false;
-    })
-    .addCase(getIngredients.fulfilled, (state, action) => {
-      state.ingredients = action.payload;      
-      state.ingredientsRequest = false;
-    })
-    .addCase(getIngredients.rejected, (state, action) => {
-      state.ingredientsRequest = false;
-      state.ingredientsFailed = true;
-    });
-  }
+    builder
+      .addCase(getIngredients.pending, (state, action) => {
+        state.ingredientsRequest = true;
+        state.ingredientsFailed = false;
+      })
+      .addCase(getIngredients.fulfilled, (state, action) => {
+        state.ingredients = action.payload;
+        state.ingredientsRequest = false;
+      })
+      .addCase(getIngredients.rejected, (state, action) => {
+        state.ingredientsRequest = false;
+        state.ingredientsFailed = true;
+      });
+  },
 });
 
 export const burger = combineReducers({

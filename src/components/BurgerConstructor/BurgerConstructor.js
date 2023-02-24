@@ -7,6 +7,7 @@ import React, {
   useReducer,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -19,16 +20,22 @@ import { componentsSlice } from "../../services/reducers/burger";
 import { createOrder } from "../../services/actions/burger";
 
 function BurgerConstructor() {
-  const { components } = useSelector((store) => store.burger);
-  const { ingredients } = useSelector((store) => store.burger.ingredients);
+  const { components } = useSelector((store) => store.burger.components);
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
-  const { getInitialComponents } = componentsSlice.actions;
+  const { getComponent } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getInitialComponents(ingredients));
-  }, [dispatch, getInitialComponents, ingredients]);
+
+  const [{ isHover }, dropIngredient] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(ingredient) {
+      dispatch(getComponent(ingredient));
+    },
+  });
 
   const bunComponent = useMemo(
     () =>
@@ -100,28 +107,49 @@ function BurgerConstructor() {
 
   return (
     <>
-      <section className={`${styles.section_container} pt-25 `}>
-        <div className={`${styles.burger_components}`}>
-          {bunComponent && (
-            <div className={`${styles.components_container} pl-4 pr-4`}>
-              <BurgerComponent component={bunComponent} type="top" />
-            </div>
-          )}
-          {otherComponents.length !== 0 && (
-            <div className={` ${styles.components_container_scrol} pl-4 pr-2`}>
-              {otherComponents.map((component) => {
-                return (
-                  <BurgerComponent component={component} key={component._id} />
-                );
-              })}
-            </div>
-          )}
-          {bunComponent && (
-            <div className={`${styles.components_container} pl-4 pr-4`}>
-              <BurgerComponent component={bunComponent} type="bottom" />
-            </div>
-          )}
-        </div>
+      <section
+        className={`${styles.section_container} pt-25 `}
+        ref={dropIngredient}
+      >
+        {components.length === 0 && (
+          <div className={styles.instruction}>
+            <p className="text text_type_main-default pt-4">
+              Перетащите в это поле ингридиенты из меню слева.
+            </p>
+          </div>
+        )}
+        {components.length > 0 && (
+          <div
+            className={`${styles.burger_components} ${
+              isHover ? styles.hover : ""
+            } `}
+          >
+            {bunComponent && (
+              <div className={`${styles.components_container} pl-4 pr-4`}>
+                <BurgerComponent component={bunComponent} type="top" />
+              </div>
+            )}
+            {otherComponents.length !== 0 && (
+              <div
+                className={` ${styles.components_container_scrol} pl-4 pr-2`}
+              >
+                {otherComponents.map((component) => {
+                  return (
+                    <BurgerComponent
+                      component={component}
+                      key={component.componentId}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {bunComponent && (
+              <div className={`${styles.components_container} pl-4 pr-4`}>
+                <BurgerComponent component={bunComponent} type="bottom" />
+              </div>
+            )}
+          </div>
+        )}
         <div className={`${styles.info} mt-10`}>
           <div className={`${styles.price} mr-10`}>
             <p className="text text_type_digits-medium">
