@@ -1,7 +1,7 @@
 import styles from "./ingredient-details.module.css";
-import ingredientType from "../../utils/types";
+import { useSelector } from "react-redux";
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
   const {
     name,
     image_large: image,
@@ -9,7 +9,9 @@ const IngredientDetails = ({ ingredient }) => {
     proteins,
     fat,
     carbohydrates,
-  } = ingredient;
+  } = useSelector((store) => store.burger.selectedIngredient);
+  
+
   return (
     <>
       <img src={image} alt={name} className={styles.image} />
@@ -52,10 +54,6 @@ const IngredientDetails = ({ ingredient }) => {
       </div>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

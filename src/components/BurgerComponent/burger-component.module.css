@@ -5,6 +5,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: grab;
+}
+
+.hover {
+  border: 1px solid #4c4cff;
 }
 
 .component:last-of-type {
@@ -13,6 +18,7 @@
 
 .component_type_locked {
   justify-content: end;
+  cursor: default;
 }
 
 .component_position_bottom {

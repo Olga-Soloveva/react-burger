@@ -1,43 +1,24 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styles from "./app.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import MainContent from "../MainContent/MainContent";
-import { getIngredients } from "../../utils/ingredients-api";
-import { BurgerIngredientContext } from "../../contexts/BurgerIngredientContext";
+import { getIngredients } from "../../services/actions/burger";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    setIsLoading(true)
-    getIngredients()
-      .then((data) => {
-        setHasError(false)
-        setIngredients(data);
-      })
-      .catch((err) => {
-        setIngredients([]);
-        setHasError(true)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, []);
-
-  const contextValue = useMemo(() => {
-    return { ingredients, isLoading, hasError };
-  }, [
-    ingredients, isLoading, hasError 
-  ]);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.page}>
       <AppHeader />
-      <BurgerIngredientContext.Provider value={contextValue}>
+      <DndProvider backend={HTML5Backend}>
         <MainContent />
-      </BurgerIngredientContext.Provider>
+      </DndProvider>
     </div>
   );
 }
