@@ -13,6 +13,7 @@ export const createOrder = createAsyncThunk(
 export const getIngredients = createAsyncThunk(
   "ingredients/getIngredients",
   async () => {
-    return await getIngredientsApi();
+    const response = await getIngredientsApi();
+    return response.data;
   }
 );
