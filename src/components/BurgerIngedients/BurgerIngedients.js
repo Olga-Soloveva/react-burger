@@ -12,9 +12,6 @@ function BurgerIngedients() {
   const dispatch = useDispatch();
   const { removeIngredientDetails, addIngredientDetails } =
     selectedIngredientSlice.actions;
-  // const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-  //   (store) => store.burger.ingredients
-  // );
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );

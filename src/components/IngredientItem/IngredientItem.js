@@ -10,21 +10,31 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function IngredientItem({ ingredient, showIngredientDetails }) {
-  const { _id, name, image, price } = ingredient;
-  const { components } = useSelector((store) => store.components);
+  const { _id, name, image, price, type } = ingredient;
+  const { bunComponent, otherComponents } = useSelector(
+    (store) => store.components
+  );
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,
   });
 
   const count = useMemo(() => {
-    if (components.length > 0) {
-      const a = components.filter((component) => {
+    if (type === "bun" && _id === bunComponent?._id) {
+      return 2;
+    } else {
+      const a = otherComponents.filter((component) => {
         return component._id === _id;
       });
       return a.length;
     }
-  }, [components, _id]);
+    // if (components.length > 0) {
+    //   const a = components.filter((component) => {
+    //     return component._id === _id;
+    //   });
+    //   return a.length;
+    // }
+  }, [bunComponent, otherComponents, _id, type]);
 
   const handleIngredient = () => {
     showIngredientDetails(ingredient);
