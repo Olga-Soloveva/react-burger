@@ -47,5 +47,10 @@ export const componentsSlice = createSlice({
         state.otherComponents.splice(indexDragItem, 0, action.payload.componentDrop);
       }
     },
+    clearConstructor: (state) => {
+        state.componentId = 0;
+        state.bunComponent = null;
+        state.otherComponents =  [];
+      },
   },
 });

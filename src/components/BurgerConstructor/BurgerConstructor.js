@@ -18,7 +18,7 @@ function BurgerConstructor() {
     (store) => store.components
   );
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
-  const { getComponent } = componentsSlice.actions;
+  const { getComponent, clearConstructor } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;
 
   const dispatch = useDispatch();
@@ -49,7 +49,9 @@ function BurgerConstructor() {
 
   const placeOrder = (data) => {
     setIsModalOrderOpen(true);
-    dispatch(createOrder([...otherComponents, bunComponent]));
+    dispatch(createOrder([...otherComponents, bunComponent])).unwrap().then(() => {
+       dispatch(clearConstructor())
+    });
   };
 
   return (
