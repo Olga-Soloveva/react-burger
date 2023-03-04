@@ -83,7 +83,7 @@ export const orderSlice = createSlice({
         state.orderFailed = false;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
-        state.orderNumber = action.payload;
+        state.orderNumber = action.payload.order.number;
         state.orderRequest = false;
       })
       .addCase(createOrder.rejected, (state, action) => {
@@ -107,7 +107,7 @@ export const ingredientsSlice = createSlice({
         state.ingredientsFailed = false;
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
-        state.ingredients = action.payload;
+        state.ingredients = action.payload.data;
         state.ingredientsRequest = false;
       })
       .addCase(getIngredients.rejected, (state, action) => {
