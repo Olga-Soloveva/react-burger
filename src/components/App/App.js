@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styles from "./app.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import MainContent from "../MainContent/MainContent";
-import { getIngredients } from "../../services/actions/burger";
+import { getIngredients } from "../../services/actions/ingredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 

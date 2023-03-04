@@ -11,7 +11,7 @@ import {
 
 function IngredientItem({ ingredient, showIngredientDetails }) {
   const { _id, name, image, price } = ingredient;
-  const { components } = useSelector((store) => store.burger.components);
+  const { components } = useSelector((store) => store.components);
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,

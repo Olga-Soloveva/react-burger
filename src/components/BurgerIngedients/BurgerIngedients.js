@@ -6,14 +6,17 @@ import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-import { selectedIngredientSlice } from "../../services/reducers/burger";
+import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
   const { removeIngredientDetails, addIngredientDetails } =
     selectedIngredientSlice.actions;
+  // const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
+  //   (store) => store.burger.ingredients
+  // );
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.burger.ingredients
+    (store) => store.ingredients
   );
   const [currentTab, setCurrentTab] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
   const { orderNumber, orderRequest, orderFailed } = useSelector(
-    (store) => store.burger.order
+    (store) => store.order
   );
 
   return (

@@ -15,12 +15,12 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { orderSlice } from "../../services/reducers/burger";
-import { componentsSlice } from "../../services/reducers/burger";
-import { createOrder } from "../../services/actions/burger";
+import { orderSlice } from "../../services/reducers/order";
+import { componentsSlice } from "../../services/reducers/components";
+import { createOrder } from "../../services/actions/order";
 
 function BurgerConstructor() {
-  const { components } = useSelector((store) => store.burger.components);
+  const { components } = useSelector((store) => store.components);
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const { getComponent } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;

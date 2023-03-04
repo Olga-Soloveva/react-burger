@@ -9,7 +9,7 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { componentsSlice } from "../../services/reducers/burger";
+import { componentsSlice } from "../../services/reducers/components";
 
 function BurgerComponent({ component, type}) {
   const { deleteComponent, moveComponent } = componentsSlice.actions;
