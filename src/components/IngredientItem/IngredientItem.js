@@ -28,12 +28,6 @@ function IngredientItem({ ingredient, showIngredientDetails }) {
       });
       return a.length;
     }
-    // if (components.length > 0) {
-    //   const a = components.filter((component) => {
-    //     return component._id === _id;
-    //   });
-    //   return a.length;
-    // }
   }, [bunComponent, otherComponents, _id, type]);
 
   const handleIngredient = () => {
@@ -48,11 +42,11 @@ function IngredientItem({ ingredient, showIngredientDetails }) {
         <CurrencyIcon type="primary" />
       </div>
       <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
-      <Counter
+      {count && (<Counter
         count={count}
         size="default"
         extraClass={`m-1 ${styles.counter}`}
-      />
+      />)}
     </div>
   );
 }
