@@ -1,13 +1,13 @@
+import styles from "./page.module.css";
+import AppHeader from "../components/AppHeader/AppHeader";
+import MainContent from "../components/MainContent/MainContent";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import styles from "./app.module.css";
-import AppHeader from "../AppHeader/AppHeader";
-import MainContent from "../MainContent/MainContent";
-import { getIngredients } from "../../services/actions/ingredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { getIngredients } from "../services/actions/ingredients";
 
-function App() {
+export function MainPage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients());
@@ -22,5 +22,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
