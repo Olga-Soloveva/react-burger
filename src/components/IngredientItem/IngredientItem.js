@@ -1,34 +1,19 @@
 import styles from "./ingredient-item.module.css";
-import { useMemo } from "react";
 import { useDrag } from "react-dnd";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
-import { useSelector } from "react-redux";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function IngredientItem({ ingredient, showIngredientDetails }) {
-  const { _id, name, image, price, type } = ingredient;
-  const { bunComponent, otherComponents } = useSelector(
-    (store) => store.components
-  );
+function IngredientItem({ ingredient, showIngredientDetails, count }) {
+  const { name, image, price } = ingredient;
+
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,
   });
-
-  const count = useMemo(() => {
-    if (type === "bun" && _id === bunComponent?._id) {
-      return 2;
-    } else {
-      const a = otherComponents.filter((component) => {
-        return component._id === _id;
-      });
-      return a.length;
-    }
-  }, [bunComponent, otherComponents, _id, type]);
 
   const handleIngredient = () => {
     showIngredientDetails(ingredient);
