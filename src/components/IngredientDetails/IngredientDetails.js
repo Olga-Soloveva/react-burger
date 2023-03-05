@@ -9,7 +9,7 @@ const IngredientDetails = () => {
     proteins,
     fat,
     carbohydrates,
-  } = useSelector((store) => store.burger.selectedIngredient);
+  } = useSelector((store) => store.selectedIngredient);
   
 
   return (

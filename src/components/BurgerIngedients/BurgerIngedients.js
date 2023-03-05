@@ -6,15 +6,19 @@ import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-import { selectedIngredientSlice } from "../../services/reducers/burger";
+import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
   const { removeIngredientDetails, addIngredientDetails } =
     selectedIngredientSlice.actions;
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.burger.ingredients
+    (store) => store.ingredients
   );
+  const { bunComponent, otherComponents } = useSelector(
+    (store) => store.components
+  );
+
   const [currentTab, setCurrentTab] = useState("one");
   const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
 
@@ -33,6 +37,20 @@ function BurgerIngedients() {
     });
     return { bun, main, sauce };
   }, [ingredients]);
+
+  const ingredientsCounter = useMemo(() => {
+    const counters = {};
+    otherComponents.forEach((component) => {
+      if (!counters[component._id]) {
+        counters[component._id] = 0;
+      }
+      counters[component._id]++;
+    });
+    if (bunComponent) {
+      counters[bunComponent._id] = 2;
+    }
+    return counters;
+  }, [bunComponent, otherComponents]);
 
   const closeModal = useCallback(() => {
     setIsModalIngredientOpen(false);
@@ -70,7 +88,7 @@ function BurgerIngedients() {
 
     const activeTabElement = tabElementData.sort(function (a, b) {
       return a.position - b.position;
-    })[0]['type'];
+    })[0]["type"];
 
     setCurrentTab(activeTabElement);
   };
@@ -104,18 +122,21 @@ function BurgerIngedients() {
               ingredientsThisType={ingredientsByType.bun}
               typeName={"Булки"}
               showIngredientDetails={showIngredientDetails}
+              ingredientsCounter={ingredientsCounter}
               idElement="buns"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.sauce}
               typeName={"Соусы"}
               showIngredientDetails={showIngredientDetails}
+              ingredientsCounter={ingredientsCounter}
               idElement="sauces"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.main}
               typeName={"Начинки"}
               showIngredientDetails={showIngredientDetails}
+              ingredientsCounter={ingredientsCounter}
               idElement="mains"
             />
           </div>

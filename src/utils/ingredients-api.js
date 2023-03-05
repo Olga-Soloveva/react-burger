@@ -4,20 +4,28 @@ const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
-
   return res.json().then((err) => {
-    return Promise.reject(err);
+    return Promise.reject(`Ошибка ${res.status}`);
   });
 };
 
-const getIngredients = () => {
-  return fetch(`${INGREDIENTS_URL}/ingredients`)
-    .then(checkResponse)
-    .then((res) => res.data);
+const checkSuccess = (res) => {
+  if (res && res.success) {
+    return res;
+  }
+  return Promise.reject(`Ответ не success: ${res}`);
 };
 
-const createOrder = (data) => {
-  return fetch(`${INGREDIENTS_URL}/orders`, {
+const request = (endpoint, options) => {
+  return fetch(`${INGREDIENTS_URL}/${endpoint}`, options)
+    .then(checkResponse)
+    .then(checkSuccess);
+};
+
+const getIngredients = () => request("ingredients");
+
+const createOrder = (data) =>
+  request("orders", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,9 +35,6 @@ const createOrder = (data) => {
         return ingredient._id;
       }),
     }),
-  })
-    .then(checkResponse)
-    .then((res) => res);
-};
+  });
 
 export { getIngredients, createOrder };
