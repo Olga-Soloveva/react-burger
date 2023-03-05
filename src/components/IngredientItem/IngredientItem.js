@@ -39,6 +39,7 @@ function IngredientItem({ ingredient, showIngredientDetails, count }) {
 IngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
   showIngredientDetails: PropTypes.func.isRequired,
+  count: PropTypes.number,
 };
 
 export default IngredientItem;

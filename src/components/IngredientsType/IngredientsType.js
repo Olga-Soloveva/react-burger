@@ -19,6 +19,8 @@ function IngredientsType({ ingredientsThisType, typeName, idElement, ingredients
 IngredientsType.propTypes = {
   ingredientsThisType: PropTypes.arrayOf(ingredientType).isRequired,
   typeName: PropTypes.string.isRequired,
+  idElement: PropTypes.string.isRequired,
+  ingredientsCounter: PropTypes.object.isRequired,
 };
 
 
