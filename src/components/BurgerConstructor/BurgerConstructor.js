@@ -49,9 +49,11 @@ function BurgerConstructor() {
 
   const placeOrder = (data) => {
     setIsModalOrderOpen(true);
-    dispatch(createOrder([...otherComponents, bunComponent])).unwrap().then(() => {
-       dispatch(clearConstructor())
-    });
+    dispatch(createOrder([...otherComponents, bunComponent]))
+      .unwrap()
+      .then(() => {
+        dispatch(clearConstructor());
+      });
   };
 
   return (
@@ -99,6 +101,13 @@ function BurgerConstructor() {
             )}
           </div>
         )}
+        {!bunComponent && otherComponents.length > 0 && (
+          <div className={styles.notification}>
+            <p className="text text_type_main-default pt-4">
+              Чтобы офорить заказ, добавьте булку к заказу.
+            </p>
+          </div>
+        )}
         <div className={`${styles.info} mt-10`}>
           <div className={`${styles.price} mr-10`}>
             <p className="text text_type_digits-medium">{orderAmount}</p>
@@ -109,6 +118,7 @@ function BurgerConstructor() {
             type="primary"
             size="large"
             onClick={placeOrder}
+            {...(!bunComponent) && { disabled: true }}
           >
             Оформить заказ
           </Button>

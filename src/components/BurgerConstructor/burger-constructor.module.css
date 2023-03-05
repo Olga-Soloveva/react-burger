@@ -22,6 +22,10 @@
   background-color: #3A3A55;;
 }
 
+.notification {
+  text-align: right;
+}
+
 .burger_components {
   box-sizing: border-box;
   display: flex;
