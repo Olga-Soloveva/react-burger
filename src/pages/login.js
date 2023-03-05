@@ -6,8 +6,18 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useFormWithValidation } from "../hooks/useFormWithValidation";
+import { onLogin } from "../services/actions/users";
 
 export function LoginPage() {
+  const { values, handleChange, isValidForm } = useFormWithValidation();
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    dispatch(onLogin(values))
+  }
+
   return (
     <div className={styles.page}>
       <AppHeader />
@@ -15,20 +25,26 @@ export function LoginPage() {
         <h1 className="text text_type_main-medium mb-6">Вход</h1>
         <form className={`${styles.form_container}`}>
           <EmailInput
-            // onChange={onChange}
-            // value={value}
+            onChange={handleChange}
+            value={values.email || ""}
             name={"email"}
             placeholder="E-mail"
             isIcon={false}
             extraClass="mb-6"
           />
           <PasswordInput
-            // onChange={onChange}
-            // value={value}
+            onChange={handleChange}
+            value={values.password || ""}
             name={"password"}
             extraClass="mb-6"
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            disabled={!isValidForm}
+            onClick={handleSubmit}
+          >
             Войти
           </Button>
         </form>
