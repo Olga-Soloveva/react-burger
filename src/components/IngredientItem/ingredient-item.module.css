@@ -9,6 +9,16 @@
   position: relative;
 }
 
+.link {
+  text-decoration: none;
+  color: #f2f2f3;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.link:hover {
+  opacity: 0.7;
+}
+
 .price {
   display: flex;
   gap: 8px;

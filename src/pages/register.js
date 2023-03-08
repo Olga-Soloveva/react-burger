@@ -3,12 +3,12 @@ import AppHeader from "../components/AppHeader/AppHeader";
 import {
   EmailInput,
   PasswordInput,
-  Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import { useProvideAuth } from "../utils/auth";
+import FormPage from "../components/FormPage/FormPage";
 
 export function RegisterPage() {
   const { values, handleChange, isValidForm } = useFormWithValidation();
@@ -22,9 +22,13 @@ export function RegisterPage() {
   return (
     <div className={styles.page}>
       <AppHeader />
-      <div className={`${styles.content}`}>
-        <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
-        <form className={`${styles.form_container}`}>
+      <div className={`${styles.content} ${styles.content_page_form}`}>
+        <FormPage
+          title="Регистрация"
+          isValidForm={isValidForm}
+          textButton="Зарегистрироваться"
+          onSubmit={handleSubmit}
+        >
           <Input
             type={"text"}
             placeholder={"Имя"}
@@ -35,6 +39,7 @@ export function RegisterPage() {
             errorText={"Ошибка"}
             size={"default"}
             extraClass="mb-6"
+            required
           />
           <EmailInput
             onChange={handleChange}
@@ -43,23 +48,16 @@ export function RegisterPage() {
             placeholder="E-mail"
             isIcon={false}
             extraClass="mb-6"
+            required
           />
           <PasswordInput
             onChange={handleChange}
             value={values.password || ""}
             name={"password"}
             extraClass="mb-6"
+            required
           />
-          <Button
-            htmlType="button"
-            type="primary"
-            size="medium"
-            disabled={!isValidForm}
-            onClick={handleSubmit}
-          >
-            Зарегистрироваться
-          </Button>
-        </form>
+        </FormPage>
         <p className="text text_type_main-default text_color_inactive mb-4">
           Уже зарегистрированы?{" "}
           <Link to="/login" className={styles.link}>

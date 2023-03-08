@@ -1,20 +1,13 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
 
-const IngredientDetails = () => {
-  const {
-    name,
-    image_large: image,
-    calories,
-    proteins,
-    fat,
-    carbohydrates,
-  } = useSelector((store) => store.selectedIngredient);
-  
+const IngredientDetails = ({ ingredient }) => {
+  const { name, image_large, calories, proteins, fat, carbohydrates } =
+    useSelector((store) => store.selectedIngredient) || ingredient || {};
 
   return (
     <>
-      <img src={image} alt={name} className={styles.image} />
+      <img src={image_large} alt={name} className={styles.image} />
       <h3 className={`text text_type_main-medium mt-4 mb-8 ${styles.title}`}>
         {name}
       </h3>

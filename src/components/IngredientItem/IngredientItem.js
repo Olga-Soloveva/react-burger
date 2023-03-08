@@ -6,9 +6,11 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useLocation, Link } from "react-router-dom";
 
-function IngredientItem({ ingredient, showIngredientDetails, count }) {
-  const { name, image, price } = ingredient;
+function IngredientItem({ ingredient, count, showIngredientDetails  }) {
+  const { _id: ingredientId, name, image, price } = ingredient;
+  const location = useLocation();
 
   const [, dragRef] = useDrag({
     type: "ingredient",
@@ -20,25 +22,34 @@ function IngredientItem({ ingredient, showIngredientDetails, count }) {
   };
 
   return (
-    <div className={styles.container} onClick={handleIngredient} ref={dragRef}>
-      <img src={image} alt={name} />
-      <div className={styles.price}>
-        <p className="text text_type_digits-default">{price}</p>{" "}
-        <CurrencyIcon type="primary" />
+    <Link
+      to={{
+        pathname: `/ingredients/${ingredientId}`,
+      }}
+      state= {{ background: location }}
+      className={styles.link}
+    >
+      <div className={styles.container} ref={dragRef} onClick={handleIngredient}>
+        <img src={image} alt={name} />
+        <div className={styles.price}>
+          <p className="text text_type_digits-default">{price}</p>{" "}
+          <CurrencyIcon type="primary" />
+        </div>
+        <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
+        {count && (
+          <Counter
+            count={count}
+            size="default"
+            extraClass={`m-1 ${styles.counter}`}
+          />
+        )}
       </div>
-      <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
-      {count && (<Counter
-        count={count}
-        size="default"
-        extraClass={`m-1 ${styles.counter}`}
-      />)}
-    </div>
+    </Link>
   );
 }
 
 IngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
-  showIngredientDetails: PropTypes.func.isRequired,
   count: PropTypes.number,
 };
 

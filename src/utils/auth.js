@@ -10,7 +10,7 @@ export function useProvideAuth() {
       setCookie("refreshToken", res.refreshToken);
       return res.user;
     });
-    return data
+    return data;
   };
 
   const signIn = async (form) => {
@@ -21,11 +21,21 @@ export function useProvideAuth() {
       setCookie("refreshToken", res.refreshToken);
       return res.user;
     });
-    return data
+    return data;
+  };
+
+  const forgotPassword = async (form) => {
+    console.log('forgotPassword');
+  };
+
+  const resetPassword = async (form) => {
+    console.log('resetPassword');
   };
 
   return {
     signUp,
     signIn,
+    forgotPassword,
+    resetPassword
   };
 }

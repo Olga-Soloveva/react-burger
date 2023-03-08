@@ -1,6 +1,4 @@
 import styles from "./burger-ingedients.module.css";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import React from "react";
 import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +8,7 @@ import { selectedIngredientSlice } from "../../services/reducers/selectedIngredi
 
 function BurgerIngedients() {
   const dispatch = useDispatch();
-  const { removeIngredientDetails, addIngredientDetails } =
+  const { addIngredientDetails } =
     selectedIngredientSlice.actions;
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
@@ -20,7 +18,6 @@ function BurgerIngedients() {
   );
 
   const [currentTab, setCurrentTab] = useState("one");
-  const [isModalIngredientOpen, setIsModalIngredientOpen] = useState(false);
 
   const ingredientsByType = useMemo(() => {
     let bun = [];
@@ -52,15 +49,10 @@ function BurgerIngedients() {
     return counters;
   }, [bunComponent, otherComponents]);
 
-  const closeModal = useCallback(() => {
-    setIsModalIngredientOpen(false);
-    dispatch(removeIngredientDetails());
-  }, [dispatch, removeIngredientDetails]);
-
   const showIngredientDetails = useCallback(
     (data) => {
-      setIsModalIngredientOpen(true);
       dispatch(addIngredientDetails(data));
+
     },
     [dispatch, addIngredientDetails]
   );
@@ -144,22 +136,17 @@ function BurgerIngedients() {
           <>
             {ingredientsFailed && (
               <p className="text text_type_main-default pt-4">
-                Ошибка сервера: невозможно загрузить ингридиенты.
+                Ошибка сервера: невозможно загрузить ингредиенты.
               </p>
             )}
             {ingredientsRequest && (
               <p className="text text_type_main-default pt-4">
-                Загрузка ингридиентов...
+                Загрузка ингредиентов...
               </p>
             )}
           </>
         )}
       </section>
-      {isModalIngredientOpen && (
-        <Modal title={"Детали ингредиента"} onClose={closeModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 }
