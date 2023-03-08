@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import {
   BrowserRouter,
   Routes,
@@ -16,7 +17,6 @@ import {
   NotFound404,
 } from "./pages";
 import Modal from "./components/Modal/Modal";
-import { useSelector, useDispatch } from "react-redux";
 import IngredientDetails from "./components/IngredientDetails/IngredientDetails";
 import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
 
@@ -25,12 +25,10 @@ function App() {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    let background = location.state && location.state.background;
-
-    const selectedIngredient = useSelector((store) => store.selectedIngredient);
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
 
+    let background = location.state && location.state.background;
+  
     const handleModalClose = () => {
       dispatch(removeIngredientDetails());
       navigate(-1);
@@ -58,7 +56,7 @@ function App() {
               path="/ingredients/:ingredientId"
               element={
                 <Modal title={"Детали ингредиента"} onClose={handleModalClose}>
-                  <IngredientDetails ingredient={selectedIngredient} />
+                  <IngredientDetails ingredient={location.state.ingredient}/>
                 </Modal>
               }
             />
@@ -73,6 +71,5 @@ function App() {
     </BrowserRouter>
   );
 }
-
 
 export default App;

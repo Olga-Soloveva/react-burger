@@ -8,3 +8,4 @@ export const selectedIngredientSlice = createSlice({
     removeIngredientDetails: (state) => null,
   },
 });
+

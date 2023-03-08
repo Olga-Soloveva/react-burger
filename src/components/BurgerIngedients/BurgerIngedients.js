@@ -1,15 +1,11 @@
 import styles from "./burger-ingedients.module.css";
 import React from "react";
-import { useState, useCallback, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
-import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 
 function BurgerIngedients() {
-  const dispatch = useDispatch();
-  const { addIngredientDetails } =
-    selectedIngredientSlice.actions;
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );
@@ -48,14 +44,6 @@ function BurgerIngedients() {
     }
     return counters;
   }, [bunComponent, otherComponents]);
-
-  const showIngredientDetails = useCallback(
-    (data) => {
-      dispatch(addIngredientDetails(data));
-
-    },
-    [dispatch, addIngredientDetails]
-  );
 
   const onTabClick = (tab) => {
     setCurrentTab(tab);
@@ -113,21 +101,18 @@ function BurgerIngedients() {
             <IngredientsType
               ingredientsThisType={ingredientsByType.bun}
               typeName={"Булки"}
-              showIngredientDetails={showIngredientDetails}
               ingredientsCounter={ingredientsCounter}
               idElement="buns"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.sauce}
               typeName={"Соусы"}
-              showIngredientDetails={showIngredientDetails}
               ingredientsCounter={ingredientsCounter}
               idElement="sauces"
             />
             <IngredientsType
               ingredientsThisType={ingredientsByType.main}
               typeName={"Начинки"}
-              showIngredientDetails={showIngredientDetails}
               ingredientsCounter={ingredientsCounter}
               idElement="mains"
             />

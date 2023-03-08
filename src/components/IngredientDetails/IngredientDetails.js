@@ -2,8 +2,10 @@ import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
 
 const IngredientDetails = ({ ingredient }) => {
+  const ingredientStore = useSelector((store) => store.selectedIngredient)
+
   const { name, image_large, calories, proteins, fat, carbohydrates } =
-    useSelector((store) => store.selectedIngredient) || ingredient || {};
+  ingredient || ingredientStore || {};
 
   return (
     <>

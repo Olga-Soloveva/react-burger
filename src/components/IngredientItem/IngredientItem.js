@@ -7,18 +7,26 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
+import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
+import { useDispatch } from "react-redux";
 
-function IngredientItem({ ingredient, count, showIngredientDetails  }) {
+function IngredientItem({
+  ingredient,
+  count,
+  showIngredientDetails
+}) {
   const { _id: ingredientId, name, image, price } = ingredient;
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,
   });
+  const { addIngredientDetails } = selectedIngredientSlice.actions;
 
   const handleIngredient = () => {
-    showIngredientDetails(ingredient);
+    dispatch(addIngredientDetails(ingredient));
   };
 
   return (
@@ -26,10 +34,14 @@ function IngredientItem({ ingredient, count, showIngredientDetails  }) {
       to={{
         pathname: `/ingredients/${ingredientId}`,
       }}
-      state= {{ background: location }}
+      state={{ background: location, ingredient: ingredient }}
       className={styles.link}
     >
-      <div className={styles.container} ref={dragRef} onClick={handleIngredient}>
+      <div
+        className={styles.container}
+        ref={dragRef}
+        onClick={handleIngredient}
+      >
         <img src={image} alt={name} />
         <div className={styles.price}>
           <p className="text text_type_digits-default">{price}</p>{" "}
