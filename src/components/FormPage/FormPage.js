@@ -5,10 +5,10 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 function FormPage({ title, isValidForm, onSubmit, textButton, children }) {
   return (
     <>
-      <h1 className="text text_type_main-medium mb-6">{title}</h1>
+      {title && (<h1 className="text text_type_main-medium mb-6">{title}</h1>)}
       <form className={`${styles.form_container}`}>
         {children}
-        <Button
+       <Button
           htmlType="button"
           type="primary"
           size="medium"
@@ -24,7 +24,7 @@ function FormPage({ title, isValidForm, onSubmit, textButton, children }) {
 
 FormPage.propTypes = {
   children: PropTypes.node,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   textButton: PropTypes.string.isRequired,
   isValidForm: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,

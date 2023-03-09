@@ -1,19 +1,22 @@
 import styles from "./navigation-link.module.css";
+import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function NavigationLink({ linkName, isLinkActive, children }) {
+function NavigationLink({ linkName, linkPath,  children,  }) {
+  const location = useLocation();
+  const isLinkActive = location.pathname === linkPath;
+
   return (
     <li className={`${styles.navigation_link}  pr-5 pl-5`}>
       {children}
-      <a
+      <Link to={linkPath}
         className={`${styles.link_name} 
         ${
           !isLinkActive ? styles.link_name_inactive : ""
         } text text_type_main-default pl-2`}
-        href="/"
       >
         {linkName}
-      </a>
+      </Link>
     </li>
   );
 }
@@ -21,7 +24,7 @@ function NavigationLink({ linkName, isLinkActive, children }) {
 NavigationLink.propTypes = {
   children: PropTypes.node.isRequired,
   linkName: PropTypes.string.isRequired,
-  isLinkActive: PropTypes.bool,
+  linkPath: PropTypes.string.isRequired,
 };
 
 export default NavigationLink;
