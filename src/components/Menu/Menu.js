@@ -11,20 +11,18 @@ function Menu() {
 
   function handlelogOut(evt) {
     dispatch(onLogOut())
-    .unwrap()
-    .then(() => {
-      navigate("/login")
-    })
-    .catch((err) => {
-      dispatch(clearUser())
-    })
-    .finally(() => {
-      navigate("/login")
-    })
-
-
-    
+      .unwrap()
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((err) => {
+        dispatch(clearUser());
+      })
+      .finally(() => {
+        navigate("/login");
+      });
   }
+  
   return (
     <nav>
       <ul className={`${styles.navigation}`}>

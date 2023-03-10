@@ -38,6 +38,17 @@ const onLogOutRequest = () =>
     }),
   });
 
+  const refreshTokenRequest = () =>
+  request("auth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: getCookie("refreshToken"),
+    }),
+  });
+
 const forgotPasswordRequest = (form) =>
   request("password-reset", {
     method: "POST",
@@ -65,6 +76,7 @@ export {
   onRegisterRequest,
   onLoginRequest,
   onLogOutRequest,
+  refreshTokenRequest,
   forgotPasswordRequest,
   resetPasswordRequest,
 };

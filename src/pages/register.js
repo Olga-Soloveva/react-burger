@@ -15,10 +15,10 @@ import { onRegister } from "../services/actions/users";
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
-  const dispatch = useDispatch();
-  const { onRegisterFailed } = useSelector((store) => store.user);
+   const { onRegisterFailed } = useSelector((store) => store.user);
 
   function handleSubmit(evt) {
     dispatch(onRegister(values))

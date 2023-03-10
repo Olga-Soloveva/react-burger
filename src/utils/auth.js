@@ -2,6 +2,7 @@ import {
   onRegisterRequest,
   onLoginRequest,
   onLogOutRequest,
+  refreshTokenRequest,
   forgotPasswordRequest,
   resetPasswordRequest,
 } from "./authApi";
@@ -41,6 +42,15 @@ export function useProvideAuth() {
       });
   };
 
+  const refreshToken = async () => {
+    return await refreshTokenRequest().then((res) => {
+      setCookie("token", res.accessToken.split("Bearer ")[1], {
+        expires: 1200,
+      });
+      setCookie("refreshToken", res.refreshToken);
+    });
+  };
+
   const forgotPassword = async (form) => {
     return await forgotPasswordRequest(form).then((res) => {
       return res;
@@ -56,8 +66,9 @@ export function useProvideAuth() {
   return {
     onRegister,
     onLogin,
+    onLogOut,
+    refreshToken,
     forgotPassword,
     resetPassword,
-    onLogOut,
   };
 }

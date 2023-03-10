@@ -14,6 +14,7 @@ export function useFormWithValidation() {
 
   return {
     values,
+    setValues,
     handleChange,
     isValidForm,
   };

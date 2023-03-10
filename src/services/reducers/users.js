@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { onLogin, onRegister, onLogOut } from "../actions/users";
+import {
+  onLogin,
+  onRegister,
+  onLogOut,
+  getUser,
+  editUser,
+} from "../actions/users";
 
 export const userSlice = createSlice({
   name: "user",
@@ -42,7 +48,31 @@ export const userSlice = createSlice({
         state.onRegisterFailed = true;
       })
       .addCase(onLogOut.fulfilled, (state, action) => {
-        state.user = {}
+        state.user = {};
       })
+      .addCase(getUser.pending, (state, action) => {
+        state.onAuthorizationRequest = true;
+        state.onAuthorizationFailed = false;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.onAuthorizationRequest = false;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.onAuthorizationRequest = false;
+        state.onAuthorizationFailed = true;
+      })
+      .addCase(editUser.pending, (state, action) => {
+        state.editUserRequest = true;
+        state.editUserFailed = false;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.editUserRequest = false;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.editUserRequest = false;
+        state.editUserFailed = true;
+      });
   },
 });
