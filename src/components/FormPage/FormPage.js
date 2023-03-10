@@ -6,15 +6,14 @@ function FormPage({ title, isValidForm, onSubmit, textButton, children }) {
   return (
     <>
       {title && (<h1 className="text text_type_main-medium mb-6">{title}</h1>)}
-      <form className={`${styles.form_container}`}>
+      <form className={`${styles.form_container}`} onSubmit={onSubmit} >
         {children}
        <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           disabled={!isValidForm}
-          onClick={onSubmit}
-        >
+            >
           {textButton}
         </Button>
       </form>
@@ -27,7 +26,7 @@ FormPage.propTypes = {
   title: PropTypes.string,
   textButton: PropTypes.string.isRequired,
   isValidForm: PropTypes.bool.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 };
 
 export default FormPage;

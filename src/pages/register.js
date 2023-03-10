@@ -1,23 +1,42 @@
 import styles from "./page.module.css";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import AppHeader from "../components/AppHeader/AppHeader";
+import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
   PasswordInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
-import { useProvideAuth } from "../utils/auth";
-import FormPage from "../components/FormPage/FormPage";
+import { onRegister } from "../services/actions/users";
 
 export function RegisterPage() {
+  const navigate = useNavigate();
   const { values, handleChange, isValidForm } = useFormWithValidation();
-  const { onRegister } = useProvideAuth();
+  const [requestFailedMessage, setRequestFailedMessage] = useState(null);
+  const dispatch = useDispatch();
+  const { onRegisterFailed } = useSelector((store) => store.user);
 
   function handleSubmit(evt) {
-    evt.preventDefault();
-    onRegister(values);
+    dispatch(onRegister(values))
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((err) => {
+        setRequestFailedMessage(err.message);
+      });
   }
+
+  const handleChangeInput = (evt) => {
+    handleChange(evt);
+    if (requestFailedMessage) {
+      setRequestFailedMessage(null);
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -32,7 +51,7 @@ export function RegisterPage() {
           <Input
             type={"text"}
             placeholder={"Имя"}
-            onChange={handleChange}
+            onChange={handleChangeInput}
             value={values.name || ""}
             name={"name"}
             error={false}
@@ -42,7 +61,7 @@ export function RegisterPage() {
             required
           />
           <EmailInput
-            onChange={handleChange}
+            onChange={handleChangeInput}
             value={values.email || ""}
             name={"email"}
             placeholder="E-mail"
@@ -51,7 +70,7 @@ export function RegisterPage() {
             required
           />
           <PasswordInput
-            onChange={handleChange}
+            onChange={handleChangeInput}
             value={values.password || ""}
             name={"password"}
             extraClass="mb-6"
@@ -64,6 +83,11 @@ export function RegisterPage() {
             Войти
           </Link>
         </p>
+        {onRegisterFailed && (
+          <p className={`${styles.error} text text_type_main-default mt-20`}>
+            {requestFailedMessage}
+          </p>
+        )}
       </div>
     </div>
   );

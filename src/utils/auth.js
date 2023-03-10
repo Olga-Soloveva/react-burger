@@ -1,10 +1,11 @@
 import {
   onRegisterRequest,
   onLoginRequest,
+  onLogOutRequest,
   forgotPasswordRequest,
   resetPasswordRequest,
 } from "./authApi";
-import { setCookie } from "./utilsApi";
+import { setCookie, deleteCookie } from "./utilsApi";
 
 export function useProvideAuth() {
   const onRegister = async (form) => {
@@ -29,21 +30,27 @@ export function useProvideAuth() {
     return data;
   };
 
-  const forgotPassword = async (form) => {
-    return await forgotPasswordRequest(form)
+  const onLogOut = async () => {
+    return await onLogOutRequest()
       .then((res) => {
         return res;
       })
+      .finally(() => {
+        deleteCookie("token");
+        deleteCookie("refreshToken");
+      });
+  };
+
+  const forgotPassword = async (form) => {
+    return await forgotPasswordRequest(form).then((res) => {
+      return res;
+    });
   };
 
   const resetPassword = async (form) => {
-    return await resetPasswordRequest(form)
-      .then((res) => {
-        return res
-      })
-      // .catch((res) => {
-      //   return res;
-      // });
+    return await resetPasswordRequest(form).then((res) => {
+      return res;
+    });
   };
 
   return {
@@ -51,5 +58,6 @@ export function useProvideAuth() {
     onLogin,
     forgotPassword,
     resetPassword,
+    onLogOut,
   };
 }

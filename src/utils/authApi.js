@@ -27,7 +27,18 @@ const onLoginRequest = (form) =>
     }),
   });
 
-  const forgotPasswordRequest = (form) =>
+const onLogOutRequest = () =>
+  request("auth/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: getCookie("refreshToken"),
+    }),
+  });
+
+const forgotPasswordRequest = (form) =>
   request("password-reset", {
     method: "POST",
     headers: {
@@ -38,7 +49,7 @@ const onLoginRequest = (form) =>
     }),
   });
 
-  const resetPasswordRequest = (form) =>
+const resetPasswordRequest = (form) =>
   request("password-reset/reset", {
     method: "POST",
     headers: {
@@ -50,4 +61,10 @@ const onLoginRequest = (form) =>
     }),
   });
 
-export { onRegisterRequest, onLoginRequest, forgotPasswordRequest, resetPasswordRequest };
+export {
+  onRegisterRequest,
+  onLoginRequest,
+  onLogOutRequest,
+  forgotPasswordRequest,
+  resetPasswordRequest,
+};

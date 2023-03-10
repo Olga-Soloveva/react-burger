@@ -1,7 +1,30 @@
 import styles from "./menu.module.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { onLogOut } from "../../services/actions/users";
+import { userSlice } from "../../services/reducers/users";
 
 function Menu() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { clearUser } = userSlice.actions;
+
+  function handlelogOut(evt) {
+    dispatch(onLogOut())
+    .unwrap()
+    .then(() => {
+      navigate("/login")
+    })
+    .catch((err) => {
+      dispatch(clearUser())
+    })
+    .finally(() => {
+      navigate("/login")
+    })
+
+
+    
+  }
   return (
     <nav>
       <ul className={`${styles.navigation}`}>
@@ -31,11 +54,11 @@ function Menu() {
           </NavLink>
         </li>
         <li className={styles.navigation_link}>
-          <Link to="/order-history" className={styles.link_name}>
+          <button className={styles.button} onClick={handlelogOut}>
             <p className="text text_type_main-medium text_color_inactive">
               Выход
             </p>
-          </Link>
+          </button>
         </li>
       </ul>
     </nav>
