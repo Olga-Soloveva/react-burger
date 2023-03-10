@@ -1,14 +1,14 @@
 import {
-  onRegister,
-  onLogin,
+  onRegisterRequest,
+  onLoginRequest,
   forgotPasswordRequest,
   resetPasswordRequest,
 } from "./authApi";
 import { setCookie } from "./utilsApi";
 
 export function useProvideAuth() {
-  const signUp = async (form) => {
-    const data = await onRegister(form).then((res) => {
+  const onRegister = async (form) => {
+    const data = await onRegisterRequest(form).then((res) => {
       setCookie("token", res.accessToken.split("Bearer ")[1], {
         expires: 1200,
       });
@@ -18,8 +18,8 @@ export function useProvideAuth() {
     return data;
   };
 
-  const signIn = async (form) => {
-    const data = await onLogin(form).then((res) => {
+  const onLogin = async (form) => {
+    const data = await onLoginRequest(form).then((res) => {
       setCookie("token", res.accessToken.split("Bearer ")[1], {
         expires: 1200,
       });
@@ -41,14 +41,14 @@ export function useProvideAuth() {
       .then((res) => {
         return res
       })
-      .catch((res) => {
-        return res;
-      });
+      // .catch((res) => {
+      //   return res;
+      // });
   };
 
   return {
-    signUp,
-    signIn,
+    onRegister,
+    onLogin,
     forgotPassword,
     resetPassword,
   };

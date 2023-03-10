@@ -1,7 +1,7 @@
 import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
 
-const onRegister = (form) =>
+const onRegisterRequest = (form) =>
   request("auth/register", {
     method: "POST",
     headers: {
@@ -14,7 +14,7 @@ const onRegister = (form) =>
     }),
   });
 
-const onLogin = (form) =>
+const onLoginRequest = (form) =>
   request("auth/login", {
     method: "POST",
     headers: {
@@ -50,4 +50,4 @@ const onLogin = (form) =>
     }),
   });
 
-export { onRegister, onLogin, forgotPasswordRequest, resetPasswordRequest };
+export { onRegisterRequest, onLoginRequest, forgotPasswordRequest, resetPasswordRequest };

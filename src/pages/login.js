@@ -1,21 +1,38 @@
 import styles from "./page.module.css";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import AppHeader from "../components/AppHeader/AppHeader";
+import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import { onLogin } from "../services/actions/users";
-import FormPage from "../components/FormPage/FormPage";
+import { userSlice } from "../services/reducers/users";
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const { values, handleChange, isValidForm } = useFormWithValidation();
+  const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const dispatch = useDispatch();
+  const { clearLoginFailed } = userSlice.actions;
+  const { onLoginFailed } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    dispatch(clearLoginFailed());
+  }, [clearLoginFailed, dispatch, values]);
 
   const handleSubmit = () => {
-    dispatch(onLogin(values));
+    dispatch(onLogin(values))
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((err) => {
+        setRequestFailedMessage(err.message)
+      })
   };
 
   return (
@@ -57,6 +74,11 @@ export function LoginPage() {
             Восстановить пароль
           </Link>
         </p>
+        {onLoginFailed && (
+          <p className={`${styles.error} text text_type_main-default mt-20`}>
+            {requestFailedMessage}
+          </p>
+        )}
       </div>
     </div>
   );

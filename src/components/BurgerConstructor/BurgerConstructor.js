@@ -10,8 +10,9 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { orderSlice } from "../../services/reducers/order";
-import { componentsSlice } from "../../services/reducers/components";
 import { createOrder } from "../../services/actions/order";
+import { componentsSlice } from "../../services/reducers/components";
+
 
 function BurgerConstructor() {
   const { bunComponent, otherComponents } = useSelector(

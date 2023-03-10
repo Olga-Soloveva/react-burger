@@ -1,6 +1,7 @@
 import styles from "./page.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import AppHeader from "../components/AppHeader/AppHeader";
 import FormPage from "../components/FormPage/FormPage";
 import {
@@ -9,21 +10,33 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import { useProvideAuth } from "../utils/auth";
+import { onLogin } from "../services/actions/users";
 
 export function ResetPassword() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const [requestFailed, setRequestFailed] = useState(false);
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { resetPassword } = useProvideAuth();
+  const [requestFailedMessage, setRequestFailedMessage] = useState(null);
 
-  const handleSubmit = async (evt) => {
+  console.log(location.state);
+
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-    const requestresult = await resetPassword(values);
-    if (requestresult.success) {
-      navigate("/");
-    } else {
-      setRequestFailed(true);
-    }
+    resetPassword(values)
+      .then(() => {
+        dispatch(onLogin({email: location.state, password: values.password}))
+          .unwrap()
+          .then(() => {
+            navigate("/");
+          });
+      })
+      .catch((err) => {
+        setRequestFailed(true);
+        setRequestFailedMessage(err.message);
+      });
   };
 
   useEffect(() => {
@@ -61,17 +74,18 @@ export function ResetPassword() {
             required
           />
         </FormPage>
-        {requestFailed && (
-          <p className={`${styles.error} text text_type_main-default mb-4`}>
-            Неверный код.
-          </p>
-        )}
+
         <p className="text text_type_main-default text_color_inactive mb-4">
           Вспомнили пароль?{" "}
           <Link to="/login" className={styles.link}>
             Войти
           </Link>
         </p>
+        {requestFailed && (
+          <p className={`${styles.error} text text_type_main-default mt-20`}>
+            {requestFailedMessage}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -10,17 +10,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
-import { useProvideAuth } from "../utils/auth";
+// import { useProvideAuth } from "../utils/auth";
 import FormPage from "../components/FormPage/FormPage";
 
 export function Profile() {
   const { values, handleChange, isValidForm } = useFormWithValidation();
-  const { signUp } = useProvideAuth();
+  // const { onRegister } = useProvideAuth();
 
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    signUp(values);
-  }
+  // function handleSubmit(evt) {
+  //   evt.preventDefault();
+  //   onRegister(values);
+  // }
 
   return (
     <div className={styles.page}>
@@ -37,7 +37,7 @@ export function Profile() {
             <FormPage
               isValidForm={isValidForm}
               textButton="Сохранить"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
             >
               <Input
                 type={"text"}
@@ -61,7 +61,7 @@ export function Profile() {
                 extraClass="mb-6"
               />
               <PasswordInput
-                onChange={handleChange}
+                // onChange={handleChange}
                 value={values.password || ""}
                 name={"password"}
                 extraClass="mb-6"

@@ -20,14 +20,14 @@ function Menu() {
 
         <li className={styles.navigation_link}>
           <NavLink
-            to="/order-history"
+            to="/profile/orders"
             className={({ isActive }) =>
               isActive
                 ? `${styles.link_name_active} text text_type_main-medium`
                 : `${styles.link_name} text text_type_main-medium text_color_inactive`
             }
           >
-            История
+            История заказов
           </NavLink>
         </li>
         <li className={styles.navigation_link}>

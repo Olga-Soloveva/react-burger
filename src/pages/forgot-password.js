@@ -15,7 +15,7 @@ export function ForgotPassword() {
     evt.preventDefault();
     const requestresult = await forgotPassword(values);
     if (requestresult.success) {
-      navigate("/reset-password");
+      navigate("/reset-password", { state: values.email });
     }
   };
 

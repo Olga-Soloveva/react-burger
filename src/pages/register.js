@@ -12,11 +12,11 @@ import FormPage from "../components/FormPage/FormPage";
 
 export function RegisterPage() {
   const { values, handleChange, isValidForm } = useFormWithValidation();
-  const { signUp } = useProvideAuth();
+  const { onRegister } = useProvideAuth();
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    signUp(values);
+    onRegister(values);
   }
 
   return (
