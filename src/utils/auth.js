@@ -1,4 +1,9 @@
-import { onRegister, onLogin } from "./authApi";
+import {
+  onRegister,
+  onLogin,
+  forgotPasswordRequest,
+  resetPasswordRequest,
+} from "./authApi";
 import { setCookie } from "./utilsApi";
 
 export function useProvideAuth() {
@@ -25,17 +30,26 @@ export function useProvideAuth() {
   };
 
   const forgotPassword = async (form) => {
-    console.log('forgotPassword');
+    return await forgotPasswordRequest(form)
+      .then((res) => {
+        return res;
+      })
   };
 
   const resetPassword = async (form) => {
-    console.log('resetPassword');
+    return await resetPasswordRequest(form)
+      .then((res) => {
+        return res
+      })
+      .catch((res) => {
+        return res;
+      });
   };
 
   return {
     signUp,
     signIn,
     forgotPassword,
-    resetPassword
+    resetPassword,
   };
 }

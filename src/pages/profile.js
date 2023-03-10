@@ -27,7 +27,12 @@ export function Profile() {
       <AppHeader />
       <div className={`${styles.content} ${styles.content_page_profile}`}>
         <div className={profileStyles.content}>
-          <Menu />
+          <div className={profileStyles.column_right}>
+            <Menu />
+            <p className={`${profileStyles.paragraph} text text_type_main-default mt-20`}>
+              В этом разделе вы можете изменить свои персональные данные
+            </p>
+          </div>
           <div className={profileStyles.column_center}>
             <FormPage
               isValidForm={isValidForm}

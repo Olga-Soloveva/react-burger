@@ -1,13 +1,23 @@
 .content {
-    display: grid;
-    width: 1240px;
-    grid-template-columns: 320px 480px;
-    gap: 60px;
-    height: 100%;
-  }
+  display: grid;
+  width: 1240px;
+  grid-template-columns: 320px 480px;
+  gap: 60px;
+  height: 100%;
+}
 
 .column_center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.column_right {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraph {
+  max-width: 100%;
+  opacity: 0.4;
 }

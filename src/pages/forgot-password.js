@@ -1,19 +1,23 @@
 import styles from "./page.module.css";
+import { Link, useNavigate } from "react-router-dom";
 import AppHeader from "../components/AppHeader/AppHeader";
-import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
-import { useFormWithValidation } from "../hooks/useFormWithValidation";
-import { useProvideAuth } from "../utils/auth";
 import FormPage from "../components/FormPage/FormPage";
+import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useProvideAuth } from "../utils/auth";
+import { useFormWithValidation } from "../hooks/useFormWithValidation";
 
 export function ForgotPassword() {
+  const navigate = useNavigate();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { forgotPassword } = useProvideAuth();
 
-  function handleSubmit(evt) {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
-    forgotPassword(values);
-  }
+    const requestresult = await forgotPassword(values);
+    if (requestresult.success) {
+      navigate("/reset-password");
+    }
+  };
 
   return (
     <div className={styles.page}>

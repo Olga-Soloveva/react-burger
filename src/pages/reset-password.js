@@ -1,22 +1,34 @@
 import styles from "./page.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import AppHeader from "../components/AppHeader/AppHeader";
+import FormPage from "../components/FormPage/FormPage";
 import {
   PasswordInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import { useProvideAuth } from "../utils/auth";
-import FormPage from "../components/FormPage/FormPage";
 
 export function ResetPassword() {
+  const navigate = useNavigate();
+  const [requestFailed, setRequestFailed] = useState(false);
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { resetPassword } = useProvideAuth();
 
-  function handleSubmit(evt) {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
-    resetPassword(values);
-  }
+    const requestresult = await resetPassword(values);
+    if (requestresult.success) {
+      navigate("/");
+    } else {
+      setRequestFailed(true);
+    }
+  };
+
+  useEffect(() => {
+    setRequestFailed(false);
+  }, [values.token]);
 
   return (
     <div className={styles.page}>
@@ -40,8 +52,8 @@ export function ResetPassword() {
             type={"text"}
             placeholder={"Введите код из письма"}
             onChange={handleChange}
-            value={values.name || ""}
-            name={"name"}
+            value={values.token || ""}
+            name={"token"}
             error={false}
             errorText={"Ошибка"}
             size={"default"}
@@ -49,6 +61,11 @@ export function ResetPassword() {
             required
           />
         </FormPage>
+        {requestFailed && (
+          <p className={`${styles.error} text text_type_main-default mb-4`}>
+            Неверный код.
+          </p>
+        )}
         <p className="text text_type_main-default text_color_inactive mb-4">
           Вспомнили пароль?{" "}
           <Link to="/login" className={styles.link}>

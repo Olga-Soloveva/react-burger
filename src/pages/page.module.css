@@ -53,3 +53,7 @@
 .link:hover {
   opacity: 0.7;
 }
+
+.error {
+  color: #E52B1A
+}
