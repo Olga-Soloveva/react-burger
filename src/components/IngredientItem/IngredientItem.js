@@ -10,11 +10,7 @@ import { useLocation, Link } from "react-router-dom";
 import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 import { useDispatch } from "react-redux";
 
-function IngredientItem({
-  ingredient,
-  count,
-  showIngredientDetails
-}) {
+function IngredientItem({ ingredient, count }) {
   const { _id: ingredientId, name, image, price } = ingredient;
   const location = useLocation();
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import styles from "./order-details.module.css";
-import WrapperIcon from "../WtapperIcon/WrapperIcon";
+import WrapperIcon from "../WrapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 

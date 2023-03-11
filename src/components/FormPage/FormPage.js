@@ -24,9 +24,10 @@ function FormPage({ title, isValidForm, buttonIsInvisible, onSubmit, textButton,
 FormPage.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string,
-  textButton: PropTypes.string.isRequired,
   isValidForm: PropTypes.bool,
+  buttonIsInvisible: PropTypes.bool,
   onSubmit: PropTypes.func,
+  textButton: PropTypes.string.isRequired,
 };
 
 export default FormPage;

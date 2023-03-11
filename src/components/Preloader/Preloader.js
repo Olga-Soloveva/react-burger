@@ -6,8 +6,14 @@ const Preloader = React.memo(() => {
   const { onAuthorizationRequest } = useSelector((store) => store.user);
 
   return (
-    onAuthorizationRequest && (<div className={styles.content}>
-      <p className="text text_type_main-medium mt-10">Загружаем ваши данные...</p></div>
+    onAuthorizationRequest && (
+      <div className={styles.preloader}>
+        <div className={styles.container}>
+          <p className={`${styles.message} text text_type_main-medium mt-10`}>
+            Загружаем ваши данные...
+          </p>
+        </div>
+      </div>
     )
   );
 });
