@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useMemo } from "react";
 import { getIngredients } from "../services/actions/ingredients";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
-import AppHeader from "../components/AppHeader/AppHeader";
 
 export function IngredientPage() {
   const dispatch = useDispatch();
@@ -37,37 +36,34 @@ export function IngredientPage() {
   }, [ingredientId, ingredients]);
 
   return (
-    <div className={styles.page}>
-      <AppHeader />
-      <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
-        {!ingredientsFailed && !ingredientsRequest ? (
-          <>
-            {ingredientFound === "found" && (
-              <IngredientDetails ingredient={ingredient} />
-            )}
-            {ingredientFound === "notfound" && (
-              <>
-                <p className="text text_type_main-default mt-10 mb-10">
-                  Ингредиент не найден.
-                </p>
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            {ingredientsFailed && (
-              <p className="text text_type_main-default pt-4">
-                Ошибка сервера: невозможно загрузить ингредиенты.
+    <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
+      {!ingredientsFailed && !ingredientsRequest ? (
+        <>
+          {ingredientFound === "found" && (
+            <IngredientDetails ingredient={ingredient} />
+          )}
+          {ingredientFound === "notfound" && (
+            <>
+              <p className="text text_type_main-default mt-10 mb-10">
+                Ингредиент не найден.
               </p>
-            )}
-            {ingredientsRequest && (
-              <p className="text text_type_main-default pt-4">
-                Загрузка ингредиентов...
-              </p>
-            )}
-          </>
-        )}
-      </div>{" "}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          {ingredientsFailed && (
+            <p className="text text_type_main-default pt-4">
+              Ошибка сервера: невозможно загрузить ингредиенты.
+            </p>
+          )}
+          {ingredientsRequest && (
+            <p className="text text_type_main-default pt-4">
+              Загрузка ингредиентов...
+            </p>
+          )}
+        </>
+      )}
     </div>
   );
 }

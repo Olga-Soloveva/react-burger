@@ -1,5 +1,3 @@
-import styles from "./page.module.css";
-import AppHeader from "../components/AppHeader/AppHeader";
 import MainContent from "../components/MainContent/MainContent";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -14,11 +12,8 @@ export function MainPage() {
   }, [dispatch]);
 
   return (
-    <div className={styles.page}>
-      <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-        <MainContent />
-      </DndProvider>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <MainContent />
+    </DndProvider>
   );
 }

@@ -10,7 +10,7 @@ import {
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: {},
+    user: null,
     onLoginRequest: false,
     onLoginFailed: false,
     onRegisterRequest: false,
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
   },
   reducers: {
     clearUser: (state) => {
-      state.user = {};
+      state.user = null;
     },
   },
   extraReducers: (builder) => {
@@ -48,7 +48,7 @@ export const userSlice = createSlice({
         state.onRegisterFailed = true;
       })
       .addCase(onLogOut.fulfilled, (state, action) => {
-        state.user = {};
+        state.user = null;
       })
       .addCase(getUser.pending, (state, action) => {
         state.onAuthorizationRequest = true;
@@ -59,6 +59,7 @@ export const userSlice = createSlice({
         state.onAuthorizationRequest = false;
       })
       .addCase(getUser.rejected, (state, action) => {
+        state.user = null;
         state.onAuthorizationRequest = false;
         state.onAuthorizationFailed = true;
       })

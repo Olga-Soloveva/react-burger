@@ -8,13 +8,17 @@ import {
 } from "./authApi";
 import { setCookie, deleteCookie } from "./utilsApi";
 
+const saveTokens = (accessToken, refreshToken, ) => {
+  setCookie("token", accessToken.split("Bearer ")[1], {
+    expires: 1200,
+  });
+  setCookie("refreshToken", refreshToken);
+ }
+
 export function useProvideAuth() {
   const onRegister = async (form) => {
     const data = await onRegisterRequest(form).then((res) => {
-      setCookie("token", res.accessToken.split("Bearer ")[1], {
-        expires: 1200,
-      });
-      setCookie("refreshToken", res.refreshToken);
+      saveTokens(res.accessToken, res.refreshToken)
       return res.user;
     });
     return data;
@@ -22,10 +26,7 @@ export function useProvideAuth() {
 
   const onLogin = async (form) => {
     const data = await onLoginRequest(form).then((res) => {
-      setCookie("token", res.accessToken.split("Bearer ")[1], {
-        expires: 1200,
-      });
-      setCookie("refreshToken", res.refreshToken);
+      saveTokens(res.accessToken, res.refreshToken)
       return res.user;
     });
     return data;
@@ -44,10 +45,7 @@ export function useProvideAuth() {
 
   const refreshToken = async () => {
     return await refreshTokenRequest().then((res) => {
-      setCookie("token", res.accessToken.split("Bearer ")[1], {
-        expires: 1200,
-      });
-      setCookie("refreshToken", res.refreshToken);
+      saveTokens(res.accessToken, res.refreshToken)
     });
   };
 

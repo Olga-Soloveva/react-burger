@@ -11,7 +11,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const AppHeader = React.memo((props) => {
+const AppHeader = React.memo(() => {
   const location = useLocation();
   return (
     <header className={styles.header}>

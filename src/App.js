@@ -1,3 +1,4 @@
+import styles from "./index.css";
 import { useDispatch } from "react-redux";
 import {
   BrowserRouter,
@@ -16,9 +17,12 @@ import {
   IngredientPage,
   NotFound404,
 } from "./pages";
+import AppHeader from "./components/AppHeader/AppHeader";
 import Modal from "./components/Modal/Modal";
 import IngredientDetails from "./components/IngredientDetails/IngredientDetails";
+import Preloader from "./components/Preloader/Preloader";
 import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
+import { ProtectedRouteElement } from "./components/RrotectedRoute";
 
 function App() {
   const ModalSwitch = () => {
@@ -28,21 +32,45 @@ function App() {
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
 
     let background = location.state && location.state.background;
-  
+
     const handleModalClose = () => {
       dispatch(removeIngredientDetails());
       navigate(-1);
     };
 
     return (
-      <>
+      <div className={styles.page}>
+        <AppHeader />
+        <Preloader />
         <Routes location={background || location}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/login"
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<LoginPage />}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={<ProtectedRouteElement element={<RegisterPage />} />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<ProtectedRouteElement element={<ForgotPassword />} />}
+          />
+          <Route
+            path="/reset-password"
+            element={<ProtectedRouteElement element={<ResetPassword />} />}
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRouteElement onlyUnAuth={true} element={<Profile />} />
+            }
+          />
           <Route
             path="/ingredients/:ingredientId"
             element={<IngredientPage />}
@@ -56,13 +84,13 @@ function App() {
               path="/ingredients/:ingredientId"
               element={
                 <Modal title={"Детали ингредиента"} onClose={handleModalClose}>
-                  <IngredientDetails ingredient={location.state.ingredient}/>
+                  <IngredientDetails ingredient={location.state.ingredient} />
                 </Modal>
               }
             />
           </Routes>
         )}
-      </>
+      </div>
     );
   };
   return (

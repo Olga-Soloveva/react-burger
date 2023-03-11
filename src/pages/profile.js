@@ -3,7 +3,6 @@ import profileStyles from "./profile.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import AppHeader from "../components/AppHeader/AppHeader";
 import Menu from "../components/Menu/Menu";
 import {
   EmailInput,
@@ -24,9 +23,9 @@ export function Profile() {
   const [isDataUserChange, setIsDataUserChange] = useState(false);
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const [requestSuccessMessage, setRequestSuccessMessage] = useState(null);
-  const { user, editUserRequest, editUserFailed } = useSelector(
-    (store) => store.user
-  );
+  const { user, editUserRequest, editUserFailed } =
+    useSelector((store) => store.user);
+
   const { refreshToken } = useProvideAuth();
 
   const handleChangeInput = (evt) => {
@@ -97,8 +96,7 @@ export function Profile() {
   };
 
   return (
-    <div className={styles.page}>
-      <AppHeader />
+    <>
       <div className={`${styles.content} ${styles.content_page_profile}`}>
         <div className={profileStyles.content}>
           <div className={profileStyles.column_right}>
@@ -176,6 +174,6 @@ export function Profile() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

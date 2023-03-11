@@ -1,8 +1,7 @@
 import styles from "./page.module.css";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import AppHeader from "../components/AppHeader/AppHeader";
 import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
@@ -16,14 +15,16 @@ export function LoginPage() {
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const dispatch = useDispatch();
+  const location = useLocation();
   const { onLoginFailed } = useSelector((store) => store.user);
 
   const handleSubmit = (evt) => {
-    evt.preventDefault()
+    evt.preventDefault();
     dispatch(onLogin(values))
       .unwrap()
       .then(() => {
-        navigate("/");
+        const from = location?.state?.from || { from: { pathname: "/" } };
+        navigate(from.pathname);
       })
       .catch((err) => {
         setRequestFailedMessage(err.message);
@@ -38,50 +39,47 @@ export function LoginPage() {
   };
 
   return (
-    <div className={styles.page}>
-      <AppHeader />
-      <div className={`${styles.content} ${styles.content_page_form}`}>
-        <FormPage
-          title="Вход"
-          isValidForm={isValidForm}
-          textButton="Войти"
-          onSubmit={handleSubmit}
-        >
-          <EmailInput
-            onChange={handleChangeInput}
-            value={values.email || ""}
-            name={"email"}
-            placeholder="E-mail"
-            isIcon={false}
-            extraClass="mb-6"
-            required
-          />
-          <PasswordInput
-            onChange={handleChangeInput}
-            value={values.password || ""}
-            name={"password"}
-            extraClass="mb-6"
-            required
-          />
-        </FormPage>
-        <p className="text text_type_main-default text_color_inactive mb-4">
-          Вы — новый пользователь?{" "}
-          <Link to="/register" className={styles.link}>
-            Зарегистрироваться
-          </Link>
+    <div className={`${styles.content} ${styles.content_page_form}`}>
+      <FormPage
+        title="Вход"
+        isValidForm={isValidForm}
+        textButton="Войти"
+        onSubmit={handleSubmit}
+      >
+        <EmailInput
+          onChange={handleChangeInput}
+          value={values.email || ""}
+          name={"email"}
+          placeholder="E-mail"
+          isIcon={false}
+          extraClass="mb-6"
+          required
+        />
+        <PasswordInput
+          onChange={handleChangeInput}
+          value={values.password || ""}
+          name={"password"}
+          extraClass="mb-6"
+          required
+        />
+      </FormPage>
+      <p className="text text_type_main-default text_color_inactive mb-4">
+        Вы — новый пользователь?{" "}
+        <Link to="/register" className={styles.link}>
+          Зарегистрироваться
+        </Link>
+      </p>
+      <p className="text text_type_main-default text_color_inactive">
+        Забыли пароль?{" "}
+        <Link to="/forgot-password" className={styles.link}>
+          Восстановить пароль
+        </Link>
+      </p>
+      {onLoginFailed && (
+        <p className={`${styles.error} text text_type_main-default mt-20`}>
+          {requestFailedMessage}
         </p>
-        <p className="text text_type_main-default text_color_inactive">
-          Забыли пароль?{" "}
-          <Link to="/forgot-password" className={styles.link}>
-            Восстановить пароль
-          </Link>
-        </p>
-        {onLoginFailed && (
-          <p className={`${styles.error} text text_type_main-default mt-20`}>
-            {requestFailedMessage}
-          </p>
-        )}
-      </div>
+      )}
     </div>
   );
 }
