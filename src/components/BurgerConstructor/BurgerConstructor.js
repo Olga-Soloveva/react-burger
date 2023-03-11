@@ -65,6 +65,7 @@ function BurgerConstructor() {
       .catch((err) => {
         refreshToken()
           .then(() => {
+            setIsModalOrderOpen(true);
             dispatch(createOrder())
               .unwrap()
               .then((res) => {

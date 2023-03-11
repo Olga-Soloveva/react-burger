@@ -16,7 +16,7 @@ export function LoginPage() {
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const dispatch = useDispatch();
   const location = useLocation();
-  const { onLoginFailed } = useSelector((store) => store.user);
+  const { onLoginFailed, onLoginRequest } = useSelector((store) => store.user);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -78,6 +78,11 @@ export function LoginPage() {
       {onLoginFailed && (
         <p className={`${styles.error} text text_type_main-default mt-20`}>
           {requestFailedMessage}
+        </p>
+      )}
+            {onLoginRequest && (
+        <p className="text text_type_main-default mt-20">
+          Идет автроизация пользователя...
         </p>
       )}
     </div>

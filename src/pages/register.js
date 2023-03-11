@@ -17,9 +17,12 @@ export function RegisterPage() {
   const dispatch = useDispatch();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
-  const { onRegisterFailed } = useSelector((store) => store.user);
+  const { onRegisterFailed, onRegisterRequest } = useSelector(
+    (store) => store.user
+  );
 
   function handleSubmit(evt) {
+    evt.preventDefault();
     dispatch(onRegister(values))
       .unwrap()
       .then(() => {
@@ -83,6 +86,11 @@ export function RegisterPage() {
       {onRegisterFailed && (
         <p className={`${styles.error} text text_type_main-default mt-20`}>
           {requestFailedMessage}
+        </p>
+      )}
+      {onRegisterRequest && (
+        <p className="text text_type_main-default mt-20">
+          Идет регистрация пользователя...
         </p>
       )}
     </div>
