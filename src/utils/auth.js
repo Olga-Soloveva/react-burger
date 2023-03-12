@@ -1,3 +1,4 @@
+import { TOKEN_LIFETIME } from "./сonstant";
 import {
   onRegisterRequest,
   onLoginRequest,
@@ -10,7 +11,7 @@ import { setCookie, deleteCookie } from "./utilsApi";
 
 const saveTokens = (accessToken, refreshToken, ) => {
   setCookie("token", accessToken.split("Bearer ")[1], {
-    expires: 1200,
+    expires: TOKEN_LIFETIME,
   });
   setCookie("refreshToken", refreshToken);
  }

@@ -1,3 +1,11 @@
+import {
+  ROUTE_MAIN,
+  ROUTE_LOGIN,
+  ROUTE_REGISTER,
+  ROUTE_FORGOT_PASSWORD,
+  ROUTE_RESET_PASSWORD,
+  ROUTE_PROFILE,ROUTE_INGREDIENTS
+} from "./utils/сonstant";
 import styles from "./index.css";
 import { useDispatch } from "react-redux";
 import {
@@ -43,9 +51,9 @@ function App() {
         <AppHeader />
         <Preloader />
         <Routes location={background || location}>
-          <Route path="/" element={<MainPage />} />
+          <Route path={ROUTE_MAIN} element={<MainPage />} />
           <Route
-            path="/login"
+            path={ROUTE_LOGIN}
             element={
               <ProtectedRouteElement
                 onlyUnAuth={false}
@@ -54,25 +62,25 @@ function App() {
             }
           />
           <Route
-            path="/register"
+            path={ROUTE_REGISTER}
             element={<ProtectedRouteElement element={<RegisterPage />} />}
           />
           <Route
-            path="/forgot-password"
+            path={ROUTE_FORGOT_PASSWORD}
             element={<ProtectedRouteElement element={<ForgotPassword />} />}
           />
           <Route
-            path="/reset-password"
+            path={ROUTE_RESET_PASSWORD}
             element={<ProtectedRouteElement element={<ResetPassword />} />}
           />
           <Route
-            path="/profile"
+            path={ROUTE_PROFILE}
             element={
               <ProtectedRouteElement onlyUnAuth={true} element={<Profile />} />
             }
           />
           <Route
-            path="/ingredients/:ingredientId"
+            path={`${ROUTE_INGREDIENTS}/:ingredientId`}
             element={<IngredientPage />}
           />
           <Route path="*" element={<NotFound404 />} />
@@ -81,7 +89,7 @@ function App() {
         {background && (
           <Routes>
             <Route
-              path="/ingredients/:ingredientId"
+              path={`${ROUTE_INGREDIENTS}/:ingredientId`}
               element={
                 <Modal title={"Детали ингредиента"} onClose={handleModalClose}>
                   <IngredientDetails ingredient={location.state.ingredient} />

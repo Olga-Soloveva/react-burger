@@ -57,3 +57,17 @@ export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
 
+export function checkAuthorizationToken() {
+  const checkTokenResult = Boolean(getCookie("refreshToken")) && Boolean(getCookie("token"))
+  return checkTokenResult || false
+}
+
+export function checkToken() {
+  const checkTokenResult = Boolean(getCookie("token"))
+  return checkTokenResult || false
+}
+
+export function checkRefreshToken() {
+  const checkTokenResult = Boolean(getCookie("refreshToken"))
+  return checkTokenResult || false
+}

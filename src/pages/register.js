@@ -1,3 +1,4 @@
+import { ROUTE_MAIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,7 +27,7 @@ export function RegisterPage() {
     dispatch(onRegister(values))
       .unwrap()
       .then(() => {
-        navigate("/");
+        navigate(ROUTE_MAIN );
       })
       .catch((err) => {
         setRequestFailedMessage(err.message);

@@ -1,3 +1,4 @@
+import { ROUTE_LOGIN } from "../../utils/сonstant";
 import styles from "./burger-constructor.module.css";
 import React, { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +16,7 @@ import { createOrder } from "../../services/actions/order";
 import { componentsSlice } from "../../services/reducers/components";
 import { useProvideAuth } from "../../utils/auth";
 import { getUser } from "../../services/actions/users";
+import { checkRefreshToken, checkToken, deleteCookie } from "../../utils/utilsApi";
 
 function BurgerConstructor() {
   const { bunComponent, otherComponents } = useSelector(
@@ -52,30 +54,38 @@ function BurgerConstructor() {
   }, [dispatch, clearOrder]);
 
   const placeOrder = async (data) => {
-    await dispatch(getUser())
-      .unwrap()
-      .then(() => {
-        setIsModalOrderOpen(true);
-        dispatch(createOrder([...otherComponents, bunComponent]))
-          .unwrap()
-          .then(() => {
-            dispatch(clearConstructor());
-          });
-      })
-      .catch((err) => {
-        refreshToken()
-          .then(() => {
-            setIsModalOrderOpen(true);
-            dispatch(createOrder())
-              .unwrap()
-              .then((res) => {
-                dispatch(clearConstructor());
-              });
-          })
-          .catch((err) => {
-            navigate("/login");
-          });
-      });
+    const isTokens = checkToken()
+    const isRefreshTokens = checkRefreshToken()
+    if (!isTokens && !isRefreshTokens) {
+      navigate(ROUTE_LOGIN);
+    } else {
+      await dispatch(getUser())
+        .unwrap()
+        .then(() => {
+          setIsModalOrderOpen(true);
+          dispatch(createOrder([...otherComponents, bunComponent]))
+            .unwrap()
+            .then(() => {
+              dispatch(clearConstructor());
+            });
+        })
+        .catch((err) => {
+          deleteCookie("token");
+          refreshToken()
+            .then(() => {
+              setIsModalOrderOpen(true);
+              dispatch(createOrder([...otherComponents, bunComponent]))
+                .unwrap()
+                .then((res) => {
+                  dispatch(clearConstructor());
+                });
+            })
+            .catch((err) => {
+              deleteCookie("refreshToken");
+              navigate(ROUTE_LOGIN);
+            });
+        });
+    }
   };
 
   return (

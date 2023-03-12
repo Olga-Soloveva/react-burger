@@ -1,3 +1,4 @@
+import { ROUTE_MAIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -31,7 +32,7 @@ export function ResetPassword() {
         )
           .unwrap()
           .then(() => {
-            navigate("/");
+            navigate(ROUTE_MAIN );
           });
       })
       .catch((err) => {
@@ -42,7 +43,7 @@ export function ResetPassword() {
 
   useEffect(() => {
     if (location?.state?.from !== "reset-password") {
-      navigate("/");
+      navigate(ROUTE_MAIN );
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

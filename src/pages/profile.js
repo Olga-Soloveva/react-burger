@@ -1,3 +1,4 @@
+import { ROUTE_LOGIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import profileStyles from "./profile.module.css";
 import { useState, useEffect } from "react";
@@ -66,7 +67,7 @@ export function Profile() {
               });
           })
           .catch((err) => {
-            navigate("/login");
+            navigate(ROUTE_LOGIN);
           });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,3 +1,4 @@
+import { ROUTE_RESET_PASSWORD } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import FormPage from "../components/FormPage/FormPage";
@@ -14,7 +15,7 @@ export function ForgotPassword() {
     evt.preventDefault();
     const requestresult = await forgotPassword(values);
     if (requestresult.success) {
-      navigate("/reset-password", {
+      navigate(ROUTE_RESET_PASSWORD, {
         state: { email: values.email, from: "reset-password" },
       });
     }

@@ -1,3 +1,4 @@
+import { ROUTE_LOGIN } from "../../utils/сonstant";
 import styles from "./menu.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -13,13 +14,13 @@ function Menu() {
     dispatch(onLogOut())
       .unwrap()
       .then(() => {
-        navigate("/login");
+        navigate(ROUTE_LOGIN);
       })
       .catch((err) => {
         dispatch(clearUser());
       })
       .finally(() => {
-        navigate("/login");
+        navigate(ROUTE_LOGIN);
       });
   }
   
