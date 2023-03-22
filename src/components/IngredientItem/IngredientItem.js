@@ -1,4 +1,5 @@
 import styles from "./ingredient-item.module.css";
+import React from "react";
 import { useDrag } from "react-dnd";
 import PropTypes from "prop-types";
 import ingredientType from "../../utils/types";
@@ -61,4 +62,4 @@ IngredientItem.propTypes = {
   count: PropTypes.number,
 };
 
-export default IngredientItem;
+export default React.memo(IngredientItem);

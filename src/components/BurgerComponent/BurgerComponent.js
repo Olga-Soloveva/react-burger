@@ -1,4 +1,5 @@
 import styles from "./burger-component.module.css";
+import React from "react";
 import { mergeRefs } from "react-merge-refs";
 import { useDrag, useDrop } from "react-dnd";
 import PropTypes from "prop-types";
@@ -75,4 +76,4 @@ BurgerComponent.propTypes = {
   type: PropTypes.string,
 };
 
-export default BurgerComponent;
+export default React.memo(BurgerComponent);

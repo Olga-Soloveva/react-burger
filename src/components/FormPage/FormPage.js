@@ -1,4 +1,5 @@
 import styles from "./form-page.module.css";
+import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -30,4 +31,4 @@ FormPage.propTypes = {
   textButton: PropTypes.string.isRequired,
 };
 
-export default FormPage;
+export default React.memo(FormPage);

@@ -22,8 +22,9 @@ export const request = (endpoint, options) => {
     .then(checkSuccess);
 };
 
-export function setCookie(name, value, props) {
-  props = props || {};
+export function setCookie(name, value, props = {}) {
+  props = {path: '/', ...props};
+  
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
     const d = new Date();

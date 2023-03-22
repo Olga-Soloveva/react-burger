@@ -1,4 +1,5 @@
 import styles from "./ingredient-details.module.css";
+import React from "react";
 import { useSelector } from "react-redux";
 import ingredientType from "../../utils/types";
 
@@ -56,4 +57,4 @@ IngredientDetails.propTypes = {
   ingredient: ingredientType.isRequired,
 };
 
-export default IngredientDetails;
+export default React.memo(IngredientDetails);

@@ -1,4 +1,5 @@
 import { ROUTE_LOGIN } from "../../utils/сonstant";
+import React from "react";
 import styles from "./menu.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -64,4 +65,4 @@ function Menu() {
   );
 }
 
-export default Menu;
+export default React.memo(Menu);

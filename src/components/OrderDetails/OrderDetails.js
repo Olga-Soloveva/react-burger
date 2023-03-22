@@ -1,4 +1,5 @@
 import styles from "./order-details.module.css";
+import React from "react";
 import WrapperIcon from "../WrapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
@@ -37,4 +38,4 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+export default React.memo(OrderDetails);

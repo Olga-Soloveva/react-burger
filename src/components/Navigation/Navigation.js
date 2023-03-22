@@ -1,4 +1,5 @@
 import styles from "./navigation.module.css";
+import React from "react";
 import PropTypes from "prop-types";
 
 function Navigation({ position, children }) {
@@ -20,4 +21,4 @@ Navigation.propTypes = {
   position: PropTypes.string,
 };
 
-export default Navigation;
+export default React.memo(Navigation);

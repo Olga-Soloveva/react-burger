@@ -22,35 +22,27 @@ export const ProtectedRouteElement = ({ element = false, onlyUnAuth }) => {
     const isRefreshTokens = checkRefreshToken();
     if (!isTokens && !isRefreshTokens) {
       await dispatch(clearUser());
-      setUserLoaded(true);
     } else {
       await dispatch(getUser())
         .unwrap()
-        .then(() => {
-          setUserLoaded(true);
-        })
-        .catch((err) => {
+        .catch(async (err) => {
           deleteCookie("token");
-          refreshToken()
-            .then(() => {
-              dispatch(getUser())
+          await refreshToken()
+            .then(async () => {
+              await dispatch(getUser())
                 .unwrap()
-                .then(() => {
-                  setUserLoaded(true);
-                })
                 .catch((err) => {
-                  setUserLoaded(true);
                   dispatch(clearUser());
                   deleteCookie("refreshToken");
                 });
             })
             .catch((err) => {
-              setUserLoaded(true);
               dispatch(clearUser());
               deleteCookie("refreshToken");
             });
         });
     }
+    setUserLoaded(true);
   };
 
   useEffect(() => {

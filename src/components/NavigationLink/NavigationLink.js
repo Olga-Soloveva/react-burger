@@ -1,4 +1,5 @@
 import styles from "./navigation-link.module.css";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -27,4 +28,4 @@ NavigationLink.propTypes = {
   linkPath: PropTypes.string.isRequired,
 };
 
-export default NavigationLink;
+export default React.memo(NavigationLink);

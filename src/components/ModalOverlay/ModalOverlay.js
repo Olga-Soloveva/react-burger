@@ -1,4 +1,5 @@
 import styles from "./modal-overlay.module.css";
+import React from "react";
 import PropTypes from "prop-types";
 
 const ModalOverlay = ({onClickOverlay, children}) => {
@@ -10,4 +11,4 @@ ModalOverlay.propTypes = {
   onClickOverlay: PropTypes.func.isRequired,
 };
 
-export default ModalOverlay;
+export default React.memo(ModalOverlay);
