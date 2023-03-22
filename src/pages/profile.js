@@ -1,8 +1,6 @@
-import { ROUTE_LOGIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import profileStyles from "./profile.module.css";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Menu from "../components/Menu/Menu";
 import {
@@ -11,23 +9,20 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getUser, editUser } from "../services/actions/users";
+import { editUser } from "../services/actions/users";
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import FormPage from "../components/FormPage/FormPage";
-import { useProvideAuth } from "../utils/auth";
 
 export function Profile() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { values, setValues, handleChange, isValidForm } =
     useFormWithValidation();
   const [isDataUserChange, setIsDataUserChange] = useState(false);
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const [requestSuccessMessage, setRequestSuccessMessage] = useState(null);
-  const { user, editUserRequest, editUserFailed } =
-    useSelector((store) => store.user);
-
-  const { refreshToken } = useProvideAuth();
+  const { user, editUserRequest, editUserFailed } = useSelector(
+    (store) => store.user
+  );
 
   const handleChangeInput = (evt) => {
     handleChange(evt);
@@ -48,30 +43,11 @@ export function Profile() {
   }, [values, user]);
 
   useEffect(() => {
-    dispatch(getUser())
-      .unwrap()
-      .then((res) => {
-        values.name = res.user.name;
-        values.email = res.user.email;
-        values.password = "";
-      })
-      .catch((err) => {
-        refreshToken()
-          .then(() => {
-            dispatch(getUser())
-              .unwrap()
-              .then((res) => {
-                values.name = res.user.name;
-                values.email = res.user.email;
-                values.password = "";
-              });
-          })
-          .catch((err) => {
-            navigate(ROUTE_LOGIN);
-          });
-      });
+    values.name = user.name;
+    values.email = user.email;
+    values.password = "";
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -81,13 +57,7 @@ export function Profile() {
         setRequestSuccessMessage(true);
       })
       .catch((err) => {
-        refreshToken().then(() => {
-          dispatch(editUser(values))
-            .unwrap()
-            .catch((err) => {
-              setRequestFailedMessage(err.message);
-            });
-        });
+        setRequestFailedMessage(err.message);
       });
   }
 

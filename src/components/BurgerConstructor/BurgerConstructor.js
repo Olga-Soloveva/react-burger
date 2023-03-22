@@ -14,9 +14,11 @@ import {
 import { orderSlice } from "../../services/reducers/order";
 import { createOrder } from "../../services/actions/order";
 import { componentsSlice } from "../../services/reducers/components";
-import { useProvideAuth } from "../../utils/auth";
 import { getUser } from "../../services/actions/users";
-import { checkRefreshToken, checkToken, deleteCookie } from "../../utils/utilsApi";
+import {
+  checkRefreshToken,
+  checkToken,
+} from "../../utils/utilsApi";
 
 function BurgerConstructor() {
   const { bunComponent, otherComponents } = useSelector(
@@ -26,7 +28,6 @@ function BurgerConstructor() {
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const { getComponent, clearConstructor } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;
-  const { refreshToken } = useProvideAuth();
   const dispatch = useDispatch();
 
   const [{ isHover }, dropIngredient] = useDrop({
@@ -54,8 +55,8 @@ function BurgerConstructor() {
   }, [dispatch, clearOrder]);
 
   const placeOrder = async (data) => {
-    const isTokens = checkToken()
-    const isRefreshTokens = checkRefreshToken()
+    const isTokens = checkToken();
+    const isRefreshTokens = checkRefreshToken();
     if (!isTokens && !isRefreshTokens) {
       navigate(ROUTE_LOGIN);
     } else {
@@ -70,20 +71,7 @@ function BurgerConstructor() {
             });
         })
         .catch((err) => {
-          deleteCookie("token");
-          refreshToken()
-            .then(() => {
-              setIsModalOrderOpen(true);
-              dispatch(createOrder([...otherComponents, bunComponent]))
-                .unwrap()
-                .then((res) => {
-                  dispatch(clearConstructor());
-                });
-            })
-            .catch((err) => {
-              deleteCookie("refreshToken");
-              navigate(ROUTE_LOGIN);
-            });
+          navigate(ROUTE_LOGIN);
         });
     }
   };

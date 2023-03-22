@@ -1,8 +1,8 @@
-import { request } from "./utilsApi";
+import { requestWithRefresh } from "./utilsApi";
 import { getCookie } from "./utilsApi";
 
 const getUserRequest = () =>
-  request("auth/user", {
+  requestWithRefresh("auth/user", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -10,18 +10,18 @@ const getUserRequest = () =>
     },
   });
 
-  const editUserRequest = (form) =>
-  request("auth/user", {
+const editUserRequest = (form) =>
+  requestWithRefresh("auth/user", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + getCookie("token"),
     },
     body: JSON.stringify({
-        name: form.name,
-        email: form.email,
-        password: form.password,
-      }),
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    }),
   });
 
 export { getUserRequest, editUserRequest };

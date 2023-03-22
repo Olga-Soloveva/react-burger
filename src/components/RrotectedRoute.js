@@ -5,12 +5,9 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { userSlice } from "../services/reducers/users";
-import { deleteCookie } from "../utils/utilsApi";
 import { checkRefreshToken, checkToken } from "../utils/utilsApi";
-import { useProvideAuth } from "../utils/auth";
 
 export const ProtectedRouteElement = ({ element = false, onlyUnAuth }) => {
-  const { refreshToken } = useProvideAuth();
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const [isUserLoaded, setUserLoaded] = useState(false);
@@ -26,20 +23,7 @@ export const ProtectedRouteElement = ({ element = false, onlyUnAuth }) => {
       await dispatch(getUser())
         .unwrap()
         .catch(async (err) => {
-          deleteCookie("token");
-          await refreshToken()
-            .then(async () => {
-              await dispatch(getUser())
-                .unwrap()
-                .catch((err) => {
-                  dispatch(clearUser());
-                  deleteCookie("refreshToken");
-                });
-            })
-            .catch((err) => {
-              dispatch(clearUser());
-              deleteCookie("refreshToken");
-            });
+          await dispatch(clearUser());
         });
     }
     setUserLoaded(true);

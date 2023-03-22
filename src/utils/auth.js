@@ -1,4 +1,3 @@
-import { TOKEN_LIFETIME } from "./сonstant";
 import {
   onRegisterRequest,
   onLoginRequest,
@@ -7,14 +6,7 @@ import {
   forgotPasswordRequest,
   resetPasswordRequest,
 } from "./authApi";
-import { setCookie, deleteCookie } from "./utilsApi";
-
-const saveTokens = (accessToken, refreshToken, ) => {
-  setCookie("token", accessToken.split("Bearer ")[1], {
-    expires: TOKEN_LIFETIME,
-  });
-  setCookie("refreshToken", refreshToken);
- }
+import { deleteCookie, saveTokens } from "./utilsApi";
 
 export function useProvideAuth() {
   const onRegister = async (form) => {
