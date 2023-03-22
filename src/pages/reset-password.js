@@ -21,8 +21,6 @@ export function ResetPassword() {
   const { resetPassword } = useProvideAuth();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
 
-  console.log(location.state);
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
     resetPassword(values)

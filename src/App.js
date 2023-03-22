@@ -4,7 +4,8 @@ import {
   ROUTE_REGISTER,
   ROUTE_FORGOT_PASSWORD,
   ROUTE_RESET_PASSWORD,
-  ROUTE_PROFILE,ROUTE_INGREDIENTS
+  ROUTE_PROFILE, 
+  ROUTE_INGREDIENTS
 } from "./utils/сonstant";
 import styles from "./index.css";
 import { useDispatch } from "react-redux";

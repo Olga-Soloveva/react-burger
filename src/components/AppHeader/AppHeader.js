@@ -2,7 +2,8 @@ import styles from "./app-header.module.css";
 import React from "react";
 import Navigation from "../Navigation/Navigation";
 import NavigationLink from "../NavigationLink/NavigationLink";
-import { useLocation } from "react-router-dom";
+import { useMatch } from "react-router-dom";
+import { ROUTE_MAIN, ROUTE_PROFILE, ROUTE_ORDER } from "../../utils/сonstant";
 
 import {
   Logo,
@@ -12,22 +13,27 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const AppHeader = React.memo(() => {
-  const location = useLocation();
+  const isMainPage = !!useMatch({ path: ROUTE_MAIN, exact: true });
+  const isOrderPage = !!useMatch(ROUTE_ORDER);
+  const isProfilePage = !!useMatch(ROUTE_PROFILE);
+
   return (
     <header className={styles.header}>
       <div className={`${styles.content} pb-4 pt-4`}>
         <Navigation position={"left"}>
-          <NavigationLink linkName={"Конструктор"} linkPath='/'>
-            <BurgerIcon type={location.pathname === '/' ? "primary" : "secondary" } />
+          <NavigationLink linkName={"Конструктор"} linkPath="/">
+            <BurgerIcon type={isMainPage ? "primary" : "secondary"} />
           </NavigationLink>
-          <NavigationLink linkName={"Лента заказов"} linkPath='/orders'>
-            <ListIcon type={location.pathname === '/orders' ? "primary" : "secondary" } />
+          <NavigationLink linkName={"Лента заказов"} linkPath="/orders">
+            <ListIcon type={isOrderPage ? "primary" : "secondary"} />
           </NavigationLink>
         </Navigation>
         <Logo />
         <Navigation position={"right"}>
-          <NavigationLink linkName={"Личный кабинет"} linkPath='/profile'>
-            <ProfileIcon type={location.pathname === '/profile' ? "primary" : "secondary" }  />
+          <NavigationLink linkName={"Личный кабинет"} linkPath="/profile">
+            <ProfileIcon
+              type={isProfilePage === "/profile" ? "primary" : "secondary"}
+            />
           </NavigationLink>
         </Navigation>
       </div>
