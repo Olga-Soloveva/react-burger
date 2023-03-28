@@ -4,8 +4,9 @@ import {
   ROUTE_REGISTER,
   ROUTE_FORGOT_PASSWORD,
   ROUTE_RESET_PASSWORD,
-  ROUTE_PROFILE, 
-  ROUTE_INGREDIENTS
+  ROUTE_PROFILE,
+  ROUTE_INGREDIENTS,
+  ROUTE_ORDER,
 } from "./utils/сonstant";
 import styles from "./index.css";
 import { useDispatch } from "react-redux";
@@ -25,6 +26,7 @@ import {
   Profile,
   IngredientPage,
   NotFound404,
+  OrderPage,
 } from "./pages";
 import AppHeader from "./components/AppHeader/AppHeader";
 import Modal from "./components/Modal/Modal";
@@ -52,7 +54,8 @@ function App() {
         <AppHeader />
         <Preloader />
         <Routes location={background || location}>
-          <Route path={ROUTE_MAIN} element={<MainPage />} />
+          <Route path={ROUTE_MAIN} element={<MainPage />} exact />
+          <Route path={ROUTE_ORDER} element={<OrderPage />}/>
           <Route
             path={ROUTE_LOGIN}
             element={

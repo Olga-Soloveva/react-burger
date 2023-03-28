@@ -1,8 +1,8 @@
 import styles from "./wrapper-icon.module.css";
-import React from "react";
+import React, {FC} from "react";
 import PropTypes from "prop-types";
 
-const WrapperIcon = ({ children }) => {
+const WrapperIcon: FC<{children: React.ReactNode}> = ({ children })  => {
   return (
     <div className={styles.image_container}>
       <svg

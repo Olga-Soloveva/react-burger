@@ -1,4 +1,4 @@
-import { ROUTE_LOGIN } from "../../utils/сonstant";
+import { ROUTE_LOGIN, ROUTE_PROFILE } from "../../utils/сonstant";
 import React from "react";
 import styles from "./menu.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ function Menu() {
       <ul className={`${styles.navigation}`}>
         <li className={`${styles.navigation_link}`}>
           <NavLink
-            to="/profile"
+            to={ROUTE_PROFILE}
             className={({ isActive }) =>
               isActive
                 ? `${styles.link_name_active} text text_type_main-medium`
@@ -43,7 +43,7 @@ function Menu() {
 
         <li className={styles.navigation_link}>
           <NavLink
-            to="/profile/orders"
+            to={`${ROUTE_PROFILE}}/orders`}
             className={({ isActive }) =>
               isActive
                 ? `${styles.link_name_active} text text_type_main-medium`

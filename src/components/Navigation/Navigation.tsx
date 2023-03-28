@@ -1,8 +1,12 @@
 import styles from "./navigation.module.css";
-import React from "react";
-import PropTypes from "prop-types";
+import React, {FC}from "react";
 
-function Navigation({ position, children }) {
+interface INavigation {
+  position: "right" | "left"
+  children: React.ReactNode
+}
+
+const Navigation: FC<INavigation>  = ({ position = "left", children }) => {
   return (
     <nav>
       <ul
@@ -15,10 +19,5 @@ function Navigation({ position, children }) {
     </nav>
   );
 }
-
-Navigation.propTypes = {
-  children: PropTypes.node.isRequired,
-  position: PropTypes.string,
-};
 
 export default React.memo(Navigation);

@@ -1,9 +1,14 @@
 import styles from "./navigation-link.module.css";
-import React from "react";
+import React, {FC} from "react";
 import { Link, useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
 
-function NavigationLink({ linkName, linkPath,  children,  }) {
+interface INavigationLink {
+  linkName: string;
+  linkPath: string;
+  children?: React.ReactNode
+}
+
+const NavigationLink: FC<INavigationLink> = ({ linkName, linkPath,  children,  }) => {
   const location = useLocation();
   const isLinkActive = location.pathname === linkPath;
 
@@ -21,11 +26,5 @@ function NavigationLink({ linkName, linkPath,  children,  }) {
     </li>
   );
 }
-
-NavigationLink.propTypes = {
-  children: PropTypes.node.isRequired,
-  linkName: PropTypes.string.isRequired,
-  linkPath: PropTypes.string.isRequired,
-};
 
 export default React.memo(NavigationLink);

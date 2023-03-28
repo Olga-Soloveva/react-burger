@@ -13,7 +13,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const AppHeader = React.memo(() => {
-  const isMainPage = !!useMatch({ path: ROUTE_MAIN, exact: true });
+  const isMainPage = !!useMatch(ROUTE_MAIN);
   const isOrderPage = !!useMatch(ROUTE_ORDER);
   const isProfilePage = !!useMatch(ROUTE_PROFILE);
 
@@ -32,7 +32,7 @@ const AppHeader = React.memo(() => {
         <Navigation position={"right"}>
           <NavigationLink linkName={"Личный кабинет"} linkPath="/profile">
             <ProfileIcon
-              type={isProfilePage === "/profile" ? "primary" : "secondary"}
+              type={isProfilePage ? "primary" : "secondary"}
             />
           </NavigationLink>
         </Navigation>

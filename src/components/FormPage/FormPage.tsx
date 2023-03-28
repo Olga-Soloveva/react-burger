@@ -1,9 +1,17 @@
 import styles from "./form-page.module.css";
-import React from "react";
-import PropTypes from "prop-types";
+import React, {FC} from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function FormPage({ title, isValidForm, buttonIsInvisible, onSubmit, textButton, children }) {
+interface IFormPage {
+  title?: string;
+  isValidForm: boolean;
+  buttonIsInvisible: boolean;
+  onSubmit: () => void;
+  textButton: string;
+  children?: React.ReactNode
+}
+
+const FormPage: FC<IFormPage> = ({ title, isValidForm = true, buttonIsInvisible = false, onSubmit, textButton, children }) => {
   return (
     <>
       {title && (<h1 className="text text_type_main-medium mb-6">{title}</h1>)}
@@ -20,15 +28,6 @@ function FormPage({ title, isValidForm, buttonIsInvisible, onSubmit, textButton,
       </form>
     </>
   );
-};
-
-FormPage.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.string,
-  isValidForm: PropTypes.bool,
-  buttonIsInvisible: PropTypes.bool,
-  onSubmit: PropTypes.func,
-  textButton: PropTypes.string.isRequired,
 };
 
 export default React.memo(FormPage);
