@@ -8,7 +8,7 @@ import {
   ROUTE_INGREDIENTS,
   ROUTE_ORDER,
 } from "./utils/сonstant";
-import styles from "./index.css";
+import "./index.css"
 import { useDispatch } from "react-redux";
 import {
   BrowserRouter,
@@ -50,12 +50,12 @@ function App() {
     };
 
     return (
-      <div className={styles.page}>
+      <div className="page">
         <AppHeader />
         <Preloader />
         <Routes location={background || location}>
-          <Route path={ROUTE_MAIN} element={<MainPage />} exact />
-          <Route path={ROUTE_ORDER} element={<OrderPage />}/>
+          <Route path={ROUTE_MAIN} element={<MainPage />} />
+          <Route path={ROUTE_ORDER} element={<OrderPage />} />
           <Route
             path={ROUTE_LOGIN}
             element={
@@ -67,15 +67,30 @@ function App() {
           />
           <Route
             path={ROUTE_REGISTER}
-            element={<ProtectedRouteElement element={<RegisterPage />} />}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<RegisterPage />}
+              />
+            }
           />
           <Route
             path={ROUTE_FORGOT_PASSWORD}
-            element={<ProtectedRouteElement element={<ForgotPassword />} />}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<ForgotPassword />}
+              />
+            }
           />
           <Route
             path={ROUTE_RESET_PASSWORD}
-            element={<ProtectedRouteElement element={<ResetPassword />} />}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<ResetPassword />}
+              />
+            }
           />
           <Route
             path={ROUTE_PROFILE}

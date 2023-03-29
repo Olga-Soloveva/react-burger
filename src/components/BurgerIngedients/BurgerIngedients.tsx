@@ -1,25 +1,25 @@
 import styles from "./burger-ingedients.module.css";
-import React from "react";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
+import { TIngredient, TingredientsCounter } from "../../utils/types";
 
 function BurgerIngedients() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.ingredients
+    (store: any) => store.ingredients
   );
   const { bunComponent, otherComponents } = useSelector(
-    (store) => store.components
+    (store: any) => store.components
   );
 
   const [currentTab, setCurrentTab] = useState("one");
 
   const ingredientsByType = useMemo(() => {
-    let bun = [];
-    let main = [];
-    let sauce = [];
-    ingredients.forEach((ingredient) => {
+    let bun: TIngredient[] = [];
+    let main: TIngredient[] = [];
+    let sauce: TIngredient[] = [];
+    ingredients.forEach((ingredient: TIngredient) => {
       if (ingredient.type === "bun") {
         bun = [...bun, ingredient];
       } else if (ingredient.type === "main") {
@@ -32,8 +32,8 @@ function BurgerIngedients() {
   }, [ingredients]);
 
   const ingredientsCounter = useMemo(() => {
-    const counters = {};
-    otherComponents.forEach((component) => {
+    const counters: TingredientsCounter = {};
+    otherComponents.forEach((component: TIngredient) => {
       if (!counters[component._id]) {
         counters[component._id] = 0;
       }
@@ -45,22 +45,21 @@ function BurgerIngedients() {
     return counters;
   }, [bunComponent, otherComponents]);
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
     setCurrentTab(tab);
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
   const setActiveTab = () => {
-    const tabContainerPosition = document
-      .getElementById("tabContainer")
-      .getBoundingClientRect().top;
+    const tabContainerPosition =
+      document.getElementById("tabContainer")?.getBoundingClientRect().top || 0;
     const tabElement = ["buns", "sauces", "mains"];
     const tabElementData = tabElement.map((item) => {
       return {
         type: item,
         position: Math.abs(
-          document.getElementById(item).getBoundingClientRect().top -
+          (document.getElementById(item)?.getBoundingClientRect().top || 0) -
             tabContainerPosition
         ),
       };

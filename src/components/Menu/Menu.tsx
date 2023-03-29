@@ -6,25 +6,25 @@ import { useDispatch } from "react-redux";
 import { onLogOut } from "../../services/actions/users";
 import { userSlice } from "../../services/reducers/users";
 
-function Menu() {
+const Menu = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const { clearUser } = userSlice.actions;
 
-  function handlelogOut(evt) {
+  function handlelogOut() {
     dispatch(onLogOut())
       .unwrap()
       .then(() => {
         navigate(ROUTE_LOGIN);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         dispatch(clearUser());
       })
       .finally(() => {
         navigate(ROUTE_LOGIN);
       });
   }
-  
+
   return (
     <nav>
       <ul className={`${styles.navigation}`}>
@@ -63,6 +63,6 @@ function Menu() {
       </ul>
     </nav>
   );
-}
+};
 
 export default React.memo(Menu);

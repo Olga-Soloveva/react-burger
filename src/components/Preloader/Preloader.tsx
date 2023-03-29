@@ -1,9 +1,9 @@
 import styles from "./preloader.module.css";
-import React from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 
-const Preloader = React.memo(() => {
-  const { onAuthorizationRequest} = useSelector((store) => store.user);
+const Preloader: FC = React.memo(() => {
+  const { onAuthorizationRequest} = useSelector((store: any) => store.user);
 
   return (
     (onAuthorizationRequest) && (

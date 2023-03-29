@@ -1,10 +1,8 @@
 import styles from "./burger-component.module.css";
-import React from "react";
+import React, {useMemo, FC} from "react";
 import { mergeRefs } from "react-merge-refs";
 import { useDrag, useDrop } from "react-dnd";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types";
-import { useMemo } from "react";
+import { TIngredient } from "../../utils/types";
 import { useDispatch } from "react-redux";
 import {
   ConstructorElement,
@@ -12,7 +10,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { componentsSlice } from "../../services/reducers/components";
 
-function BurgerComponent({ component, type}) {
+interface IBurgerComponent {
+  component: TIngredient;
+  type?: "top" | "bottom";
+}
+
+const BurgerComponent: FC<IBurgerComponent> = ({ component, type}) => {
   const { deleteComponent, moveComponent } = componentsSlice.actions;
   const componentDrag = component
   const dispatch = useDispatch();
@@ -70,10 +73,5 @@ function BurgerComponent({ component, type}) {
     </div>
   );
 }
-
-BurgerComponent.propTypes = {
-  component: ingredientType.isRequired,
-  type: PropTypes.string,
-};
 
 export default React.memo(BurgerComponent);

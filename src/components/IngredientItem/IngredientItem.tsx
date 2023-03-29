@@ -1,8 +1,6 @@
 import styles from "./ingredient-item.module.css";
-import React from "react";
+import React, {FC} from "react";
 import { useDrag } from "react-dnd";
-import PropTypes from "prop-types";
-import ingredientType from "../../utils/types";
 import {
   CurrencyIcon,
   Counter,
@@ -10,8 +8,14 @@ import {
 import { useLocation, Link } from "react-router-dom";
 import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 import { useDispatch } from "react-redux";
+import { TIngredient } from "../../utils/types";
 
-function IngredientItem({ ingredient, count }) {
+interface IIngredientItem {
+  ingredient: TIngredient;
+  count?: number
+}
+
+const IngredientItem: FC<IIngredientItem> = ({ ingredient, count }) => {
   const { _id: ingredientId, name, image, price } = ingredient;
   const location = useLocation();
   const dispatch = useDispatch();
@@ -56,10 +60,5 @@ function IngredientItem({ ingredient, count }) {
     </Link>
   );
 }
-
-IngredientItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-  count: PropTypes.number,
-};
 
 export default React.memo(IngredientItem);

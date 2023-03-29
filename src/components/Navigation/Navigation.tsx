@@ -1,12 +1,12 @@
 import styles from "./navigation.module.css";
-import React, {FC}from "react";
+import React, { FC } from "react";
 
 interface INavigation {
-  position: "right" | "left"
-  children: React.ReactNode
+  position: "right" | "left";
+  children: React.ReactNode;
 }
 
-const Navigation: FC<INavigation>  = ({ position = "left", children }) => {
+const Navigation: FC<INavigation> = ({ position = "left", children }) => {
   return (
     <nav>
       <ul
@@ -18,6 +18,6 @@ const Navigation: FC<INavigation>  = ({ position = "left", children }) => {
       </ul>
     </nav>
   );
-}
+};
 
 export default React.memo(Navigation);

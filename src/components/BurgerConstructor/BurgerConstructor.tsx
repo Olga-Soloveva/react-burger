@@ -1,6 +1,6 @@
 import { ROUTE_LOGIN } from "../../utils/сonstant";
 import styles from "./burger-constructor.module.css";
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
@@ -15,20 +15,21 @@ import { orderSlice } from "../../services/reducers/order";
 import { createOrder } from "../../services/actions/order";
 import { componentsSlice } from "../../services/reducers/components";
 import { getUser } from "../../services/actions/users";
+import { TIngredient } from "../../utils/types";
 import {
   checkRefreshToken,
   checkToken,
 } from "../../utils/utilsApi";
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const { bunComponent, otherComponents } = useSelector(
-    (store) => store.components
+    (store: any) => store.components
   );
   const navigate = useNavigate();
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const { getComponent, clearConstructor } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
 
   const [{ isHover }, dropIngredient] = useDrop({
     accept: "ingredient",
@@ -43,7 +44,7 @@ function BurgerConstructor() {
   const orderAmount = useMemo(() => {
     return (
       (bunComponent ? bunComponent.price * 2 : 0) +
-      otherComponents.reduce(function (previousValue, item) {
+      otherComponents.reduce(function (previousValue: number, item: TIngredient) {
         return previousValue + item.price;
       }, 0)
     );
@@ -54,7 +55,7 @@ function BurgerConstructor() {
     dispatch(clearOrder());
   }, [dispatch, clearOrder]);
 
-  const placeOrder = async (data) => {
+  const placeOrder = async () => {
     const isTokens = checkToken();
     const isRefreshTokens = checkRefreshToken();
     if (!isTokens && !isRefreshTokens) {
@@ -70,7 +71,7 @@ function BurgerConstructor() {
               dispatch(clearConstructor());
             });
         })
-        .catch((err) => {
+        .catch((err: any) => {
           navigate(ROUTE_LOGIN);
         });
     }
@@ -104,7 +105,7 @@ function BurgerConstructor() {
               <div
                 className={` ${styles.components_container_scrol} pl-4 pr-2`}
               >
-                {otherComponents.map((component) => {
+                {otherComponents.map((component: TIngredient & {componentId: string}) => {
                   return (
                     <BurgerComponent
                       component={component}

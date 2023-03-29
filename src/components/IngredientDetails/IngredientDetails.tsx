@@ -1,10 +1,14 @@
 import styles from "./ingredient-details.module.css";
-import React from "react";
+import React, {FC} from "react";
 import { useSelector } from "react-redux";
-import ingredientType from "../../utils/types";
+import { TIngredient } from "../../utils/types";
 
-const IngredientDetails = ({ ingredient }) => {
-  const ingredientStore = useSelector((store) => store.selectedIngredient)
+interface IIngredientDetails {
+  ingredient: TIngredient;
+}
+
+const IngredientDetails: FC<IIngredientDetails> = ({ ingredient }) => {
+  const ingredientStore = useSelector((store: any) => store.selectedIngredient)
 
   const { name, image_large, calories, proteins, fat, carbohydrates } =
   ingredient || ingredientStore || {};
@@ -51,10 +55,6 @@ const IngredientDetails = ({ ingredient }) => {
       </div>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientType.isRequired,
 };
 
 export default React.memo(IngredientDetails);

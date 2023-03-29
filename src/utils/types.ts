@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const ingredientType = PropTypes.shape({
+export const ingredientType = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['bun', 'main', 'sauce']).isRequired,
@@ -14,4 +14,25 @@ const ingredientType = PropTypes.shape({
   image_large: PropTypes.string.isRequired,
 });
 
-export default ingredientType;
+
+export type TIngredient = {
+  _id: string;
+  name: string;
+  type: 'bun' | 'main' | 'sauce';
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string
+}
+
+
+export type TingredientsCounter = { [name: string]: number }
+
+export type TMouseEvent = (evt: React.MouseEvent<HTMLElement>) => void 
+
+
+

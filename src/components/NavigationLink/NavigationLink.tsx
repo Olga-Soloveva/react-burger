@@ -1,21 +1,26 @@
 import styles from "./navigation-link.module.css";
-import React, {FC} from "react";
+import React, { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 interface INavigationLink {
   linkName: string;
   linkPath: string;
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
-const NavigationLink: FC<INavigationLink> = ({ linkName, linkPath,  children,  }) => {
+const NavigationLink: FC<INavigationLink> = ({
+  linkName,
+  linkPath,
+  children,
+}) => {
   const location = useLocation();
   const isLinkActive = location.pathname === linkPath;
 
   return (
     <li className={`${styles.navigation_link}  pr-5 pl-5`}>
       {children}
-      <Link to={linkPath}
+      <Link
+        to={linkPath}
         className={`${styles.link_name} 
         ${
           !isLinkActive ? styles.link_name_inactive : ""
@@ -25,6 +30,6 @@ const NavigationLink: FC<INavigationLink> = ({ linkName, linkPath,  children,  }
       </Link>
     </li>
   );
-}
+};
 
 export default React.memo(NavigationLink);

@@ -1,12 +1,11 @@
-import styles from "./order-details.module.css";
-import React from "react";
+import React, { FC } from "react";
 import WrapperIcon from "../WrapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 
-const OrderDetails = () => {
+const OrderDetails: FC = () => {
   const { orderNumber, orderRequest, orderFailed } = useSelector(
-    (store) => store.order
+    (store: any) => store.order
   );
 
   return (
@@ -26,7 +25,7 @@ const OrderDetails = () => {
         )}
       </p>
       <WrapperIcon>
-        <CheckMarkIcon type="primary" className={styles.image} />
+        <CheckMarkIcon type="primary" />
       </WrapperIcon>
       <p className="text text_type_main-default pt-15 pb-2">
         Ваш заказ начали готовить
