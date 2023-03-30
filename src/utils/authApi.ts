@@ -1,7 +1,8 @@
 import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
+import { TFormValues } from "./types";
 
-const onRegisterRequest = (form) =>
+const onRegisterRequest = (form: TFormValues) =>
   request("auth/register", {
     method: "POST",
     headers: {
@@ -14,7 +15,7 @@ const onRegisterRequest = (form) =>
     }),
   });
 
-const onLoginRequest = (form) =>
+const onLoginRequest = (form: TFormValues) =>
   request("auth/login", {
     method: "POST",
     headers: {
@@ -49,7 +50,7 @@ const onLogOutRequest = () =>
     }),
   });
 
-const forgotPasswordRequest = (form) =>
+const forgotPasswordRequest = (form: TFormValues) =>
   request("password-reset", {
     method: "POST",
     headers: {
@@ -60,7 +61,7 @@ const forgotPasswordRequest = (form) =>
     }),
   });
 
-const resetPasswordRequest = (form) =>
+const resetPasswordRequest = (form: TFormValues) =>
   request("password-reset/reset", {
     method: "POST",
     headers: {

@@ -1,5 +1,6 @@
 import { requestWithRefresh } from "./utilsApi";
 import { getCookie } from "./utilsApi";
+import { TFormValues } from "./types";
 
 const getUserRequest = () =>
   requestWithRefresh("auth/user", {
@@ -10,7 +11,7 @@ const getUserRequest = () =>
     },
   });
 
-const editUserRequest = (form) =>
+const editUserRequest = (form: TFormValues) =>
   requestWithRefresh("auth/user", {
     method: "PATCH",
     headers: {

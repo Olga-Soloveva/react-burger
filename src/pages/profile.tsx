@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import profileStyles from "./profile.module.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Menu from "../components/Menu/Menu";
 import {
@@ -14,17 +14,19 @@ import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import FormPage from "../components/FormPage/FormPage";
 
 export function Profile() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const { values, setValues, handleChange, isValidForm } =
     useFormWithValidation();
-  const [isDataUserChange, setIsDataUserChange] = useState(false);
+  const [isDataUserChange, setIsDataUserChange] = useState<boolean>(false);
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
-  const [requestSuccessMessage, setRequestSuccessMessage] = useState(null);
+  const [requestSuccessMessage, setRequestSuccessMessage] = useState<
+    boolean | null
+  >(null);
   const { user, editUserRequest, editUserFailed } = useSelector(
-    (store) => store.user
+    (store: any) => store.user
   );
 
-  const handleChangeInput = (evt) => {
+  const handleChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(evt);
     if (requestFailedMessage) {
       setRequestFailedMessage(null);
@@ -38,7 +40,7 @@ export function Profile() {
     setIsDataUserChange(
       values.name !== user.name ||
         values.email !== user.email ||
-        values.password
+        Boolean(values.password)
     );
   }, [values, user]);
 
@@ -49,14 +51,15 @@ export function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function handleSubmit(evt) {
+  function handleSubmit(evt: React.SyntheticEvent<HTMLElement>) {
     evt.preventDefault();
+    // @ts-ignore
     dispatch(editUser(values))
       .unwrap()
-      .then((res) => {
+      .then((res: any) => {
         setRequestSuccessMessage(true);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setRequestFailedMessage(err.message);
       });
   }
@@ -82,6 +85,7 @@ export function Profile() {
             <FormPage
               isValidForm={isValidForm}
               textButton="Сохранить"
+              // @ts-ignore
               onSubmit={handleSubmit}
               buttonIsInvisible={!isDataUserChange}
             >
@@ -100,11 +104,10 @@ export function Profile() {
               />
               <EmailInput
                 onChange={handleChangeInput}
-                icon="EditIcon"
                 value={values.email || ""}
                 name={"email"}
                 placeholder="Логин"
-                isIcon={false}
+                isIcon={true}
                 extraClass="mb-6"
                 required
               />

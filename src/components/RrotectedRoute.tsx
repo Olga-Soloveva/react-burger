@@ -9,7 +9,7 @@ import { userSlice } from "../services/reducers/users";
 import { checkRefreshToken, checkToken } from "../utils/utilsApi";
 
 interface IProtectedRouteElement {
-  element: any;
+  element: React.ReactElement;
   onlyUnAuth?: Boolean;
 }
 
@@ -53,9 +53,7 @@ export const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
     ) : (
       <Navigate to={ROUTE_LOGIN} state={{ from: location }} />
     );
-  }
-
-  if (!onlyUnAuth) {
+  } else {
     return !user ? element : <Navigate to={ROUTE_MAIN} />;
   }
 };

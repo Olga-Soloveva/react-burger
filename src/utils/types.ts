@@ -29,6 +29,9 @@ export type TIngredient = {
   image_large: string
 }
 
+export type THandleSubmit = (evt: React.SyntheticEvent<HTMLElement>) => Promise<void> 
+
+export type TFormValues = { [name: string]: string }
 
 export type TingredientsCounter = { [name: string]: number }
 

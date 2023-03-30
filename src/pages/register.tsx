@@ -1,37 +1,41 @@
+import { ROUTE_MAIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
   PasswordInput,
+  Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useFormWithValidation } from "../hooks/useFormWithValidation";
-import { onLogin } from "../services/actions/users";
 
-export function LoginPage() {
+import { useFormWithValidation } from "../hooks/useFormWithValidation";
+import { onRegister } from "../services/actions/users";
+
+export function RegisterPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { onLoginFailed, onLoginRequest } = useSelector((store) => store.user);
+  const { onRegisterFailed, onRegisterRequest } = useSelector(
+    (store: any) => store.user
+  );
 
-  const handleSubmit = (evt) => {
+  function handleSubmit(evt: React.SyntheticEvent<HTMLElement>) {
     evt.preventDefault();
-    dispatch(onLogin(values))
+     // @ts-ignore
+    dispatch(onRegister(values))
       .unwrap()
       .then(() => {
-        const from = location?.state?.from || { from: { pathname: "/" } };
-        navigate(from.pathname);
+        navigate(ROUTE_MAIN );
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setRequestFailedMessage(err.message);
       });
-  };
+  }
 
-  const handleChangeInput = (evt) => {
+  const handleChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(evt);
     if (requestFailedMessage) {
       setRequestFailedMessage(null);
@@ -41,11 +45,24 @@ export function LoginPage() {
   return (
     <div className={`${styles.content} ${styles.content_page_form}`}>
       <FormPage
-        title="Вход"
+        title="Регистрация"
         isValidForm={isValidForm}
-        textButton="Войти"
+        textButton="Зарегистрироваться"
+        // @ts-ignore
         onSubmit={handleSubmit}
       >
+        <Input
+          type={"text"}
+          placeholder={"Имя"}
+          onChange={handleChangeInput}
+          value={values.name || ""}
+          name={"name"}
+          error={false}
+          errorText={"Ошибка"}
+          size={"default"}
+          extraClass="mb-6"
+          required
+        />
         <EmailInput
           onChange={handleChangeInput}
           value={values.email || ""}
@@ -64,25 +81,19 @@ export function LoginPage() {
         />
       </FormPage>
       <p className="text text_type_main-default text_color_inactive mb-4">
-        Вы — новый пользователь?{" "}
-        <Link to="/register" className={styles.link}>
-          Зарегистрироваться
+        Уже зарегистрированы?{" "}
+        <Link to="/login" className={styles.link}>
+          Войти
         </Link>
       </p>
-      <p className="text text_type_main-default text_color_inactive">
-        Забыли пароль?{" "}
-        <Link to="/forgot-password" className={styles.link}>
-          Восстановить пароль
-        </Link>
-      </p>
-      {onLoginFailed && (
+      {onRegisterFailed && (
         <p className={`${styles.error} text text_type_main-default mt-20`}>
           {requestFailedMessage}
         </p>
       )}
-            {onLoginRequest && (
+      {onRegisterRequest && (
         <p className="text text_type_main-default mt-20">
-          Идет автроизация пользователя...
+          Идет регистрация пользователя...
         </p>
       )}
     </div>

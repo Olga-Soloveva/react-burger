@@ -1,12 +1,13 @@
 import styles from "./form-page.module.css";
 import React, {FC} from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { THandleSubmit } from "../../utils/types";
 
 interface IFormPage {
   title?: string;
   isValidForm: boolean;
-  buttonIsInvisible: boolean;
-  onSubmit: () => void;
+  buttonIsInvisible?: boolean;
+  onSubmit: THandleSubmit;
   textButton: string;
   children?: React.ReactNode
 }

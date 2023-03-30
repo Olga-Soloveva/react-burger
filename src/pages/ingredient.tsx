@@ -4,14 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useMemo } from "react";
 import { getIngredients } from "../services/actions/ingredients";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
+import { TIngredient } from "../utils/types";
 
 export function IngredientPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [ingredientFound, setIngredientFound] = useState("unknown");
 
   let { ingredientId } = useParams();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.ingredients
+    (store:any) => store.ingredients
   );
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export function IngredientPage() {
 
   const ingredient = useMemo(() => {
     if (ingredients.length) {
-      const dataIngredient = ingredients.find(function (item) {
+      const dataIngredient = ingredients.find(function (item: TIngredient) {
         return item._id === ingredientId;
       });
       if (dataIngredient) {

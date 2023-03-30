@@ -15,17 +15,18 @@ import { onLogin } from "../services/actions/users";
 export function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [requestFailed, setRequestFailed] = useState(false);
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { resetPassword } = useProvideAuth();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: React.SyntheticEvent<HTMLElement>) => {
     evt.preventDefault();
     resetPassword(values)
       .then(() => {
         dispatch(
+          // @ts-ignore
           onLogin({ email: location.state.email, password: values.password })
         )
           .unwrap()
@@ -56,6 +57,7 @@ export function ResetPassword() {
         title="Восстановление пароля"
         isValidForm={isValidForm}
         textButton="Сохранить"
+        // @ts-ignore
         onSubmit={handleSubmit}
       >
         <PasswordInput

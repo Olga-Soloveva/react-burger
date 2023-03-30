@@ -1,9 +1,10 @@
 import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
+import { TIngredient } from "./types";
 
 const getIngredients = () => request("ingredients");
 
-const createOrder = (data) =>
+const createOrder = (data: TIngredient[]) =>
   request("orders", {
     method: "POST",
     headers: {

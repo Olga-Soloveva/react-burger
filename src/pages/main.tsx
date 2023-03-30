@@ -6,7 +6,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { getIngredients } from "../services/actions/ingredients";
 
 export function MainPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);

@@ -1,3 +1,4 @@
+import React from "react";
 import { ROUTE_RESET_PASSWORD } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,12 +12,12 @@ export function ForgotPassword() {
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { forgotPassword } = useProvideAuth();
 
-  const handleSubmit = async (evt) => {
+  const handleSubmit = async (evt: React.SyntheticEvent<HTMLElement>) => {
     evt.preventDefault();
     const requestresult = await forgotPassword(values);
     if (requestresult.success) {
       navigate(ROUTE_RESET_PASSWORD, {
-        state: { email: values.email, from: "reset-password" },
+        state: { email: values.email, from: "reset-password" }
       });
     }
   };

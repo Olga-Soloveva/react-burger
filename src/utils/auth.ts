@@ -7,9 +7,10 @@ import {
   resetPasswordRequest,
 } from "./authApi";
 import { deleteCookie, saveTokens } from "./utilsApi";
+import { TFormValues } from "./types";
 
 export function useProvideAuth() {
-  const onRegister = async (form) => {
+  const onRegister = async (form: TFormValues) => {
     const data = await onRegisterRequest(form).then((res) => {
       saveTokens(res.accessToken, res.refreshToken)
       return res.user;
@@ -17,7 +18,7 @@ export function useProvideAuth() {
     return data;
   };
 
-  const onLogin = async (form) => {
+  const onLogin = async (form: TFormValues) => {
     const data = await onLoginRequest(form).then((res) => {
       saveTokens(res.accessToken, res.refreshToken)
       return res.user;
@@ -42,13 +43,13 @@ export function useProvideAuth() {
     });
   };
 
-  const forgotPassword = async (form) => {
+  const forgotPassword = async (form: TFormValues) => {
     return await forgotPasswordRequest(form).then((res) => {
       return res;
     });
   };
 
-  const resetPassword = async (form) => {
+  const resetPassword = async (form: TFormValues) => {
     return await resetPasswordRequest(form).then((res) => {
       return res;
     });
