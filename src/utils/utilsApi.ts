@@ -1,7 +1,7 @@
 import { BASE_URL, TOKEN_LIFETIME } from "./сonstant";
 import { refreshTokenRequest } from "./authApi";
 
-const checkResponse = (res: any) => {
+const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   }
@@ -74,6 +74,7 @@ export function getCookie(name: string,) {
     // eslint-disable-next-line no-useless-escape
     new RegExp(
       "(?:^|; )" +
+        // eslint-disable-next-line no-useless-escape
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
         "=([^;]*)"
     )

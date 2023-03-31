@@ -85,7 +85,6 @@ export function Profile() {
             <FormPage
               isValidForm={isValidForm}
               textButton="Сохранить"
-              // @ts-ignore
               onSubmit={handleSubmit}
               buttonIsInvisible={!isDataUserChange}
             >

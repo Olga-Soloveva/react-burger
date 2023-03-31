@@ -1,10 +1,10 @@
 import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
-import { TIngredient } from "./types";
+import { TIngredient, TOrder } from "./types";
 
-const getIngredients = () => request("ingredients");
+const getIngredients = (): Promise<TIngredient[]> => request("ingredients");
 
-const createOrder = (data: TIngredient[]) =>
+const createOrder = (data: TIngredient[]): Promise<TOrder> =>
   request("orders", {
     method: "POST",
     headers: {

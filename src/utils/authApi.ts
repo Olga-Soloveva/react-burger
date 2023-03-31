@@ -1,8 +1,9 @@
 import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
 import { TFormValues } from "./types";
+import { TToken, TUserWithToken, TResWithoutData } from "./types";
 
-const onRegisterRequest = (form: TFormValues) =>
+const onRegisterRequest = (form: TFormValues): Promise<TUserWithToken> =>
   request("auth/register", {
     method: "POST",
     headers: {
@@ -15,7 +16,7 @@ const onRegisterRequest = (form: TFormValues) =>
     }),
   });
 
-const onLoginRequest = (form: TFormValues) =>
+const onLoginRequest = (form: TFormValues): Promise<TUserWithToken> =>
   request("auth/login", {
     method: "POST",
     headers: {
@@ -28,7 +29,7 @@ const onLoginRequest = (form: TFormValues) =>
     }),
   });
 
-const onLogOutRequest = () =>
+const onLogOutRequest = (): Promise<TResWithoutData> =>
   request("auth/logout", {
     method: "POST",
     headers: {
@@ -39,7 +40,7 @@ const onLogOutRequest = () =>
     }),
   });
 
-  const refreshTokenRequest = () =>
+  const refreshTokenRequest = (): Promise<TToken>  =>
   request("auth/token", {
     method: "POST",
     headers: {
@@ -50,7 +51,7 @@ const onLogOutRequest = () =>
     }),
   });
 
-const forgotPasswordRequest = (form: TFormValues) =>
+const forgotPasswordRequest = (form: TFormValues): Promise<TResWithoutData> =>
   request("password-reset", {
     method: "POST",
     headers: {
@@ -61,7 +62,7 @@ const forgotPasswordRequest = (form: TFormValues) =>
     }),
   });
 
-const resetPasswordRequest = (form: TFormValues) =>
+const resetPasswordRequest = (form: TFormValues): Promise<TResWithoutData> =>
   request("password-reset/reset", {
     method: "POST",
     headers: {

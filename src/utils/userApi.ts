@@ -1,8 +1,9 @@
 import { requestWithRefresh } from "./utilsApi";
 import { getCookie } from "./utilsApi";
 import { TFormValues } from "./types";
+import { TUserData, TUserWithToken } from "./types";
 
-const getUserRequest = () =>
+const getUserRequest = (): Promise<TUserWithToken> =>
   requestWithRefresh("auth/user", {
     method: "GET",
     headers: {
@@ -11,7 +12,7 @@ const getUserRequest = () =>
     },
   });
 
-const editUserRequest = (form: TFormValues) =>
+const editUserRequest = (form: TFormValues): Promise<TUserData> =>
   requestWithRefresh("auth/user", {
     method: "PATCH",
     headers: {

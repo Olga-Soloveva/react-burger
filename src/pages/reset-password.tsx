@@ -57,7 +57,6 @@ export function ResetPassword() {
         title="Восстановление пароля"
         isValidForm={isValidForm}
         textButton="Сохранить"
-        // @ts-ignore
         onSubmit={handleSubmit}
       >
         <PasswordInput

@@ -45,7 +45,6 @@ export function LoginPage() {
         title="Вход"
         isValidForm={isValidForm}
         textButton="Войти"
-        // @ts-ignore
         onSubmit={handleSubmit}
       >
         <EmailInput

@@ -48,7 +48,6 @@ export function RegisterPage() {
         title="Регистрация"
         isValidForm={isValidForm}
         textButton="Зарегистрироваться"
-        // @ts-ignore
         onSubmit={handleSubmit}
       >
         <Input
