@@ -1,6 +1,5 @@
 import styles from "./wrapper-icon.module.css";
 import React, { FC } from "react";
-import PropTypes from "prop-types";
 
 const WrapperIcon: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -95,10 +94,6 @@ const WrapperIcon: FC<{ children: React.ReactNode }> = ({ children }) => {
       {children}
     </div>
   );
-};
-
-WrapperIcon.propTypes = {
-  children: PropTypes.node,
 };
 
 export default React.memo(WrapperIcon);

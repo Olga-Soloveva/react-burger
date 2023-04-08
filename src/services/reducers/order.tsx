@@ -1,13 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createOrder } from "../actions/order";
 
+interface OrderState {
+  orderNumber: number | null,
+  orderRequest: boolean,
+  orderFailed: boolean,
+}
+
 export const orderSlice = createSlice({
     name: "order",
     initialState: {
       orderNumber: null,
       orderRequest: false,
       orderFailed: false,
-    },
+    } as OrderState,
     reducers: {
       clearOrder: (state) => {
         state.orderNumber = null;

@@ -2,7 +2,7 @@ import { ROUTE_MAIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../utils/hooks";
 import FormPage from "../components/FormPage/FormPage";
 import {
   PasswordInput,
@@ -15,7 +15,7 @@ import { onLogin } from "../services/actions/users";
 export function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const [requestFailed, setRequestFailed] = useState(false);
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const { resetPassword } = useProvideAuth();
@@ -26,7 +26,6 @@ export function ResetPassword() {
     resetPassword(values)
       .then(() => {
         dispatch(
-          // @ts-ignore
           onLogin({ email: location.state.email, password: values.password })
         )
           .unwrap()

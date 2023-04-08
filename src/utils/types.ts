@@ -1,3 +1,9 @@
+import { store } from "../services/store";
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch; 
+
 export type TIngredient = {
   _id: string;
   name: string;
@@ -10,10 +16,15 @@ export type TIngredient = {
   image: string;
   image_mobile: string;
   image_large: string;
+  componentId?: number
 };
 
+// export type TUser = {
+//   user: { email: string; name: string };
+// };
+
 export type TUser = {
-  user: { email: string; name: string };
+  email: string; name: string 
 };
 
 export type TUserData = {

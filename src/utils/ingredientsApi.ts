@@ -2,7 +2,7 @@ import { request } from "./utilsApi";
 import { getCookie } from "./utilsApi";
 import { TIngredient, TOrder } from "./types";
 
-const getIngredients = (): Promise<TIngredient[]> => request("ingredients");
+const getIngredients = (): Promise<{data: TIngredient[]}> => request("ingredients");
 
 const createOrder = (data: TIngredient[]): Promise<TOrder> =>
   request("orders", {

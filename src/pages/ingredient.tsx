@@ -1,18 +1,18 @@
 import styles from "./page.module.css";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import { useState, useEffect, useMemo } from "react";
 import { getIngredients } from "../services/actions/ingredients";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import { TIngredient } from "../utils/types";
 
 export function IngredientPage() {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const [ingredientFound, setIngredientFound] = useState("unknown");
 
   let { ingredientId } = useParams();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store:any) => store.ingredients
+    (store) => store.ingredients
   );
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export function IngredientPage() {
     <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
       {!ingredientsFailed && !ingredientsRequest ? (
         <>
-          {ingredientFound === "found" && (
+          {ingredientFound === "found" && ingredient && (
             <IngredientDetails ingredient={ingredient} />
           )}
           {ingredientFound === "notfound" && (

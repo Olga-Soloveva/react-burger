@@ -1,16 +1,16 @@
 import styles from "./burger-ingedients.module.css";
 import React, { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector} from "../../utils/hooks";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsType from "../IngredientsType/IngredientsType";
 import { TIngredient, TingredientsCounter } from "../../utils/types";
 
 function BurgerIngedients() {
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store: any) => store.ingredients
+    (store) => store.ingredients
   );
   const { bunComponent, otherComponents } = useSelector(
-    (store: any) => store.components
+    (store) => store.components
   );
 
   const [currentTab, setCurrentTab] = useState("one");

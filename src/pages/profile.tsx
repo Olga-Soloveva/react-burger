@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import profileStyles from "./profile.module.css";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import Menu from "../components/Menu/Menu";
 import {
   EmailInput,
@@ -14,7 +14,7 @@ import { useFormWithValidation } from "../hooks/useFormWithValidation";
 import FormPage from "../components/FormPage/FormPage";
 
 export function Profile() {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const { values, setValues, handleChange, isValidForm } =
     useFormWithValidation();
   const [isDataUserChange, setIsDataUserChange] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export function Profile() {
     boolean | null
   >(null);
   const { user, editUserRequest, editUserFailed } = useSelector(
-    (store: any) => store.user
+    (store) => store.user
   );
 
   const handleChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,26 +37,29 @@ export function Profile() {
   };
 
   useEffect(() => {
-    setIsDataUserChange(
-      values.name !== user.name ||
-        values.email !== user.email ||
-        Boolean(values.password)
-    );
+    if (user) {
+      setIsDataUserChange(
+        values.name !== user.name ||
+          values.email !== user.email ||
+          Boolean(values.password)
+      );
+    }
   }, [values, user]);
 
   useEffect(() => {
-    values.name = user.name;
-    values.email = user.email;
-    values.password = "";
+    if (user) {
+      values.name = user.name;
+      values.email = user.email;
+      values.password = "";
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(evt: React.SyntheticEvent<HTMLElement>) {
     evt.preventDefault();
-    // @ts-ignore
     dispatch(editUser(values))
       .unwrap()
-      .then((res: any) => {
+      .then(() => {
         setRequestSuccessMessage(true);
       })
       .catch((err: any) => {
@@ -65,8 +68,15 @@ export function Profile() {
   }
 
   const undoData = () => {
-    setValues({ ...values, name: user.name, email: user.email, password: "" });
-    setRequestFailedMessage(null);
+    if (user) {
+      setValues({
+        ...values,
+        name: user.name,
+        email: user.email,
+        password: "",
+      });
+      setRequestFailedMessage(null);
+    }
   };
 
   return (

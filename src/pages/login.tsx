@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
@@ -14,13 +14,12 @@ export function LoginPage() {
   const navigate = useNavigate();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const location = useLocation();
-  const { onLoginFailed, onLoginRequest } = useSelector((store:any) => store.user);
+  const { onLoginFailed, onLoginRequest } = useSelector((store) => store.user);
 
   const handleSubmit = (evt: React.SyntheticEvent<HTMLElement>) => {
     evt.preventDefault();
-    // @ts-ignore
     dispatch(onLogin(values))
       .unwrap()
       .then(() => {

@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
 import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { TIngredient } from "../../utils/types";
 
 interface IIngredientItem {

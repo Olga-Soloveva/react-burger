@@ -1,4 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TIngredient } from "../../utils/types";
+
+interface ComponentsState {
+  componentId: number;
+  bunComponent: TIngredient | null;
+  otherComponents: TIngredient[] | [];
+}
 
 export const componentsSlice = createSlice({
   name: "components",
@@ -6,7 +13,7 @@ export const componentsSlice = createSlice({
     componentId: 0,
     bunComponent: null,
     otherComponents: [],
-  },
+  } as ComponentsState,
   reducers: {
     getComponent: (state, action) => {
       const component = JSON.parse(JSON.stringify(action.payload));
@@ -50,7 +57,7 @@ export const componentsSlice = createSlice({
     clearConstructor: (state) => {
         state.componentId = 0;
         state.bunComponent = null;
-        state.otherComponents =  [];
+        state.otherComponents = [];
       },
   },
 });

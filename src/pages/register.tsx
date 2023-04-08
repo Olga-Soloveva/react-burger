@@ -2,7 +2,8 @@ import { ROUTE_MAIN } from "../utils/сonstant";
 import styles from "./page.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import FormPage from "../components/FormPage/FormPage";
 import {
   EmailInput,
@@ -15,16 +16,15 @@ import { onRegister } from "../services/actions/users";
 
 export function RegisterPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const { values, handleChange, isValidForm } = useFormWithValidation();
   const [requestFailedMessage, setRequestFailedMessage] = useState(null);
   const { onRegisterFailed, onRegisterRequest } = useSelector(
-    (store: any) => store.user
+    (store) => store.user
   );
 
   function handleSubmit(evt: React.SyntheticEvent<HTMLElement>) {
     evt.preventDefault();
-     // @ts-ignore
     dispatch(onRegister(values))
       .unwrap()
       .then(() => {
