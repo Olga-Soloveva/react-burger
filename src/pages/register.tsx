@@ -1,8 +1,7 @@
 import { ROUTE_MAIN } from "../utils/сonstant";
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
 import { useSelector, useDispatch } from "../utils/hooks";
 import FormPage from "../components/FormPage/FormPage";
 import {

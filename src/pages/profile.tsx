@@ -1,5 +1,5 @@
-import styles from "./page.module.css";
-import profileStyles from "./profile.module.css";
+import styles from "./styles/page.module.css";
+import profileStyles from "./styles/profile.module.css";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "../utils/hooks";
 import Menu from "../components/Menu/Menu";

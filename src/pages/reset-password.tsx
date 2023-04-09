@@ -1,5 +1,5 @@
 import { ROUTE_MAIN } from "../utils/сonstant";
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch } from "../utils/hooks";

@@ -41,7 +41,6 @@ const BurgerConstructor: FC = () => {
   const orderAmount = useMemo(() => {
     return  (
       (bunComponent ? bunComponent.price * 2 : 0) +
-       // @ts-ignore
       otherComponents.reduce((previousValue: number, item: TIngredient) => {
         return previousValue + item.price;
       }, 0)

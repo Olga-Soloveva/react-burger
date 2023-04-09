@@ -1,6 +1,7 @@
 import styles from "./ingredient-item.module.css";
 import React, {FC} from "react";
 import { useDrag } from "react-dnd";
+import { ROUTE_INGREDIENTS } from "../../utils/сonstant";
 import {
   CurrencyIcon,
   Counter,
@@ -33,7 +34,7 @@ const IngredientItem: FC<IIngredientItem> = ({ ingredient, count }) => {
   return (
     <Link
       to={{
-        pathname: `/ingredients/${ingredientId}`,
+        pathname: `${ROUTE_INGREDIENTS}/${ingredientId}`,
       }}
       state={{ background: location, ingredient: ingredient }}
       className={styles.link}

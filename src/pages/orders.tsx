@@ -1,21 +1,24 @@
-import styles from "./page.module.css";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
+import styles from "./styles/orders.module.css";
+import OrderCard from "../components/OrderCard/OrderCard";
 
-export function OrderPage() {
-  const navigate = useNavigate();
-
+export function OrdersPage() {
   return (
-    <div className={`${styles.content}  ${styles.content_page_notfound}`}>
-      <h1 className="text text_type_main-medium mb-10">Страница в разработке</h1>
-      <Button
-        htmlType="button"
-        type="primary"
-        size="medium"
-        onClick={() => navigate(-1)}
-      >
-        Назад
-      </Button>
-    </div>
+    <main className={styles.main_container}>
+      <div className={styles.content}>
+        <section className={`${styles.section_container} pt-10 `}>
+          <h1 className="text text_type_main-large pb-5">Лента заказов</h1>
+          <div className={styles.orders}>
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+          </div>
+        </section>
+      </div>
+    </main>
+
+    //Отразить инфо в случае ошибки по аналогии с BurgerIngredients
   );
 }

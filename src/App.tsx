@@ -6,9 +6,9 @@ import {
   ROUTE_RESET_PASSWORD,
   ROUTE_PROFILE,
   ROUTE_INGREDIENTS,
-  ROUTE_ORDER,
+  ROUTE_FEED,
 } from "./utils/сonstant";
-import "./index.css"
+import "./index.css";
 import { useDispatch } from "react-redux";
 import {
   BrowserRouter,
@@ -26,11 +26,13 @@ import {
   Profile,
   IngredientPage,
   NotFound404,
-  OrderPage,
+  OrdersPage,
+  OrderInfoPage
 } from "./pages";
 import AppHeader from "./components/AppHeader/AppHeader";
 import Modal from "./components/Modal/Modal";
 import IngredientDetails from "./components/IngredientDetails/IngredientDetails";
+import OrderCardInfo from "./components/OrderCardInfo/OrderCardInfo";
 import Preloader from "./components/Preloader/Preloader";
 import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
 import { ProtectedRouteElement } from "./components/RrotectedRoute";
@@ -55,7 +57,7 @@ function App() {
         <Preloader />
         <Routes location={background || location}>
           <Route path={ROUTE_MAIN} element={<MainPage />} />
-          <Route path={ROUTE_ORDER} element={<OrderPage />} />
+          <Route path={ROUTE_FEED} element={<OrdersPage />} />
           <Route
             path={ROUTE_LOGIN}
             element={
@@ -102,6 +104,10 @@ function App() {
             path={`${ROUTE_INGREDIENTS}/:ingredientId`}
             element={<IngredientPage />}
           />
+                    <Route
+            path={`${ROUTE_FEED}/:orderId`}
+            element={<OrderInfoPage />}
+          />
           <Route path="*" element={<NotFound404 />} />
         </Routes>
 
@@ -112,6 +118,14 @@ function App() {
               element={
                 <Modal title={"Детали ингредиента"} onClose={handleModalClose}>
                   <IngredientDetails ingredient={location.state.ingredient} />
+                </Modal>
+              }
+            />
+            <Route
+              path={`${ROUTE_FEED}/:orderId`}
+              element={
+                <Modal title={" "} onClose={handleModalClose}>
+                  <OrderCardInfo order={location.state.orderCard} />
                 </Modal>
               }
             />

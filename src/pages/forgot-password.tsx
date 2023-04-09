@@ -1,6 +1,6 @@
 import React from "react";
 import { ROUTE_RESET_PASSWORD } from "../utils/сonstant";
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import FormPage from "../components/FormPage/FormPage";
 import { EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";

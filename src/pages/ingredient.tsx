@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import { useState, useEffect, useMemo } from "react";
@@ -40,6 +40,9 @@ export function IngredientPage() {
     <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
       {!ingredientsFailed && !ingredientsRequest ? (
         <>
+          <h2 className={`text text_type_main-large ${styles.title} mt-10`}>
+            Детали ингредиента
+          </h2>
           {ingredientFound === "found" && ingredient && (
             <IngredientDetails ingredient={ingredient} />
           )}

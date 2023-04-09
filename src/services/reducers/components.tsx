@@ -4,7 +4,7 @@ import { TIngredient } from "../../utils/types";
 interface ComponentsState {
   componentId: number;
   bunComponent: TIngredient | null;
-  otherComponents: TIngredient[] | [];
+  otherComponents: TIngredient[];
 }
 
 export const componentsSlice = createSlice({
