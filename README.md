@@ -9,7 +9,7 @@
 
 ## Функциональность проекта
 
-__Стэк__: HTML/CSS, JavaScript, React.js, Redux
+__Стэк__: HTML/CSS, JavaScript, React.js, Redux, TypeScript
 
 * Сайт создан через Create React App
 * Использованы функциональные компоненты
