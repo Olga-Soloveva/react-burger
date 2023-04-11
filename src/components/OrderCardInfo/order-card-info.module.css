@@ -20,7 +20,7 @@
 
 .container_ingredients {
   box-sizing: border-box;
-  max-height: 384px;
+  max-height: 312px;
   overflow: auto;
   padding-right: 8px;
 }

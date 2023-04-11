@@ -70,8 +70,8 @@ const OrderCardInfo: FC<IOrderCardInfo> = ({ order, isModal }) => {
         orderAmountData =
           orderAmountData +
           (ingredientStore.type === "bun"
-            ? ingredientStore.price * 2
-            : ingredientStore.price);
+            ? ingredientStore.price * 2 * ingredientsFilter.length 
+            : ingredientStore.price * ingredientsFilter.length);
       }
     });
     return { ingredients: ingredientsOrderData, orderAmount: orderAmountData };
@@ -91,11 +91,11 @@ const OrderCardInfo: FC<IOrderCardInfo> = ({ order, isModal }) => {
       <div className={`${styles.container_status} mt-2`}>
         <p className="text text_type_main-small">{statusText}</p>
       </div>
-      <p className="text text_type_main-medium mt-10 mb-6">Соcтав:</p>
+      <p className="text text_type_main-medium mt-15 mb-6">Соcтав:</p>
       <div className={`${styles.container_ingredients} mb-10`}>
         {ingredientsOrderInfo.ingredients.map((ingredient) => {
           return (
-            <div className={`${styles.ingredient_item} mb-10`} key={ingredient._id}>
+            <div className={`${styles.ingredient_item} mb-4`} key={ingredient._id}>
               <div className={`${styles.ingredient_info}`}>
                 <div
                   className={styles.ingredient_image}

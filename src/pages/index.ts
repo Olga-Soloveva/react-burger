@@ -8,6 +8,7 @@ import { IngredientPage } from "./ingredient";
 import { NotFound404 } from "./not-found";
 import { OrdersPage } from "./orders";
 import { OrderInfoPage } from "./order-info";
+import { OrderHistory } from "./order-history";
 
 export {
   MainPage,
@@ -19,5 +20,6 @@ export {
   IngredientPage,
   NotFound404,
   OrdersPage,
-  OrderInfoPage
+  OrderInfoPage,
+  OrderHistory
 };

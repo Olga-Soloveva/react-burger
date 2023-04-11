@@ -12,7 +12,7 @@
   height: 100%;
 }
 
-.section_container {
+.section_orders {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -36,11 +36,37 @@
 .orders::-webkit-scrollbar-track {
   background: #2f2f37;
   margin-bottom: 60px;
-
 }
 
 .orders::-webkit-scrollbar-thumb {
   background-color: #8585ad;
-
 }
 
+.section_info {
+  margin-top: 100px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.orders_board {
+  display: grid;
+  width: 100%;
+  height: 206px;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+
+.orders_number {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 153px;
+  gap: 8px;
+}
+
+.orders_number_done {
+  color: #00cccc;
+}

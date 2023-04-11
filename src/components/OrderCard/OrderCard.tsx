@@ -8,14 +8,15 @@ import { useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "../../utils/hooks";
 import { getIngredients } from "../../services/actions/ingredients";
 import { ROUTE_FEED } from "../../utils/сonstant";
-import { TOrderInfo, TIngredient } from "../../utils/types";
+import { TOrderInfo, TIngredientWithCount } from "../../utils/types";
 
 interface IOrderCard {
   orderInfo: TOrderInfo;
+  isStatusVisible?: boolean;
 }
 
-const OrderCard: FC<IOrderCard> = ({ orderInfo }) => {
-  const { number, name, ingredients, updatedAt } = orderInfo;
+const OrderCard: FC<IOrderCard> = ({ orderInfo, isStatusVisible = false }) => {
+  const { number, name, ingredients, status, createdAt } = orderInfo;
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -30,24 +31,54 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo }) => {
   }, [dispatch, ingredientsStore]);
 
   const ingredientsOrderInfo = useMemo(() => {
-    let ingredientsOrderData: TIngredient[] | [] = [];
+    let ingredientsOrderData: TIngredientWithCount[] | [] = [];
     let orderAmountData: number = 0;
-    ingredients.forEach((ingredient) => {
-      const ingredientFind = ingredientsStore.find((ingredientStore) => {
+    ingredientsStore.forEach((ingredientStore) => {
+      const ingredientsFilter = ingredients.filter((ingredient) => {
         return ingredient === ingredientStore._id;
       });
-      if (ingredientFind) {
-        ingredientsOrderData = [...ingredientsOrderData, ingredientFind];
+      if (ingredientsFilter.length) {
+        let ingredientStoreWithCount: TIngredientWithCount = Object.assign(
+          {},
+          ingredientStore,
+          {
+            count:
+              ingredientStore.type === "bun"
+                ? ingredientsFilter.length * 2
+                : ingredientsFilter.length,
+          }
+        );
+
+        ingredientsOrderData = [
+          ...ingredientsOrderData,
+          ingredientStoreWithCount,
+        ];
 
         orderAmountData =
           orderAmountData +
-          (ingredientFind.type === "bun"
-            ? ingredientFind.price * 2
-            : ingredientFind.price);
+          (ingredientStore.type === "bun"
+            ? ingredientStore.price * 2 * ingredientsFilter.length 
+            : ingredientStore.price * ingredientsFilter.length);
       }
     });
     return { ingredients: ingredientsOrderData, orderAmount: orderAmountData };
   }, [ingredients, ingredientsStore]);
+
+  let statusText;
+  switch (status) {
+    case "done":
+      statusText = "Выполнен";
+      break;
+    case "created":
+      statusText = "Создан";
+      break;
+    case "pending":
+      statusText = "Готовится";
+      break;
+    default:
+      statusText = "Статус заказа не известен";
+      break;
+  }
 
   return (
     <Link
@@ -61,15 +92,23 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo }) => {
         <div className={`${styles.container_columns} mb-6`}>
           <h2 className="text text_type_digits-default">#{number}</h2>
           <p className="text text_type_main-default text_color_inactive">
-            <FormattedDate date={new Date(updatedAt)} />
+            <FormattedDate date={new Date(createdAt)} />
           </p>
         </div>
-        <p className="text text_type_main-medium mb-6">{name}</p>
+        <div className={`${styles.container_name_status} mb-6`}>
+          <p className="text text_type_main-medium ">{name}</p>
+          {isStatusVisible ? (
+            <div className={`${styles.container_status} mt-2 ${status === `done` ? styles.container_status_active : ""}`}>
+              <p className="text text_type_main-small">{statusText}</p>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
         <div className={`${styles.container_columns}`}>
           <div className={styles.container_ingredient}>
             {ingredientsOrderInfo.ingredients.map(
               (ingredient, index, array) => {
-                // console.log(`${number}${index}`)
                 if (index <= 4) {
                   return (
                     <div
@@ -99,7 +138,7 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo }) => {
                     </div>
                   );
                 } else {
-                  return ('')
+                  return "";
                 }
               }
             )}

@@ -1,4 +1,4 @@
-import { ROUTE_LOGIN, ROUTE_PROFILE } from "../../utils/сonstant";
+import { ROUTE_LOGIN, ROUTE_PROFILE, ROUTE_ORDER } from "../../utils/сonstant";
 import React from "react";
 import styles from "./menu.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -36,6 +36,7 @@ const Menu = () => {
                 ? `${styles.link_name_active} text text_type_main-medium`
                 : `${styles.link_name} text text_type_main-medium text_color_inactive`
             }
+            end
           >
             Профиль
           </NavLink>
@@ -43,12 +44,13 @@ const Menu = () => {
 
         <li className={styles.navigation_link}>
           <NavLink
-            to={`${ROUTE_PROFILE}}/orders`}
+            to={`${ROUTE_PROFILE}${ROUTE_ORDER}`}
             className={({ isActive }) =>
               isActive
                 ? `${styles.link_name_active} text text_type_main-medium`
                 : `${styles.link_name} text text_type_main-medium text_color_inactive`
             }
+            end
           >
             История заказов
           </NavLink>

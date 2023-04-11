@@ -1,0 +1,44 @@
+.content {
+    display: grid;
+    width: 1240px;
+    grid-template-columns: 320px 844px;
+    gap: 60px;
+    height: 100%;
+  }
+  
+  .column_menu {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column_content {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: calc(100vh - 128px);
+    overflow: auto;
+    padding-right: 8px;
+  }
+  
+  .column_content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .column_content::-webkit-scrollbar-track {
+    background: #2f2f37;
+    margin-bottom: 60px;
+    }
+  
+  .column_content::-webkit-scrollbar-thumb {
+    background-color: #8585ad;
+  
+  }
+  
+  .paragraph {
+    max-width: 100%;
+    opacity: 0.4;
+  }
+

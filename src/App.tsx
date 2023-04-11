@@ -7,6 +7,7 @@ import {
   ROUTE_PROFILE,
   ROUTE_INGREDIENTS,
   ROUTE_FEED,
+  ROUTE_ORDER,
 } from "./utils/сonstant";
 import "./index.css";
 import { useDispatch } from "react-redux";
@@ -28,6 +29,7 @@ import {
   NotFound404,
   OrdersPage,
   OrderInfoPage,
+  OrderHistory,
 } from "./pages";
 import AppHeader from "./components/AppHeader/AppHeader";
 import Modal from "./components/Modal/Modal";
@@ -102,10 +104,21 @@ function App() {
             }
           />
           <Route
+            path={`${ROUTE_PROFILE}${ROUTE_ORDER}`}
+            element={
+              <ProtectedRouteElement onlyUnAuth={true} element={<OrderHistory />} />
+            }
+          />
+                    <Route
+            path={`${ROUTE_PROFILE}${ROUTE_ORDER}/:orderId`}
+            element={
+              <ProtectedRouteElement onlyUnAuth={true} element={<OrderInfoPage />} />
+            }
+          />
+          <Route
             path={`${ROUTE_INGREDIENTS}/:ingredientId`}
             element={<IngredientPage />}
           />
-    
           <Route path="*" element={<NotFound404 />} />
         </Routes>
 

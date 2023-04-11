@@ -83,7 +83,7 @@ export function Profile() {
     <>
       <div className={`${styles.content} ${styles.content_page_profile}`}>
         <div className={profileStyles.content}>
-          <div className={profileStyles.column_right}>
+          <div className={profileStyles.column_menu}>
             <Menu />
             <p
               className={`${profileStyles.paragraph} text text_type_main-default mt-20`}
@@ -91,7 +91,7 @@ export function Profile() {
               В этом разделе вы можете изменить свои персональные данные
             </p>
           </div>
-          <div className={profileStyles.column_center}>
+          <div className={profileStyles.column_form}>
             <FormPage
               isValidForm={isValidForm}
               textButton="Сохранить"

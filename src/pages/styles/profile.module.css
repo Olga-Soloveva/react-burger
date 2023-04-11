@@ -6,13 +6,15 @@
   height: 100%;
 }
 
-.column_center {
+.column_form {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.column_right {
+.column_menu {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
 }
