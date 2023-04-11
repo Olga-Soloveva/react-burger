@@ -40,11 +40,13 @@ export function IngredientPage() {
     <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
       {!ingredientsFailed && !ingredientsRequest ? (
         <>
-          <h2 className={`text text_type_main-large ${styles.title} mt-10`}>
-            Детали ингредиента
-          </h2>
           {ingredientFound === "found" && ingredient && (
-            <IngredientDetails ingredient={ingredient} />
+            <>
+              <h2 className={`text text_type_main-large ${styles.title} mt-10`}>
+                Детали ингредиента
+              </h2>
+              <IngredientDetails ingredient={ingredient} />
+            </>
           )}
           {ingredientFound === "notfound" && (
             <>

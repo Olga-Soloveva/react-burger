@@ -5,6 +5,7 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch; 
 
 export type TIngredient = {
+  count: number;
   _id: string;
   name: string;
   type: "bun" | "main" | "sauce";
@@ -19,9 +20,19 @@ export type TIngredient = {
   componentId?: number
 };
 
-// export type TUser = {
-//   user: { email: string; name: string };
-// };
+export type TIngredientWithCount = TIngredient & {count: number}
+
+export type TOrderInfo = {
+  _id: string;
+  ingredients: string[];
+  status: 'done' | 'created' | 'pending'
+  name: string;
+  createdAt: Date;
+  updatedAt: string;
+  number: number
+};
+
+export type TOrderInfoWithOwner = TOrderInfo & {owner: string}
 
 export type TUser = {
   email: string; name: string 

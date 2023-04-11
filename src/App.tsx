@@ -27,7 +27,7 @@ import {
   IngredientPage,
   NotFound404,
   OrdersPage,
-  OrderInfoPage
+  OrderInfoPage,
 } from "./pages";
 import AppHeader from "./components/AppHeader/AppHeader";
 import Modal from "./components/Modal/Modal";
@@ -58,6 +58,7 @@ function App() {
         <Routes location={background || location}>
           <Route path={ROUTE_MAIN} element={<MainPage />} />
           <Route path={ROUTE_FEED} element={<OrdersPage />} />
+          <Route path={`${ROUTE_FEED}/:orderId`} element={<OrderInfoPage />} />
           <Route
             path={ROUTE_LOGIN}
             element={
@@ -104,10 +105,7 @@ function App() {
             path={`${ROUTE_INGREDIENTS}/:ingredientId`}
             element={<IngredientPage />}
           />
-                    <Route
-            path={`${ROUTE_FEED}/:orderId`}
-            element={<OrderInfoPage />}
-          />
+    
           <Route path="*" element={<NotFound404 />} />
         </Routes>
 
@@ -125,7 +123,10 @@ function App() {
               path={`${ROUTE_FEED}/:orderId`}
               element={
                 <Modal title={" "} onClose={handleModalClose}>
-                  <OrderCardInfo order={location.state.orderCard} />
+                  <OrderCardInfo
+                    order={location.state.orderCard}
+                    isModal={true}
+                  />
                 </Modal>
               }
             />
