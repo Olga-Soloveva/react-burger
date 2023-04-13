@@ -1,4 +1,6 @@
 export const BASE_URL = "https://norma.nomoreparties.space/api"
+export const WS_URL_ORDER_FEED = "wss://norma.nomoreparties.space/orders/all"
+export const WS_URL_ORDER_HISTORY = "wss://norma.nomoreparties.space/orders"
 
 export const TOKEN_LIFETIME = 1200
 

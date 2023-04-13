@@ -10,7 +10,8 @@ import {
   ROUTE_ORDER,
 } from "./utils/сonstant";
 import "./index.css";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "./utils/hooks";
 import {
   BrowserRouter,
   Routes,
@@ -38,6 +39,8 @@ import OrderCardInfo from "./components/OrderCardInfo/OrderCardInfo";
 import Preloader from "./components/Preloader/Preloader";
 import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
 import { ProtectedRouteElement } from "./components/RrotectedRoute";
+import { disconnect } from "./services/actions/orderFeed";
+import { WebsocketStatus } from "./utils/types";
 
 function App() {
   const ModalSwitch = () => {
@@ -45,8 +48,17 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
+    const { status: statusWS } = useSelector((store) => store.orderFeed);
+    const isOrderFeedPages = location.pathname.includes(ROUTE_FEED);
+    const isOrderHistoryPage = location.pathname.includes(`${ROUTE_PROFILE}${ROUTE_ORDER}`) ;
 
     let background = location.state && location.state.background;
+    
+    useEffect(() => {
+      if (statusWS === WebsocketStatus.ONLINE && (!isOrderFeedPages && !isOrderHistoryPage)) {
+        dispatch(disconnect());
+      }
+    }, [dispatch, statusWS, isOrderFeedPages, isOrderHistoryPage]);
 
     const handleModalClose = () => {
       dispatch(removeIngredientDetails());
@@ -106,13 +118,19 @@ function App() {
           <Route
             path={`${ROUTE_PROFILE}${ROUTE_ORDER}`}
             element={
-              <ProtectedRouteElement onlyUnAuth={true} element={<OrderHistory />} />
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<OrderHistory />}
+              />
             }
           />
-                    <Route
+          <Route
             path={`${ROUTE_PROFILE}${ROUTE_ORDER}/:orderId`}
             element={
-              <ProtectedRouteElement onlyUnAuth={true} element={<OrderInfoPage />} />
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<OrderInfoPage />}
+              />
             }
           />
           <Route

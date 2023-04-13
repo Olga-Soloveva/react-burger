@@ -1,25 +1,44 @@
 import styles from "./styles/page.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "../utils/hooks";
 import OrderCardInfo from "../components/OrderCardInfo/OrderCardInfo";
-
-//WebSocket: Заменить тестовые данные
-import { orderTestData } from "../utils/testData";
+import { TOrderInfo } from "../utils/types";
+import { connect } from "../services/actions/orderFeed";
+import { WS_URL_ORDER_FEED } from "../utils/сonstant";
+import { WebsocketStatus } from "../utils/types";
 
 export function OrderInfoPage() {
-  //WebSocket: Заменить тестовые данные
-  const orderInfo = orderTestData.orders[0];
-
-  const [orderInfoRequest, setOrderInfoRequest] = useState<boolean>(false);
-  const [orderInfoFailed, setOrderInfoFailed] = useState<boolean>(false);
-
-  const orderFound = orderInfo ? "found" : "notfound";
+  const dispatch = useDispatch();
 
   let { orderId } = useParams();
 
+  const [orderFound, setOrderFound] = useState("unknown");
+
+  const { orders, status: statusWS } = useSelector((store) => store.orderFeed);
+
+  useEffect(() => {
+    dispatch(connect(WS_URL_ORDER_FEED));
+  }, [dispatch]);
+
+  const orderInfo = useMemo(() => {
+    if (orders.length) {
+      const dataOrder = orders.find(function (item: TOrderInfo) {
+        return item.number === Number(orderId);
+      });
+      if (dataOrder) {
+        setOrderFound("found");
+        return dataOrder;
+      } else {
+        setOrderFound("notfound");
+        return;
+      }
+    }
+  }, [orderId, orders]);
+
   return (
     <div className={`${styles.content}  ${styles.content_page_order_info}`}>
-      {!orderInfoFailed && !orderInfoRequest ? (
+      {statusWS === WebsocketStatus.ONLINE ? (
         <>
           {orderFound === "found" && orderInfo && (
             <OrderCardInfo order={orderInfo} />
@@ -33,14 +52,13 @@ export function OrderInfoPage() {
           )}
         </>
       ) : (
-        //WebSocket: Отразить пользователю загрузку данных и ошибку сервера
         <>
-          {orderInfoFailed && (
+          {statusWS === WebsocketStatus.ERROR && (
             <p className="text text_type_main-default pt-4">
               Ошибка сервера: невозможно загрузить заказы.
             </p>
           )}
-          {orderInfoRequest && (
+          {statusWS === WebsocketStatus.CONNECTING && (
             <p className="text text_type_main-default pt-4">
               Загрузка информации о заказе...
             </p>

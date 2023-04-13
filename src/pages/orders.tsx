@@ -1,21 +1,27 @@
 import styles from "./styles/orders.module.css";
 import OrderCard from "../components/OrderCard/OrderCard";
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useSelector } from "../utils/hooks";
 import { TOrderInfo } from "../utils/types";
-
-//WebSocket: Заменить тестовые данные
-import { orderTestDataAll } from "../utils/testData";
+import { useDispatch } from "../utils/hooks";
+import { connect } from "../services/actions/orderFeed";
+import { WS_URL_ORDER_FEED } from "../utils/сonstant";
+import { WebsocketStatus } from "../utils/types";
 
 export function OrdersPage() {
-  //WebSocket: Заменить тестовые данные
+  const dispatch = useDispatch();
 
-  const [ordersRequest, setOrdersRequest] = useState<boolean>(false);
-  const [ordersFailed, setOrdersFailed] = useState<boolean>(false);
+  const {
+    orders,
+    orderTotal,
+    orderTotalToday,
+    status: statusWS,
+  } = useSelector((store) => store.orderFeed);
 
   const ordersBoardInfo = useMemo(() => {
     let ordersStatusDone: TOrderInfo[] | [] = [];
     let ordersStatusPending: TOrderInfo[] | [] = [];
-    const ordersData: TOrderInfo[] = orderTestDataAll.orders;
+    const ordersData: TOrderInfo[] = orders;
 
     ordersData.forEach((order) => {
       if (order.status === "done" && ordersStatusDone.length <= 9) {
@@ -28,16 +34,20 @@ export function OrdersPage() {
     });
 
     return { done: ordersStatusDone, pending: ordersStatusPending };
-  }, []);
+  }, [orders]);
+
+  useEffect(() => {
+    dispatch(connect(WS_URL_ORDER_FEED));
+  }, [dispatch]);
 
   return (
     <main className={styles.main_container}>
-      {!ordersRequest && !ordersFailed ? (
+      {statusWS === WebsocketStatus.ONLINE ? (
         <div className={styles.content}>
           <section className={`${styles.section_orders} pt-10 `}>
             <h1 className="text text_type_main-large pb-5">Лента заказов</h1>
             <div className={styles.orders}>
-              {orderTestDataAll.orders.map((order: TOrderInfo) => {
+              {orders.map((order: TOrderInfo) => {
                 return <OrderCard orderInfo={order} key={order.number} />;
               })}
             </div>
@@ -51,7 +61,10 @@ export function OrdersPage() {
                 >
                   {ordersBoardInfo.done.map((order) => {
                     return (
-                      <p className="text text_type_digits-default" key={order.number}>
+                      <p
+                        className="text text_type_digits-default"
+                        key={order.number}
+                      >
                         {order.number}
                       </p>
                     );
@@ -59,13 +72,14 @@ export function OrdersPage() {
                 </div>
               </div>
               <div>
-                <h2 className="text text_type_main-medium mb-6" >В работе:</h2>
-                <div
-                  className={`${styles.orders_number}`}
-                >
+                <h2 className="text text_type_main-medium mb-6">В работе:</h2>
+                <div className={`${styles.orders_number}`}>
                   {ordersBoardInfo.pending.map((order) => {
                     return (
-                      <p className="text text_type_digits-default" key={order.number}>
+                      <p
+                        className="text text_type_digits-default"
+                        key={order.number}
+                      >
                         {order.number}
                       </p>
                     );
@@ -77,28 +91,24 @@ export function OrdersPage() {
               <h2 className="text text_type_main-medium">
                 Выполнено за все время:
               </h2>
-              <p className="text text_type_digits-large">
-                {orderTestDataAll.total}
-              </p>
+              <p className="text text_type_digits-large">{orderTotal}</p>
             </div>
             <div>
               <h2 className="text text_type_main-medium">
                 Выполнено за сегодня:
               </h2>
-              <p className="text text_type_digits-large">
-                {orderTestDataAll.totalToday}
-              </p>
+              <p className="text text_type_digits-large">{orderTotalToday}</p>
             </div>
           </section>
         </div>
       ) : (
         <>
-          {ordersFailed && (
+          {statusWS === WebsocketStatus.ERROR && (
             <p className="text text_type_main-default mt-20">
               Ошибка сервера: невозможно загрузить ленту заказов.
             </p>
           )}
-          {ordersRequest && (
+          {statusWS === WebsocketStatus.CONNECTING && (
             <p className="text text_type_main-default mt-20">
               Загрузка ленты заказов...
             </p>
@@ -106,7 +116,5 @@ export function OrdersPage() {
         </>
       )}
     </main>
-
-    //Отразить инфо в случае ошибки по аналогии с BurgerIngredients
   );
 }

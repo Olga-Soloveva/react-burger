@@ -1,16 +1,26 @@
 import styles from "./styles/page.module.css";
 import orderHistoryStyles from "./styles/order-history.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect} from "react";
 import { useSelector, useDispatch } from "../utils/hooks";
 import Menu from "../components/Menu/Menu";
 import OrderCard from "../components/OrderCard/OrderCard";
 import { TOrderInfo } from "../utils/types";
-
-//WebSocket: Заменить тестовые данные
-import { orderTestDataAll } from "../utils/testData";
-
+import { WS_URL_ORDER_HISTORY } from "../utils/сonstant";
+import { WebsocketStatus } from "../utils/types";
+import { connect } from "../services/actions/orderFeed";
+import { getCookie } from "../utils/utilsApi";
 
 export function OrderHistory() {
+  const dispatch = useDispatch();
+  const accessToken = getCookie("token");
+
+  const { orders, status: statusWS } = useSelector((store) => store.orderFeed);
+
+  const reversOrders = [...orders].reverse();
+
+  useEffect(() => {
+    dispatch(connect(`${WS_URL_ORDER_HISTORY}?token=${accessToken}`));
+  }, [dispatch, accessToken]);
 
   return (
     <>
@@ -24,11 +34,32 @@ export function OrderHistory() {
               В этом разделе вы можете просмотреть свою историю заказов
             </p>
           </div>
-          <div className={orderHistoryStyles.column_content}>
-          {orderTestDataAll.orders.map((order: TOrderInfo) => {
-                return <OrderCard orderInfo={order} isStatusVisible={true} key={order.number} />;
+          {statusWS === WebsocketStatus.ONLINE ? (
+            <div className={orderHistoryStyles.column_content}>
+              {reversOrders.map((order: TOrderInfo) => {
+                return (
+                  <OrderCard
+                    orderInfo={order}
+                    isStatusVisible={true}
+                    key={order.number}
+                  />
+                );
               })}
-          </div>
+            </div>
+          ) : (
+            <>
+              {statusWS === WebsocketStatus.ERROR && (
+                <p className="text text_type_main-default mt-20">
+                  Ошибка сервера: невозможно загрузить историю заказов.
+                </p>
+              )}
+              {statusWS === WebsocketStatus.CONNECTING && (
+                <p className="text text_type_main-default mt-20">
+                  Загрузка истории заказов...
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
     </>

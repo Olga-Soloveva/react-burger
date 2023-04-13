@@ -29,10 +29,10 @@ export function IngredientPage() {
       if (dataIngredient) {
         setIngredientFound("found");
         return dataIngredient;
+      } else {
+        setIngredientFound("notfound");
+        return;
       }
-    } else {
-      setIngredientFound("notfound");
-      return;
     }
   }, [ingredientId, ingredients]);
 
