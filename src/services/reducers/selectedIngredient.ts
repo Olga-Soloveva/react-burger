@@ -5,9 +5,13 @@ interface SelectedIngredientState {
   selectedIngredient: TIngredient | null;
 }
 
+const initialState: SelectedIngredientState = {
+  selectedIngredient: null
+};
+
 export const selectedIngredientSlice = createSlice({
   name: "selectedIngredient",
-  initialState: { selectedIngredient: null } as SelectedIngredientState,
+  initialState: initialState,
   reducers: {
     addIngredientDetails: (state, action) => {
       state.selectedIngredient = action.payload;

@@ -7,13 +7,15 @@ interface OrderState {
   orderFailed: boolean,
 }
 
+const initialState: OrderState = {
+  orderNumber: null,
+  orderRequest: false,
+  orderFailed: false,
+};
+
 export const orderSlice = createSlice({
     name: "order",
-    initialState: {
-      orderNumber: null,
-      orderRequest: false,
-      orderFailed: false,
-    } as OrderState,
+    initialState: initialState,
     reducers: {
       clearOrder: (state) => {
         state.orderNumber = null;

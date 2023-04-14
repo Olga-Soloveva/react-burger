@@ -3,9 +3,8 @@ import {
   FormattedDate,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { FC, useEffect, useMemo } from "react";
-import { useSelector, useDispatch } from "../../utils/hooks";
-import { getIngredients } from "../../services/actions/ingredients";
+import React, { FC, useMemo } from "react";
+import { useSelector } from "../../utils/hooks";
 import { TOrderInfo, TIngredientWithCount } from "../../utils/types";
 
 interface IOrderCardInfo {
@@ -14,16 +13,9 @@ interface IOrderCardInfo {
 }
 
 const OrderCardInfo: FC<IOrderCardInfo> = ({ order, isModal }) => {
-  const dispatch = useDispatch();
   const { ingredients: ingredientsStore } = useSelector(
     (store) => store.ingredients
   );
-
-  useEffect(() => {
-    if (!ingredientsStore.length) {
-      dispatch(getIngredients());
-    }
-  }, [dispatch, ingredientsStore]);
 
   const { number, name, status, ingredients, createdAt } = order;
 
@@ -55,10 +47,7 @@ const OrderCardInfo: FC<IOrderCardInfo> = ({ order, isModal }) => {
           {},
           ingredientStore,
           {
-            count:
-              ingredientStore.type === "bun"
-                ? ingredientsFilter.length * 2
-                : ingredientsFilter.length,
+            count: ingredientsFilter.length,
           }
         );
 
@@ -69,9 +58,7 @@ const OrderCardInfo: FC<IOrderCardInfo> = ({ order, isModal }) => {
 
         orderAmountData =
           orderAmountData +
-          (ingredientStore.type === "bun"
-            ? ingredientStore.price * 2 * ingredientsFilter.length 
-            : ingredientStore.price * ingredientsFilter.length);
+          (ingredientStore.price * ingredientsFilter.length);
       }
     });
     return { ingredients: ingredientsOrderData, orderAmount: orderAmountData };

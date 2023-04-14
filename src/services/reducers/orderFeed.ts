@@ -10,7 +10,7 @@ export type orderFeedStore = {
   orderTotalToday: number;
 }
 
-export const initialState: orderFeedStore = {
+const initialState: orderFeedStore = {
   status: WebsocketStatus.OFFLINE,
   connectionError: '',
   orders: [],

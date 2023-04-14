@@ -1,6 +1,7 @@
 import styles from "./styles/page.module.css";
 import orderHistoryStyles from "./styles/order-history.module.css";
 import React, { useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import Menu from "../components/Menu/Menu";
 import OrderCard from "../components/OrderCard/OrderCard";
@@ -11,6 +12,8 @@ import { connect } from "../services/actions/orderFeed";
 import { getCookie } from "../utils/utilsApi";
 
 export function OrderHistory() {
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const accessToken = getCookie("token");
 
@@ -40,6 +43,7 @@ export function OrderHistory() {
                 return (
                   <OrderCard
                     orderInfo={order}
+                    link={location.pathname}
                     isStatusVisible={true}
                     key={order.number}
                   />

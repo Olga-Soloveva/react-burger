@@ -1,25 +1,17 @@
 import styles from "./styles/page.module.css";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "../utils/hooks";
-import { useState, useEffect, useMemo } from "react";
-import { getIngredients } from "../services/actions/ingredients";
+import { useSelector } from "../utils/hooks";
+import { useState, useMemo } from "react";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import { TIngredient } from "../utils/types";
 
 export function IngredientPage() {
-  const dispatch = useDispatch();
   const [ingredientFound, setIngredientFound] = useState("unknown");
 
   let { ingredientId } = useParams();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );
-
-  useEffect(() => {
-    if (!ingredients.length) {
-      dispatch(getIngredients());
-    }
-  }, [dispatch, ingredients]);
 
   const ingredient = useMemo(() => {
     if (ingredients.length) {

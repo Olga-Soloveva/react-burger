@@ -9,13 +9,15 @@ interface IngredientsState {
   ingredientsFailed: boolean;
 }
 
+const initialState: IngredientsState = {
+  ingredients: [],
+  ingredientsRequest: false,
+  ingredientsFailed: false,
+};
+
 export const ingredientsSlice = createSlice({
   name: "ingredients",
-  initialState: {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsFailed: false,
-  } as IngredientsState,
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

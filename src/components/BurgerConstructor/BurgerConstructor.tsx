@@ -62,7 +62,7 @@ const BurgerConstructor: FC = () => {
         .unwrap()
         .then(() => {
           setIsModalOrderOpen(true);
-          dispatch(createOrder([...otherComponents, bunComponent]))
+          dispatch(createOrder( [bunComponent].concat(otherComponents, bunComponent)))
             .unwrap()
             .then(() => {
               dispatch(clearConstructor());

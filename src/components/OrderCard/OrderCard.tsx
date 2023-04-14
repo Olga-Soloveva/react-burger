@@ -3,32 +3,24 @@ import {
   FormattedDate,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { FC, useEffect, useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "../../utils/hooks";
-import { getIngredients } from "../../services/actions/ingredients";
-import { ROUTE_FEED } from "../../utils/сonstant";
+import { useSelector } from "../../utils/hooks";
 import { TOrderInfo, TIngredientWithCount } from "../../utils/types";
 
 interface IOrderCard {
   orderInfo: TOrderInfo;
+  link: any;
   isStatusVisible?: boolean;
 }
 
-const OrderCard: FC<IOrderCard> = ({ orderInfo, isStatusVisible = false }) => {
+const OrderCard: FC<IOrderCard> = ({ orderInfo, link, isStatusVisible = false }) => {
   const { number, name, ingredients, status, createdAt } = orderInfo;
   const location = useLocation();
 
-  const dispatch = useDispatch();
   const { ingredients: ingredientsStore } = useSelector(
     (store) => store.ingredients
   );
-
-  useEffect(() => {
-    if (!ingredientsStore.length) {
-      dispatch(getIngredients());
-    }
-  }, [dispatch, ingredientsStore]);
 
   const ingredientsOrderInfo = useMemo(() => {
     let ingredientsOrderData: TIngredientWithCount[] | [] = [];
@@ -42,10 +34,7 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo, isStatusVisible = false }) => {
           {},
           ingredientStore,
           {
-            count:
-              ingredientStore.type === "bun"
-                ? ingredientsFilter.length * 2
-                : ingredientsFilter.length,
+            count: ingredientsFilter.length,
           }
         );
 
@@ -56,9 +45,7 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo, isStatusVisible = false }) => {
 
         orderAmountData =
           orderAmountData +
-          (ingredientStore.type === "bun"
-            ? ingredientStore.price * 2 * ingredientsFilter.length 
-            : ingredientStore.price * ingredientsFilter.length);
+           (ingredientStore.price * ingredientsFilter.length);
       }
     });
     return { ingredients: ingredientsOrderData, orderAmount: orderAmountData };
@@ -83,7 +70,7 @@ const OrderCard: FC<IOrderCard> = ({ orderInfo, isStatusVisible = false }) => {
   return (
     <Link
       to={{
-        pathname: `${ROUTE_FEED}/${number}`,
+        pathname: `${link}/${number}`,
       }}
       state={{ background: location, orderCard: orderInfo }}
       className={styles.link}

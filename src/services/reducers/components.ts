@@ -7,13 +7,15 @@ interface ComponentsState {
   otherComponents: TIngredient[];
 }
 
+const initialState: ComponentsState = {
+  componentId: 0,
+  bunComponent: null,
+  otherComponents: [],
+};
+
 export const componentsSlice = createSlice({
   name: "components",
-  initialState: {
-    componentId: 0,
-    bunComponent: null,
-    otherComponents: [],
-  } as ComponentsState,
+  initialState: initialState,
   reducers: {
     getComponent: (state, action) => {
       const component = JSON.parse(JSON.stringify(action.payload));

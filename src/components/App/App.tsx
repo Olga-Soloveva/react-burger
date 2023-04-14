@@ -8,10 +8,10 @@ import {
   ROUTE_INGREDIENTS,
   ROUTE_FEED,
   ROUTE_ORDER,
-} from "./utils/сonstant";
+} from "../../utils/сonstant";
 import "./index.css";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "./utils/hooks";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import {
   BrowserRouter,
   Routes,
@@ -31,16 +31,17 @@ import {
   OrdersPage,
   OrderInfoPage,
   OrderHistory,
-} from "./pages";
-import AppHeader from "./components/AppHeader/AppHeader";
-import Modal from "./components/Modal/Modal";
-import IngredientDetails from "./components/IngredientDetails/IngredientDetails";
-import OrderCardInfo from "./components/OrderCardInfo/OrderCardInfo";
-import Preloader from "./components/Preloader/Preloader";
-import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
-import { ProtectedRouteElement } from "./components/RrotectedRoute";
-import { disconnect } from "./services/actions/orderFeed";
-import { WebsocketStatus } from "./utils/types";
+} from "../../pages";
+import AppHeader from "../AppHeader/AppHeader";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import OrderCardInfo from "../OrderCardInfo/OrderCardInfo";
+import Preloader from "../Preloader/Preloader";
+import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
+import { ProtectedRouteElement } from "../RrotectedRoute";
+import { disconnect } from "../../services/actions/orderFeed";
+import { WebsocketStatus } from "../../utils/types";
+import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
   const ModalSwitch = () => {
@@ -50,12 +51,22 @@ function App() {
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
     const { status: statusWS } = useSelector((store) => store.orderFeed);
     const isOrderFeedPages = location.pathname.includes(ROUTE_FEED);
-    const isOrderHistoryPage = location.pathname.includes(`${ROUTE_PROFILE}${ROUTE_ORDER}`) ;
+    const isOrderHistoryPage = location.pathname.includes(
+      `${ROUTE_PROFILE}${ROUTE_ORDER}`
+    );
 
     let background = location.state && location.state.background;
-    
+
     useEffect(() => {
-      if (statusWS === WebsocketStatus.ONLINE && (!isOrderFeedPages && !isOrderHistoryPage)) {
+      dispatch(getIngredients());
+    }, [dispatch]);
+
+    useEffect(() => {
+      if (
+        statusWS === WebsocketStatus.ONLINE &&
+        !isOrderFeedPages &&
+        !isOrderHistoryPage
+      ) {
         dispatch(disconnect());
       }
     }, [dispatch, statusWS, isOrderFeedPages, isOrderHistoryPage]);
@@ -150,17 +161,23 @@ function App() {
                 </Modal>
               }
             />
-            <Route
-              path={`${ROUTE_FEED}/:orderId`}
-              element={
-                <Modal title={" "} onClose={handleModalClose}>
-                  <OrderCardInfo
-                    order={location.state.orderCard}
-                    isModal={true}
-                  />
-                </Modal>
-              }
-            />
+            {[
+              `${ROUTE_FEED}/:orderId`,
+              `${ROUTE_PROFILE}${ROUTE_ORDER}/:orderId`,
+            ].map((path, index) => (
+              <Route
+                path={path}
+                key={index}
+                element={
+                  <Modal title={" "} onClose={handleModalClose}>
+                    <OrderCardInfo
+                      order={location.state.orderCard}
+                      isModal={true}
+                    />
+                  </Modal>
+                }
+              />
+            ))}
           </Routes>
         )}
       </div>

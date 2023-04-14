@@ -1,6 +1,7 @@
 import styles from "./styles/orders.module.css";
 import OrderCard from "../components/OrderCard/OrderCard";
 import React, { useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "../utils/hooks";
 import { TOrderInfo } from "../utils/types";
 import { useDispatch } from "../utils/hooks";
@@ -9,6 +10,7 @@ import { WS_URL_ORDER_FEED } from "../utils/сonstant";
 import { WebsocketStatus } from "../utils/types";
 
 export function OrdersPage() {
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const {
@@ -48,7 +50,7 @@ export function OrdersPage() {
             <h1 className="text text_type_main-large pb-5">Лента заказов</h1>
             <div className={styles.orders}>
               {orders.map((order: TOrderInfo) => {
-                return <OrderCard orderInfo={order} key={order.number} />;
+                return <OrderCard orderInfo={order} link={location.pathname} key={order.number} />;
               })}
             </div>
           </section>
