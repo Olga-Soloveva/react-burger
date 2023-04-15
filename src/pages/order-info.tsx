@@ -1,15 +1,23 @@
 import styles from "./styles/page.module.css";
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import OrderCardInfo from "../components/OrderCardInfo/OrderCardInfo";
 import { TOrderInfo } from "../utils/types";
 import { connect } from "../services/actions/orderFeed";
-import { WS_URL_ORDER_FEED } from "../utils/сonstant";
+import {
+  WS_URL_ORDER_FEED,
+  WS_URL_ORDER_HISTORY,
+  ROUTE_PROFILE,
+  ROUTE_ORDER,
+} from "../utils/сonstant";
 import { WebsocketStatus } from "../utils/types";
+import { getCookie } from "../utils/utilsApi";
 
 export function OrderInfoPage() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const accessToken = getCookie("token");
 
   let { orderId } = useParams();
 
@@ -18,8 +26,12 @@ export function OrderInfoPage() {
   const { orders, status: statusWS } = useSelector((store) => store.orderFeed);
 
   useEffect(() => {
-    dispatch(connect(WS_URL_ORDER_FEED));
-  }, [dispatch]);
+    if (location.pathname.includes(`${ROUTE_PROFILE}${ROUTE_ORDER}`)) {
+      dispatch(connect(`${WS_URL_ORDER_HISTORY}?token=${accessToken}`));
+    } else {
+      dispatch(connect(WS_URL_ORDER_FEED));
+    }
+  }, [dispatch, accessToken, location.pathname]);
 
   const orderInfo = useMemo(() => {
     if (orders.length) {

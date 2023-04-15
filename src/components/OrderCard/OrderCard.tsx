@@ -10,7 +10,7 @@ import { TOrderInfo, TIngredientWithCount } from "../../utils/types";
 
 interface IOrderCard {
   orderInfo: TOrderInfo;
-  link: any;
+  link: string;
   isStatusVisible?: boolean;
 }
 
