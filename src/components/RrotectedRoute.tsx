@@ -3,7 +3,7 @@ import { ROUTE_LOGIN, ROUTE_MAIN } from "../utils/сonstant";
 import { getUser } from "../services/actions/users";
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../utils/hooks";
 import { useLocation } from "react-router-dom";
 import { userSlice } from "../services/reducers/users";
 import { checkRefreshToken, checkToken } from "../utils/utilsApi";
@@ -17,8 +17,8 @@ export const ProtectedRouteElement: FC<IProtectedRouteElement> = ({
   element,
   onlyUnAuth,
 }) => {
-  const dispatch = useDispatch<any>();
-  const { user } = useSelector((store: any) => store.user);
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
   const [isUserLoaded, setUserLoaded] = useState(false);
   const location = useLocation();
   const { clearUser } = userSlice.actions;

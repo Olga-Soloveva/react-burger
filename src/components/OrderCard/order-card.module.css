@@ -1,0 +1,61 @@
+.order_card {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #1c1c21;
+  border-radius: 40px;
+}
+
+.container_columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.link {
+  width: 100%;
+  text-decoration: none;
+  color: #f2f2f3;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.container_ingredient {
+  display: flex;
+}
+
+.ingredient {
+  height: 64px;
+  width: 64px;
+  background-color: #131316;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid #801ab2;
+  background-position: center;
+  background-size: cover;
+  background-repeat: "no-repeat";
+}
+
+.ingredient_over {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 50%;
+  height: 64px;
+  width: 64px;
+  background-color: rgb(28, 28, 33, 0.6);
+}
+
+.ingredient:not(:first-child) {
+  margin-left: -16px;
+}
+
+.container_status_active {
+  color: #00cccc;
+}
+

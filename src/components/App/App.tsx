@@ -6,10 +6,12 @@ import {
   ROUTE_RESET_PASSWORD,
   ROUTE_PROFILE,
   ROUTE_INGREDIENTS,
+  ROUTE_FEED,
   ROUTE_ORDER,
-} from "./utils/сonstant";
-import "./index.css"
-import { useDispatch } from "react-redux";
+} from "../../utils/сonstant";
+import "./index.css";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import {
   BrowserRouter,
   Routes,
@@ -26,14 +28,20 @@ import {
   Profile,
   IngredientPage,
   NotFound404,
-  OrderPage,
-} from "./pages";
-import AppHeader from "./components/AppHeader/AppHeader";
-import Modal from "./components/Modal/Modal";
-import IngredientDetails from "./components/IngredientDetails/IngredientDetails";
-import Preloader from "./components/Preloader/Preloader";
-import { selectedIngredientSlice } from "./services/reducers/selectedIngredient";
-import { ProtectedRouteElement } from "./components/RrotectedRoute";
+  OrdersPage,
+  OrderInfoPage,
+  OrderHistory,
+} from "../../pages";
+import AppHeader from "../AppHeader/AppHeader";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import OrderCardInfo from "../OrderCardInfo/OrderCardInfo";
+import Preloader from "../Preloader/Preloader";
+import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
+import { ProtectedRouteElement } from "../RrotectedRoute";
+import { disconnect } from "../../services/actions/orderFeed";
+import { WebsocketStatus } from "../../utils/types";
+import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
   const ModalSwitch = () => {
@@ -41,8 +49,27 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
+    const { status: statusWS } = useSelector((store) => store.orderFeed);
+    const isOrderFeedPages = location.pathname.includes(ROUTE_FEED);
+    const isOrderHistoryPage = location.pathname.includes(
+      `${ROUTE_PROFILE}${ROUTE_ORDER}`
+    );
 
     let background = location.state && location.state.background;
+
+    useEffect(() => {
+      dispatch(getIngredients());
+    }, [dispatch]);
+
+    useEffect(() => {
+      if (
+        statusWS === WebsocketStatus.ONLINE &&
+        !isOrderFeedPages &&
+        !isOrderHistoryPage
+      ) {
+        dispatch(disconnect());
+      }
+    }, [dispatch, statusWS, isOrderFeedPages, isOrderHistoryPage]);
 
     const handleModalClose = () => {
       dispatch(removeIngredientDetails());
@@ -55,7 +82,8 @@ function App() {
         <Preloader />
         <Routes location={background || location}>
           <Route path={ROUTE_MAIN} element={<MainPage />} />
-          <Route path={ROUTE_ORDER} element={<OrderPage />} />
+          <Route path={ROUTE_FEED} element={<OrdersPage />} />
+          <Route path={`${ROUTE_FEED}/:orderId`} element={<OrderInfoPage />} />
           <Route
             path={ROUTE_LOGIN}
             element={
@@ -99,6 +127,24 @@ function App() {
             }
           />
           <Route
+            path={`${ROUTE_PROFILE}${ROUTE_ORDER}`}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<OrderHistory />}
+              />
+            }
+          />
+          <Route
+            path={`${ROUTE_PROFILE}${ROUTE_ORDER}/:orderId`}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<OrderInfoPage />}
+              />
+            }
+          />
+          <Route
             path={`${ROUTE_INGREDIENTS}/:ingredientId`}
             element={<IngredientPage />}
           />
@@ -115,6 +161,23 @@ function App() {
                 </Modal>
               }
             />
+            {[
+              `${ROUTE_FEED}/:orderId`,
+              `${ROUTE_PROFILE}${ROUTE_ORDER}/:orderId`,
+            ].map((path, index) => (
+              <Route
+                path={path}
+                key={index}
+                element={
+                  <Modal title={" "} onClose={handleModalClose}>
+                    <OrderCardInfo
+                      order={location.state.orderCard}
+                      isModal={true}
+                    />
+                  </Modal>
+                }
+              />
+            ))}
           </Routes>
         )}
       </div>

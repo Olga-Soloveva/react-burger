@@ -4,6 +4,7 @@ import { orderSlice } from "./order";
 import { componentsSlice } from "./components";
 import { selectedIngredientSlice } from "./selectedIngredient";
 import { userSlice } from "./users";
+import { orderFeedReducer } from "./orderFeed";
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsSlice.reducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
     components: componentsSlice.reducer,
     selectedIngredient: selectedIngredientSlice.reducer,
     user: userSlice.reducer,
+    orderFeed: orderFeedReducer,
 });

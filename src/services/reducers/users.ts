@@ -7,15 +7,35 @@ import {
   editUser,
 } from "../actions/users";
 
+import { TUser } from "../../utils/types";
+
+interface UserState {
+  user: TUser | null;
+  onLoginRequest: boolean;
+  onLoginFailed: boolean;
+  onRegisterRequest: boolean;
+  onRegisterFailed: boolean;
+  onAuthorizationRequest: boolean;
+  onAuthorizationFailed: boolean;
+  editUserRequest: boolean;
+  editUserFailed: boolean;
+}
+
+const initialState: UserState = {
+  user: null,
+  onLoginRequest: false,
+  onLoginFailed: false,
+  onRegisterRequest: false,
+  onRegisterFailed: false,
+  onAuthorizationRequest: false,
+  onAuthorizationFailed: false,
+  editUserRequest: false,
+  editUserFailed: false,
+};
+
 export const userSlice = createSlice({
   name: "user",
-  initialState: {
-    user: null,
-    onLoginRequest: false,
-    onLoginFailed: false,
-    onRegisterRequest: false,
-    onRegisterFailed: false,
-  },
+  initialState: initialState,
   reducers: {
     clearUser: (state) => {
       state.user = null;

@@ -1,6 +1,6 @@
 import styles from "./ingredient-details.module.css";
 import React, {FC} from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import { TIngredient } from "../../utils/types";
 
 interface IIngredientDetails {
@@ -8,7 +8,7 @@ interface IIngredientDetails {
 }
 
 const IngredientDetails: FC<IIngredientDetails> = ({ ingredient }) => {
-  const ingredientStore = useSelector((store: any) => store.selectedIngredient)
+  const ingredientStore = useSelector((store) => store.selectedIngredient)
 
   const { name, image_large, calories, proteins, fat, carbohydrates } =
   ingredient || ingredientStore || {};

@@ -1,7 +1,7 @@
 import { ROUTE_LOGIN } from "../../utils/сonstant";
 import styles from "./burger-constructor.module.css";
 import React, { useState, useCallback, useMemo, FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../utils/hooks";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 import BurgerComponent from "../BurgerComponent/BurgerComponent";
@@ -16,20 +16,17 @@ import { createOrder } from "../../services/actions/order";
 import { componentsSlice } from "../../services/reducers/components";
 import { getUser } from "../../services/actions/users";
 import { TIngredient } from "../../utils/types";
-import {
-  checkRefreshToken,
-  checkToken,
-} from "../../utils/utilsApi";
+import { checkRefreshToken, checkToken } from "../../utils/utilsApi";
 
 const BurgerConstructor: FC = () => {
   const { bunComponent, otherComponents } = useSelector(
-    (store: any) => store.components
+    (store) => store.components
   );
   const navigate = useNavigate();
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const { getComponent, clearConstructor } = componentsSlice.actions;
   const { clearOrder } = orderSlice.actions;
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
   const [{ isHover }, dropIngredient] = useDrop({
     accept: "ingredient",
@@ -42,9 +39,9 @@ const BurgerConstructor: FC = () => {
   });
 
   const orderAmount = useMemo(() => {
-    return (
+    return  (
       (bunComponent ? bunComponent.price * 2 : 0) +
-      otherComponents.reduce(function (previousValue: number, item: TIngredient) {
+      otherComponents.reduce((previousValue: number, item: TIngredient) => {
         return previousValue + item.price;
       }, 0)
     );
@@ -60,12 +57,12 @@ const BurgerConstructor: FC = () => {
     const isRefreshTokens = checkRefreshToken();
     if (!isTokens && !isRefreshTokens) {
       navigate(ROUTE_LOGIN);
-    } else {
+    } else if (bunComponent !== null) {
       await dispatch(getUser())
         .unwrap()
         .then(() => {
           setIsModalOrderOpen(true);
-          dispatch(createOrder([...otherComponents, bunComponent]))
+          dispatch(createOrder( [bunComponent].concat(otherComponents, bunComponent)))
             .unwrap()
             .then(() => {
               dispatch(clearConstructor());
@@ -74,6 +71,8 @@ const BurgerConstructor: FC = () => {
         .catch((err: any) => {
           navigate(ROUTE_LOGIN);
         });
+    } else {
+      return;
     }
   };
 
@@ -105,7 +104,7 @@ const BurgerConstructor: FC = () => {
               <div
                 className={` ${styles.components_container_scrol} pl-4 pr-2`}
               >
-                {otherComponents.map((component: TIngredient & {componentId: string}) => {
+                {otherComponents.map((component: TIngredient) => {
                   return (
                     <BurgerComponent
                       component={component}
@@ -153,6 +152,6 @@ const BurgerConstructor: FC = () => {
       )}
     </>
   );
-}
+};
 
 export default React.memo(BurgerConstructor);

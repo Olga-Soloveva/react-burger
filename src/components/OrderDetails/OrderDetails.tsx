@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import WrapperIcon from "../WrapperIcon/WrapperIcon";
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 
 const OrderDetails: FC = () => {
   const { orderNumber, orderRequest, orderFailed } = useSelector(
-    (store: any) => store.order
+    (store) => store.order
   );
 
   return (

@@ -1,13 +1,14 @@
 import styles from "./ingredient-item.module.css";
 import React, {FC} from "react";
 import { useDrag } from "react-dnd";
+import { ROUTE_INGREDIENTS } from "../../utils/сonstant";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, Link } from "react-router-dom";
 import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { TIngredient } from "../../utils/types";
 
 interface IIngredientItem {
@@ -33,7 +34,7 @@ const IngredientItem: FC<IIngredientItem> = ({ ingredient, count }) => {
   return (
     <Link
       to={{
-        pathname: `/ingredients/${ingredientId}`,
+        pathname: `${ROUTE_INGREDIENTS}/${ingredientId}`,
       }}
       state={{ background: location, ingredient: ingredient }}
       className={styles.link}

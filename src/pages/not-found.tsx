@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
 

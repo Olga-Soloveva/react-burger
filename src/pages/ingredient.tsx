@@ -1,25 +1,17 @@
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useMemo } from "react";
-import { getIngredients } from "../services/actions/ingredients";
+import { useSelector } from "../utils/hooks";
+import { useState, useMemo } from "react";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import { TIngredient } from "../utils/types";
 
 export function IngredientPage() {
-  const dispatch = useDispatch<any>();
   const [ingredientFound, setIngredientFound] = useState("unknown");
 
   let { ingredientId } = useParams();
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
-    (store:any) => store.ingredients
+    (store) => store.ingredients
   );
-
-  useEffect(() => {
-    if (!ingredients.length) {
-      dispatch(getIngredients());
-    }
-  }, [dispatch, ingredients]);
 
   const ingredient = useMemo(() => {
     if (ingredients.length) {
@@ -29,10 +21,10 @@ export function IngredientPage() {
       if (dataIngredient) {
         setIngredientFound("found");
         return dataIngredient;
+      } else {
+        setIngredientFound("notfound");
+        return;
       }
-    } else {
-      setIngredientFound("notfound");
-      return;
     }
   }, [ingredientId, ingredients]);
 
@@ -40,8 +32,13 @@ export function IngredientPage() {
     <div className={`${styles.content}  ${styles.content_page_ingredient}`}>
       {!ingredientsFailed && !ingredientsRequest ? (
         <>
-          {ingredientFound === "found" && (
-            <IngredientDetails ingredient={ingredient} />
+          {ingredientFound === "found" && ingredient && (
+            <>
+              <h2 className={`text text_type_main-large ${styles.title} mt-10`}>
+                Детали ингредиента
+              </h2>
+              <IngredientDetails ingredient={ingredient} />
+            </>
           )}
           {ingredientFound === "notfound" && (
             <>

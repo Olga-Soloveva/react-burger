@@ -5,16 +5,18 @@ import { Link, useLocation } from "react-router-dom";
 interface INavigationLink {
   linkName: string;
   linkPath: string;
+  isActiveLink: boolean;
   children?: React.ReactNode;
 }
 
 const NavigationLink: FC<INavigationLink> = ({
   linkName,
   linkPath,
+  isActiveLink,
   children,
 }) => {
   const location = useLocation();
-  const isLinkActive = location.pathname === linkPath;
+  // const isLinkActive = location.pathname === linkPath;
 
   return (
     <li className={`${styles.navigation_link}  pr-5 pl-5`}>
@@ -23,7 +25,7 @@ const NavigationLink: FC<INavigationLink> = ({
         to={linkPath}
         className={`${styles.link_name} 
         ${
-          !isLinkActive ? styles.link_name_inactive : ""
+          !isActiveLink ? styles.link_name_inactive : ""
         } text text_type_main-default pl-2`}
       >
         {linkName}
