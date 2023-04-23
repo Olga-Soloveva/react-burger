@@ -4,7 +4,11 @@ import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "../utils/hooks";
 import OrderCardInfo from "../components/OrderCardInfo/OrderCardInfo";
 import { TOrderInfo } from "../utils/types";
-import { connect } from "../services/actions/orderFeed";
+import {
+  connect as connectOrderFeed,
+  disconnect as disconnectOrderFeed,
+} from "../services/actions/orderFeed";
+import { connect as connectOrderHistory, disconnect as disconnectOrderHistory, } from "../services/actions/orderHistory";
 import {
   WS_URL_ORDER_FEED,
   WS_URL_ORDER_HISTORY,
@@ -27,9 +31,20 @@ export function OrderInfoPage() {
 
   useEffect(() => {
     if (location.pathname.includes(`${ROUTE_PROFILE}${ROUTE_ORDER}`)) {
-      dispatch(connect(`${WS_URL_ORDER_HISTORY}?token=${accessToken}`));
+      dispatch(
+        connectOrderHistory(`${WS_URL_ORDER_HISTORY}?token=${accessToken}`)
+      );
     } else {
-      dispatch(connect(WS_URL_ORDER_FEED));
+      dispatch(connectOrderFeed(WS_URL_ORDER_FEED));
+    }
+    return () => {
+      if (location.pathname.includes(`${ROUTE_PROFILE}${ROUTE_ORDER}`)) {
+        dispatch(
+          disconnectOrderHistory()
+        );
+      } else {
+        dispatch(disconnectOrderFeed());
+      }
     }
   }, [dispatch, accessToken, location.pathname]);
 

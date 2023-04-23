@@ -1,6 +1,6 @@
 import styles from "./navigation-link.module.css";
 import React, { FC } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface INavigationLink {
   linkName: string;
@@ -15,8 +15,6 @@ const NavigationLink: FC<INavigationLink> = ({
   isActiveLink,
   children,
 }) => {
-  const location = useLocation();
-  // const isLinkActive = location.pathname === linkPath;
 
   return (
     <li className={`${styles.navigation_link}  pr-5 pl-5`}>

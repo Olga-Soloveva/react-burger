@@ -8,7 +8,7 @@ import OrderCard from "../components/OrderCard/OrderCard";
 import { TOrderInfo } from "../utils/types";
 import { WS_URL_ORDER_HISTORY } from "../utils/сonstant";
 import { WebsocketStatus } from "../utils/types";
-import { connect } from "../services/actions/orderFeed";
+import { connect, disconnect } from "../services/actions/orderHistory";
 import { getCookie } from "../utils/utilsApi";
 
 export function OrderHistory() {
@@ -17,12 +17,15 @@ export function OrderHistory() {
   const dispatch = useDispatch();
   const accessToken = getCookie("token");
 
-  const { orders, status: statusWS } = useSelector((store) => store.orderFeed);
+  const { orders, status: statusWS } = useSelector((store) => store.orderHistory);
 
   const reversOrders = [...orders].reverse();
 
   useEffect(() => {
     dispatch(connect(`${WS_URL_ORDER_HISTORY}?token=${accessToken}`));
+    return () => {
+      dispatch(disconnect());
+    }
   }, [dispatch, accessToken]);
 
   return (

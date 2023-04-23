@@ -6,6 +6,7 @@ import {
 import { Middleware } from "redux";
 import { RootState } from "../store";
 import { TOrderFeedActions } from "../actions/orderFeed";
+import { TOrderHistoryActions } from "../actions/orderHistory";
 
 export type TwsActionTypes = {
   connect: ActionCreatorWithPayload<string>;
@@ -14,7 +15,7 @@ export type TwsActionTypes = {
   wsOpen: ActionCreatorWithoutPayload;
   wsClose: ActionCreatorWithoutPayload;
   wsError: ActionCreatorWithPayload<string>;
-  wsMessage: ActionCreatorWithPayload<TOrderFeed>;
+  wsMessage: ActionCreatorWithPayload<any>;
 };
 
 export const createSocketMiddleware = (
@@ -26,7 +27,7 @@ export const createSocketMiddleware = (
     let isConnected = false;
     let reconnectTimer = 0;
 
-    return (next) => (action: TOrderFeedActions) => {
+    return (next) => (action: TOrderFeedActions | TOrderHistoryActions) => {
       const { dispatch } = store;
       const {
         connect,
@@ -66,6 +67,7 @@ export const createSocketMiddleware = (
           if (event.code !== 1000) {
             dispatch(wsError(event.code.toString()));
           }
+          dispatch(wsClose());
           if (isConnected) {
             dispatch(wsConnecting());
             reconnectTimer = window.setTimeout(() => {
@@ -79,8 +81,8 @@ export const createSocketMiddleware = (
         window.clearTimeout(reconnectTimer);
         isConnected = false;
         reconnectTimer = 0;
-        dispatch(wsClose());
         socket.close(1000);
+        dispatch(wsClose());
         socket = null;
       }
 

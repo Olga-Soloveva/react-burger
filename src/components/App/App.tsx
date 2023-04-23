@@ -11,7 +11,7 @@ import {
 } from "../../utils/сonstant";
 import "./index.css";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "../../utils/hooks";
+import { useDispatch } from "../../utils/hooks";
 import {
   BrowserRouter,
   Routes,
@@ -39,8 +39,6 @@ import OrderCardInfo from "../OrderCardInfo/OrderCardInfo";
 import Preloader from "../Preloader/Preloader";
 import { selectedIngredientSlice } from "../../services/reducers/selectedIngredient";
 import { ProtectedRouteElement } from "../RrotectedRoute";
-import { disconnect } from "../../services/actions/orderFeed";
-import { WebsocketStatus } from "../../utils/types";
 import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
@@ -49,27 +47,12 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { removeIngredientDetails } = selectedIngredientSlice.actions;
-    const { status: statusWS } = useSelector((store) => store.orderFeed);
-    const isOrderFeedPages = location.pathname.includes(ROUTE_FEED);
-    const isOrderHistoryPage = location.pathname.includes(
-      `${ROUTE_PROFILE}${ROUTE_ORDER}`
-    );
 
     let background = location.state && location.state.background;
 
     useEffect(() => {
       dispatch(getIngredients());
     }, [dispatch]);
-
-    useEffect(() => {
-      if (
-        statusWS === WebsocketStatus.ONLINE &&
-        !isOrderFeedPages &&
-        !isOrderHistoryPage
-      ) {
-        dispatch(disconnect());
-      }
-    }, [dispatch, statusWS, isOrderFeedPages, isOrderHistoryPage]);
 
     const handleModalClose = () => {
       dispatch(removeIngredientDetails());

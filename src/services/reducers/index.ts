@@ -5,6 +5,7 @@ import { componentsSlice } from "./components";
 import { selectedIngredientSlice } from "./selectedIngredient";
 import { userSlice } from "./users";
 import { orderFeedReducer } from "./orderFeed";
+import { orderHistoryReducer } from "./orderHistrory";
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsSlice.reducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
     selectedIngredient: selectedIngredientSlice.reducer,
     user: userSlice.reducer,
     orderFeed: orderFeedReducer,
+    orderHistory: orderHistoryReducer
 });

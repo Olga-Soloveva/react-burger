@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "../utils/hooks";
 import { TOrderInfo } from "../utils/types";
 import { useDispatch } from "../utils/hooks";
-import { connect } from "../services/actions/orderFeed";
+import { connect, disconnect } from "../services/actions/orderFeed";
 import { WS_URL_ORDER_FEED } from "../utils/сonstant";
 import { WebsocketStatus } from "../utils/types";
 
@@ -40,6 +40,9 @@ export function OrdersPage() {
 
   useEffect(() => {
     dispatch(connect(WS_URL_ORDER_FEED));
+    return () => {
+      dispatch(disconnect());
+    }
   }, [dispatch]);
 
   return (

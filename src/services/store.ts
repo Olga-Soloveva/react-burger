@@ -11,7 +11,17 @@ import {
   wsError as OrderFeedWsError, 
 } from "./actions/orderFeed"
 
-const wsActions = {
+import {
+  connect as OrderHistoryWsConnect, 
+  disconnect as OrderHistoryWsDisconnect,
+  wsConnecting as OrderHistoryWsConnecting,
+  wsOpen as OrderHistoryWsOpen,
+  wsClose as OrderHistoryWsClose,
+  wsMessage as OrderHistoryWsMessage,
+  wsError as OrderHistoryWsError, 
+} from "./actions/orderHistory"
+
+const wsActionsOrderFeed = {
   connect: OrderFeedWsConnect,
   disconnect: OrderFeedWsDisconnect,
   wsConnecting: OrderFeedWsConnecting,
@@ -21,12 +31,23 @@ const wsActions = {
   wsMessage: OrderFeedWsMessage,
 };
 
-const websocketMiddleware = createSocketMiddleware(wsActions)
+const wsActionsOrderHistory = {
+  connect: OrderHistoryWsConnect,
+  disconnect: OrderHistoryWsDisconnect,
+  wsConnecting: OrderHistoryWsConnecting,
+  wsOpen: OrderHistoryWsOpen,
+  wsClose: OrderHistoryWsClose,
+  wsError: OrderHistoryWsError,
+  wsMessage: OrderHistoryWsMessage,
+};
+
+const wsMiddlewareOrderFeed = createSocketMiddleware(wsActionsOrderFeed)
+const wsMiddlewareOrderHistory = createSocketMiddleware(wsActionsOrderHistory)
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(websocketMiddleware)
+    return getDefaultMiddleware().concat(wsMiddlewareOrderFeed, wsMiddlewareOrderHistory)
   }
 });
 
