@@ -3,13 +3,13 @@ import { getIngredients } from "../actions/ingredients";
 
 import { TIngredient } from "../../utils/types";
 
-interface IngredientsState {
+export interface IngredientsState {
   ingredients: TIngredient[];
   ingredientsRequest: boolean;
   ingredientsFailed: boolean;
 }
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -35,3 +35,5 @@ export const ingredientsSlice = createSlice({
       });
   },
 });
+
+export default ingredientsSlice.reducer
