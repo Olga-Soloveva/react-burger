@@ -23,19 +23,19 @@ describe("ingredients reducer", () => {
     expect(reducer(undefined, { type: undefined })).toEqual(initialState);
   });
 
-  it("sets ingredientsRequest true when getIngredients is pending", () => {
+  it("should set ingredientsRequest true when getIngredients is pending", () => {
     const action = { type: getIngredients.pending.type };
     const state = reducer(initialState, action);
     expect(state).toEqual(expectStatePending);
   });
 
-  it('ingredients when getIngredients is fulfilled', () => {
+  it('should set ingredients when getIngredients is fulfilled', () => {
     const action = { type: getIngredients.fulfilled.type, payload: testDataIngredients };
     const state = reducer(initialState, action);
     expect(state).toEqual(expectStateFulfilled);
   });
 
-  it("sets ingredientsFailed true when getIngredients is rejected", () => {
+  it("should set ingredientsFailed true when getIngredients is rejected", () => {
     const action = {
       type: getIngredients.rejected.type,
       payload: { error: "Test error" },

@@ -1,9 +1,21 @@
-import { TIngredient } from "./types";
+import { TIngredient, TOrder } from "./types";
 
 export interface ITestDataIngredients {
   success: boolean;
   data: (TIngredient & { __v: number })[];
 }
+
+export interface ITestDataOrder extends TOrder {
+  success: boolean;
+}
+
+export const testDataOrder: ITestDataOrder = {
+  success: true,
+  name: "Space spicy экзо-плантаго био-марсианский краторный бургер",
+  order: {
+    number: 1535,
+  },
+};
 
 export const testDataIngredients: ITestDataIngredients = {
   success: true,
