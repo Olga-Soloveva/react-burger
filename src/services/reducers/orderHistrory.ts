@@ -10,7 +10,7 @@ export type orderHistoryStore = {
   orderTotalToday: number;
 }
 
-const initialState: orderHistoryStore = {
+export const initialState: orderHistoryStore = {
   status: WebsocketStatus.OFFLINE,
   connectionError: '',
   orders: [],
