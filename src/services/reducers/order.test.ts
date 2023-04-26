@@ -3,9 +3,9 @@ import { testDataOrder } from "../../utils/testData";
 import reducer, { initialState, OrderState, clearOrder } from "./order";
 
 const expectStateClearOrder: OrderState = {
-    ...initialState,
-    orderNumber: null
-  };
+  ...initialState,
+  orderNumber: null,
+};
 
 const expectStatePending: OrderState = {
   ...initialState,
