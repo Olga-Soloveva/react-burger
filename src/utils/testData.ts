@@ -1,4 +1,4 @@
-import { TIngredient, TOrder } from "./types";
+import { TIngredient, TOrder, TUser, TUserData } from "./types";
 
 export interface ITestDataIngredients {
   success: boolean;
@@ -8,6 +8,18 @@ export interface ITestDataIngredients {
 export interface ITestDataOrder extends TOrder {
   success: boolean;
 }
+
+export const testDataUser: TUser = {
+  email: "test@ya.ru",
+  name: "Ольга",
+};
+
+export const testDataUserData: TUserData = {
+  user: {
+    email: "test@ya.ru",
+    name: "Ольга",
+  },
+};
 
 export const testDataSelectedIngredient: TIngredient = {
   _id: "643d69a5c3f7b9001cfa093c",
