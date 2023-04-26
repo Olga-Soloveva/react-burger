@@ -1,6 +1,18 @@
 import { createOrder } from "../actions/order";
-import { testDataOrder } from "../../utils/testData";
 import reducer, { initialState, OrderState, clearOrder } from "./order";
+import { TOrder } from "../../utils/types";
+
+interface ITestDataOrder extends TOrder {
+    success: boolean;
+  }
+
+ const testDataOrder: ITestDataOrder = {
+    success: true,
+    name: "Space spicy экзо-плантаго био-марсианский краторный бургер",
+    order: {
+      number: 1535,
+    },
+  };
 
 const expectStateClearOrder: OrderState = {
   ...initialState,
@@ -30,7 +42,10 @@ describe("orders reducer", () => {
 
   it("should set orderNumber to null when clearOrder", () => {
     const action = { type: clearOrder };
-    const state = reducer(initialState, action);
+    const state = reducer({
+        ...initialState,
+        orderNumber: 1000,
+      }, action);
     expect(state).toEqual(expectStateClearOrder);
   });
 

@@ -1,19 +1,51 @@
 import { getIngredients } from "./../actions/ingredients";
-import { testDataIngredients } from "../../utils/testData";
-import reducer, { initialState, IngredientsState } from "./ingredients";
+import reducer, { initialState } from "./ingredients";
 
-const expectStatePending: IngredientsState = {
+interface ITestDataIngredients {
+  success: boolean;
+  data: { _id: string; name: string }[];
+}
+
+interface ITesIngredientsState {
+  ingredients: { _id: string; name: string }[];
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+}
+
+const testDataIngredients: ITestDataIngredients = {
+  success: true,
+  data: [
+    {
+      _id: "643d69a5c3f7b9001cfa093c",
+      name: "Краторная булка N-200i",
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa0941",
+      name: "Биокотлета из марсианской Магнолии",
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa0942",
+      name: "Соус Spicy-X",
+    },
+    {
+      _id: "643d69a5c3f7b9001cfa093d",
+      name: "Флюоресцентная булка R2-D3",
+    },
+  ],
+};
+
+const expectStatePending: ITesIngredientsState = {
   ...initialState,
   ingredientsRequest: true,
 };
 
-const expectStateFulfilled: IngredientsState = {
+const expectStateFulfilled: ITesIngredientsState = {
   ...initialState,
   ingredients: testDataIngredients.data,
   ingredientsRequest: false,
 };
 
-const expectStateRejected: IngredientsState = {
+const expectStateRejected: ITesIngredientsState = {
   ...initialState,
   ingredientsFailed: true,
 };
@@ -29,8 +61,11 @@ describe("ingredients reducer", () => {
     expect(state).toEqual(expectStatePending);
   });
 
-  it('should set ingredients when getIngredients is fulfilled', () => {
-    const action = { type: getIngredients.fulfilled.type, payload: testDataIngredients };
+  it("should set ingredients when getIngredients is fulfilled", () => {
+    const action = {
+      type: getIngredients.fulfilled.type,
+      payload: testDataIngredients,
+    };
     const state = reducer(initialState, action);
     expect(state).toEqual(expectStateFulfilled);
   });

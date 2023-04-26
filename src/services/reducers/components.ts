@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TIngredient } from "../../utils/types";
 
-interface ComponentsState {
+export interface ComponentsState {
   componentId: number;
   bunComponent: TIngredient | null;
   otherComponents: TIngredient[];
 }
 
-const initialState: ComponentsState = {
+export const initialState: ComponentsState = {
   componentId: 0,
   bunComponent: null,
   otherComponents: [],
@@ -63,3 +63,7 @@ export const componentsSlice = createSlice({
       },
   },
 });
+
+export const { getComponent, deleteComponent, moveComponent, clearConstructor } = componentsSlice.actions;
+
+export default componentsSlice.reducer;

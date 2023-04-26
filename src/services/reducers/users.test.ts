@@ -5,8 +5,20 @@ import {
   getUser,
   editUser,
 } from "../actions/users";
-import { testDataUser, testDataUserData } from "../../utils/testData";
-import reducer, { initialState, clearUser, UserState } from "./users";
+import reducer, { initialState, clearUser } from "./users";
+import { TUser, TUserData } from "../../utils/types";
+
+const testDataUser: TUser = {
+  email: "test@ya.ru",
+  name: "Ольга",
+};
+
+const testDataUserData: TUserData = {
+  user: {
+    email: "test@ya.ru",
+    name: "Ольга",
+  },
+};
 
 describe("user reducer", () => {
   it("should return the initial state", () => {
@@ -15,11 +27,17 @@ describe("user reducer", () => {
 
   it("should set user to null when clearUser", () => {
     const action = { type: clearUser };
-    const state = reducer(initialState, action);
-    expect(state).toEqual({
+    const state = reducer(
+      {
         ...initialState,
-        user: null,
-      });
+        user: testDataUser,
+      },
+      action
+    );
+    expect(state).toEqual({
+      ...initialState,
+      user: null,
+    });
   });
 
   it("should set onLoginRequest true when onLogin is pending", () => {
@@ -46,7 +64,6 @@ describe("user reducer", () => {
     expect(state).toEqual({ ...initialState, onLoginFailed: true });
   });
 
-  
   it("should set onRegisterRequest true when onRegister is pending", () => {
     const action = { type: onRegister.pending.type };
     const state = reducer(initialState, action);
@@ -72,12 +89,18 @@ describe("user reducer", () => {
   });
 
   it("should set user to null when onLogOut is fulfilled", () => {
-    const action = { type: onLogOut.fulfilled.type};
-    const state = reducer(initialState, action);
-    expect(state).toEqual({
+    const action = { type: onLogOut.fulfilled.type };
+    const state = reducer(
+      {
         ...initialState,
-        user: null,
-      });
+        user: testDataUser,
+      },
+      action
+    );
+    expect(state).toEqual({
+      ...initialState,
+      user: null,
+    });
   });
 
   it("should set onAuthorizationRequest true when getUser is pending", () => {
@@ -128,18 +151,3 @@ describe("user reducer", () => {
     expect(state).toEqual({ ...initialState, editUserFailed: true });
   });
 });
-
-
-
-//   .addCase(editUser.pending, (state, action) => {
-//     state.editUserRequest = true;
-//     state.editUserFailed = false;
-//   })
-//   .addCase(editUser.fulfilled, (state, action) => {
-//     state.user = action.payload.user;
-//     state.editUserRequest = false;
-//   })
-//   .addCase(editUser.rejected, (state, action) => {
-//     state.editUserRequest = false;
-//     state.editUserFailed = true;
-//   });

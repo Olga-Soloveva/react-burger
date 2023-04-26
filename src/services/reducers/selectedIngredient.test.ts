@@ -4,7 +4,21 @@ import reducer, {
   addIngredientDetails,
   removeIngredientDetails,
 } from "./selectedIngredient";
-import { testDataSelectedIngredient } from "../../utils/testData";
+import { TIngredient } from "../../utils/types";
+
+const testDataSelectedIngredient: TIngredient = {
+  _id: "643d69a5c3f7b9001cfa093c",
+  name: "Краторная булка N-200i",
+  type: "bun",
+  proteins: 80,
+  fat: 24,
+  carbohydrates: 53,
+  calories: 420,
+  price: 1255,
+  image: "https://code.s3.yandex.net/react/code/bun-02.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+  image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
+};
 
 const expectStateAddIngredientDetails: SelectedIngredientState = {
   ...initialState,
@@ -32,7 +46,10 @@ describe("selectedIngredient reducer", () => {
 
   it("should remove selectedIngredient when removeIngredientDetails", () => {
     const action = { type: removeIngredientDetails };
-    const state = reducer(initialState, action);
+    const state = reducer({
+      ...initialState,
+      selectedIngredient: testDataSelectedIngredient,
+    }, action);
     expect(state).toEqual(expectStateRemoveIngredientDetails);
   });
 });
