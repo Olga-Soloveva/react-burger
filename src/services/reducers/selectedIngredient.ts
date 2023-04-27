@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TIngredient } from "../../utils/types";
 
-interface SelectedIngredientState {
+export interface SelectedIngredientState {
   selectedIngredient: TIngredient | null;
 }
 
-const initialState: SelectedIngredientState = {
+export const initialState: SelectedIngredientState = {
   selectedIngredient: null
 };
 
@@ -21,3 +21,7 @@ export const selectedIngredientSlice = createSlice({
     },
   },
 });
+
+export const { addIngredientDetails, removeIngredientDetails } = selectedIngredientSlice.actions;
+
+export default selectedIngredientSlice.reducer;

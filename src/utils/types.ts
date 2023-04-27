@@ -12,7 +12,6 @@ export enum WebsocketStatus {
 }
 
 export type TIngredient = {
-  count: number;
   _id: string;
   name: string;
   type: "bun" | "main" | "sauce";
