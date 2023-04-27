@@ -79,7 +79,7 @@ const BurgerConstructor: FC = () => {
   return (
     <>
       <section
-        className={`${styles.section_container} pt-25 `}
+        className={`${styles.section_container} pt-25`}
         ref={dropIngredient}
       >
         {!bunComponent && otherComponents.length === 0 && (
