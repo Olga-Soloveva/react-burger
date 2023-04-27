@@ -1,7 +1,7 @@
 {
   "name": "react-burger",
   "version": "0.1.0",
-  "homepage": "https://Olga-Soloveva.github.io/react-burger",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
@@ -35,7 +35,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "deploy-script": "npm run build && scp -r ./build/* olga-tovstaya@51.250.28.254:/home/olga-tovstaya/stellar-frontend"
   },
   "eslintConfig": {
     "extends": [
